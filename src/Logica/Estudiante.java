@@ -1,6 +1,7 @@
 package Logica;
 
 public class Estudiante {
+
 	private int id;
 	private String nombre;
 	private String contrasena;
