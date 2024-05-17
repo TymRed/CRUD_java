@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class Vista extends JFrame {
@@ -44,7 +45,8 @@ public class Vista extends JFrame {
 class MiPanel extends JPanel {
 
 	JButton signIn, logIn;
-	JTextField nombre, contrasena;
+	JTextField nombre;
+	JPasswordField contrasena;
 
 	public MiPanel() {
 
@@ -54,8 +56,9 @@ class MiPanel extends JPanel {
 
 		nombre = crearCampoTexto("Usuario");
 		nombre.setBounds(55, 130, 225, 25);
-		contrasena = crearCampoTexto("Contraseña");
+		contrasena = crearCampoContrasena();
 		contrasena.setBounds(55, 180, 225, 25);
+
 		this.add(nombre);
 		this.add(contrasena);
 
@@ -76,6 +79,14 @@ class MiPanel extends JPanel {
 		t.setFont(new Font("Consolas", Font.PLAIN, 18));
 		t.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1).brighter().brighter(), 2));
 		return t;
+	}
+
+	private JPasswordField crearCampoContrasena() {
+		JPasswordField contrasena = new JPasswordField();
+		contrasena.setForeground(Color.GRAY);
+		contrasena.setFont(new Font("Consolas", Font.PLAIN, 18));
+		contrasena.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1).brighter().brighter(), 2));
+		return contrasena;
 	}
 
 	private JButton crearBoton(String texto, char mnemonic) {
