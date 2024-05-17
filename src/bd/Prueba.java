@@ -63,10 +63,9 @@ public class Prueba {
 	}
 
 	// Boolean for.. idc, testing mb
-	boolean hayUsuario(String nombre, String contrasena) {
-		String queryUsuarios = String.format(
-				"SELECT DISTINCT * FROM profesores, estudiantes " + "WHERE nombre = '%s' AND contrasena = '%s'", nombre,
-				contrasena);
+	public static boolean hayUsuario(String nombre, String contrasena) {
+		String queryUsuarios = String
+				.format("SELECT nombre FROM estudiantes WHERE nombre = '%s' AND contrasena = '%s' UNION SELECT nombre FROM profesores WHERE nombre = '%s' AND contrasena = '%s'", nombre, contrasena, nombre, contrasena);
 		Statement s;
 		try {
 			s = c.createStatement();
@@ -79,7 +78,7 @@ public class Prueba {
 		return false;
 	}
 
-	boolean signIn(String nombre, String contrasena) {
+	public static boolean signIn(String nombre, String contrasena) {
 		if (hayUsuario(nombre, contrasena))
 			return false;
 
