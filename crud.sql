@@ -18,14 +18,69 @@ USE `crud`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `alumno`
+-- Table structure for table `asignaturas`
 --
 
-DROP TABLE IF EXISTS `alumno`;
+DROP TABLE IF EXISTS `asignaturas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `alumno` (
-  `id` int NOT NULL,
+CREATE TABLE `asignaturas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `idprof` int NOT NULL,
+  `nombre` varchar(45) NOT NULL,
+  `cantidadalum` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idprof_UNIQUE` (`idprof`),
+  KEY `fk_idprof_idx` (`idprof`),
+  CONSTRAINT `fk_idprof` FOREIGN KEY (`idprof`) REFERENCES `profesores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `asignaturas`
+--
+
+LOCK TABLES `asignaturas` WRITE;
+/*!40000 ALTER TABLE `asignaturas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `asignaturas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `cursos`
+--
+
+DROP TABLE IF EXISTS `cursos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cursos` (
+  `idasignatura` int NOT NULL,
+  `idestudiante` int NOT NULL,
+  `notafinal` decimal(4,2) DEFAULT NULL,
+  PRIMARY KEY (`idasignatura`,`idestudiante`),
+  KEY `fk_curso_estudiantes_idx` (`idestudiante`),
+  CONSTRAINT `fk_cursos_asignaturas` FOREIGN KEY (`idasignatura`) REFERENCES `asignaturas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_cursos_estudiantes` FOREIGN KEY (`idestudiante`) REFERENCES `estudiantes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cursos`
+--
+
+LOCK TABLES `cursos` WRITE;
+/*!40000 ALTER TABLE `cursos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cursos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `estudiantes`
+--
+
+DROP TABLE IF EXISTS `estudiantes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `estudiantes` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `contrasena` varchar(45) NOT NULL,
   `cantidadasig` int NOT NULL,
@@ -34,77 +89,23 @@ CREATE TABLE `alumno` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `alumno`
+-- Dumping data for table `estudiantes`
 --
 
-LOCK TABLES `alumno` WRITE;
-/*!40000 ALTER TABLE `alumno` DISABLE KEYS */;
-/*!40000 ALTER TABLE `alumno` ENABLE KEYS */;
+LOCK TABLES `estudiantes` WRITE;
+/*!40000 ALTER TABLE `estudiantes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `estudiantes` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `asignatura`
+-- Table structure for table `profesores`
 --
 
-DROP TABLE IF EXISTS `asignatura`;
+DROP TABLE IF EXISTS `profesores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asignatura` (
-  `id` int NOT NULL,
-  `idprof` int NOT NULL,
-  `nombre` varchar(45) NOT NULL,
-  `cantidadalum` int NOT NULL,
-  PRIMARY KEY (`id`,`idprof`),
-  KEY `fk_idprof_idx` (`idprof`),
-  CONSTRAINT `fk_idprof` FOREIGN KEY (`idprof`) REFERENCES `profesor` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `asignatura`
---
-
-LOCK TABLES `asignatura` WRITE;
-/*!40000 ALTER TABLE `asignatura` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asignatura` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `asignaturasestudiantes`
---
-
-DROP TABLE IF EXISTS `asignaturasestudiantes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asignaturasestudiantes` (
-  `idasignatura` int NOT NULL,
-  `idalumno` int NOT NULL,
-  `notafinal` decimal(4,2) DEFAULT NULL,
-  PRIMARY KEY (`idasignatura`,`idalumno`),
-  KEY `fk_idalumno_asignatura_idx` (`idalumno`),
-  CONSTRAINT `fk_idalumno_asignatura` FOREIGN KEY (`idalumno`) REFERENCES `alumno` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_idasignatura_alumno` FOREIGN KEY (`idasignatura`) REFERENCES `asignatura` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `asignaturasestudiantes`
---
-
-LOCK TABLES `asignaturasestudiantes` WRITE;
-/*!40000 ALTER TABLE `asignaturasestudiantes` DISABLE KEYS */;
-/*!40000 ALTER TABLE `asignaturasestudiantes` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `profesor`
---
-
-DROP TABLE IF EXISTS `profesor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `profesor` (
-  `id` int NOT NULL,
+CREATE TABLE `profesores` (
+  `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `contrasena` varchar(45) NOT NULL,
   PRIMARY KEY (`id`)
@@ -112,12 +113,12 @@ CREATE TABLE `profesor` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `profesor`
+-- Dumping data for table `profesores`
 --
 
-LOCK TABLES `profesor` WRITE;
-/*!40000 ALTER TABLE `profesor` DISABLE KEYS */;
-/*!40000 ALTER TABLE `profesor` ENABLE KEYS */;
+LOCK TABLES `profesores` WRITE;
+/*!40000 ALTER TABLE `profesores` DISABLE KEYS */;
+/*!40000 ALTER TABLE `profesores` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -128,18 +129,18 @@ DROP TABLE IF EXISTS `tarea`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tarea` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `idasignatura` int NOT NULL,
-  `idalumno` int NOT NULL,
+  `idestudiante` int NOT NULL,
   `nombre` varchar(45) NOT NULL,
-  `nota` decimal(4,2) NOT NULL,
+  `nota` decimal(4,2) DEFAULT NULL,
   `entregado_fecha` date DEFAULT NULL,
   `descripcion` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`,`idasignatura`,`idalumno`),
-  KEY `fk_idasignatura_tarea_idx` (`idasignatura`),
-  KEY `fk_idalumno_tarea_idx` (`idalumno`),
-  CONSTRAINT `fk_idalumno_tarea` FOREIGN KEY (`idalumno`) REFERENCES `asignaturasestudiantes` (`idalumno`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_idasignatura_tarea` FOREIGN KEY (`idasignatura`) REFERENCES `asignaturasestudiantes` (`idasignatura`)
+  PRIMARY KEY (`id`,`idasignatura`,`idestudiante`),
+  KEY `fk_tareas_cursos_idx` (`idasignatura`),
+  KEY `fk_estudiantes_cursos_idx` (`idestudiante`),
+  CONSTRAINT `fk_asignaturas_cursos` FOREIGN KEY (`idasignatura`) REFERENCES `cursos` (`idasignatura`),
+  CONSTRAINT `fk_estudiantes_cursos` FOREIGN KEY (`idestudiante`) REFERENCES `cursos` (`idestudiante`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -161,4 +162,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-16 18:17:48
+-- Dump completed on 2024-05-17 18:30:35
