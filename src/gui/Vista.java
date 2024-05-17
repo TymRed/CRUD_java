@@ -3,12 +3,14 @@ package gui;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 public class Vista extends JFrame {
 
@@ -21,9 +23,12 @@ public class Vista extends JFrame {
 
 	public Vista() {
 
+		ImageIcon icono = new ImageIcon("miniLogoNoodle.png");
+
+		this.setIconImage(icono.getImage());
 		this.setTitle("Ñoodle");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(500, 400);
+		this.setSize(350, 350);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 
@@ -39,7 +44,7 @@ public class Vista extends JFrame {
 class MiPanel extends JPanel {
 
 	JButton signIn, logIn;
-	JTextArea nombre, contrasena;
+	JTextField nombre, contrasena;
 
 	public MiPanel() {
 
@@ -47,45 +52,55 @@ class MiPanel extends JPanel {
 		this.setBackground(new Color(Vista.COLOR4));
 		this.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 3));
 
-		nombre = new JTextArea();
-		nombre.setBounds(130, 120, 200, 25);
-		nombre.setForeground(new Color(Vista.COLOR1));
-		nombre.setFont(new Font("Consolas", Font.PLAIN, 18));
-		nombre.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1).brighter().brighter(), 2));
-		contrasena = new JTextArea();
-		contrasena.setBounds(130, 190, 200, 25);
-		contrasena.setForeground(new Color(Vista.COLOR1));
-		contrasena.setFont(new Font("Consolas", Font.PLAIN, 18));
-		contrasena.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1).brighter().brighter(), 2));
+		nombre = crearCampoTexto("Usuario");
+		nombre.setBounds(55, 130, 225, 25);
+		contrasena = crearCampoTexto("Contraseña");
+		contrasena.setBounds(55, 180, 225, 25);
 		this.add(nombre);
 		this.add(contrasena);
 
-		signIn = new JButton("Sign in");
-		signIn.setBounds(100, 300, 80, 30);
-		signIn.setFocusable(false);
-		signIn.setFont(new Font("Consolas", Font.PLAIN, 14));
-		signIn.setMnemonic('s');
-		signIn.setBackground(new Color(Vista.COLOR3));
-		signIn.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2, true));
-		logIn = new JButton("Log in");
-		logIn.setBounds(300, 300, 80, 30);
-		logIn.setFocusable(false);
-		logIn.setFont(new Font("Consolas", Font.PLAIN, 14));
-		logIn.setMnemonic('l');
-		logIn.setBackground(new Color(Vista.COLOR3));
-		logIn.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2, true));
-
+		signIn = crearBoton("Sign in", 's');
+		signIn.setBounds(55, 230, 80, 30);
+		logIn = crearBoton("Log in", 'l');
+		logIn.setBounds(200, 230, 80, 30);
 		this.add(signIn);
 		this.add(logIn);
+
 		this.setOpaque(true);
 
 	}
 
+	private JTextField crearCampoTexto(String texto) {
+		JTextField t = new JTextField(texto);
+		t.setForeground(Color.GRAY);
+		t.setFont(new Font("Consolas", Font.PLAIN, 18));
+		t.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1).brighter().brighter(), 2));
+		return t;
+	}
+
+	private JButton crearBoton(String texto, char mnemonic) {
+		JButton b = new JButton(texto);
+		b.setFocusable(false);
+		b.setForeground((new Color(Vista.COLOR1)));
+		b.setFont(new Font("Consolas", Font.PLAIN, 14));
+		b.setMnemonic('s');
+		b.setBackground(new Color(Vista.COLOR3));
+		b.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2, true));
+		return b;
+	}
+
+	Image logo, logoU, logoC;
+
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		this.setFont(new Font("Consolas", Font.BOLD, 25));
-		g.drawString("Ñoodle", 200, 100);
+//		this.setFont(new Font("Consolas", Font.BOLD, 25));
+		logo = new ImageIcon("logoNoodle.png").getImage();
+		logoU = new ImageIcon("usuario.png").getImage();
+		logoC = new ImageIcon("contrasena.png").getImage();
+		g.drawImage(logo, 87, 45, 150, 50, null);
+		g.drawImage(logoU, 30, 133, 18, 18, null);
+		g.drawImage(logoC, 30, 183, 18, 18, null);
 	}
 
 }
