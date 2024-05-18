@@ -26,13 +26,13 @@ DROP TABLE IF EXISTS `asignaturas`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `asignaturas` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `idprof` int NOT NULL,
+  `nombreprof` varchar(45) NOT NULL,
   `nombre` varchar(45) NOT NULL,
-  `cantidadalum` int NOT NULL,
+  `cantidadalum` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idprof_UNIQUE` (`idprof`),
-  KEY `fk_idprof_idx` (`idprof`),
-  CONSTRAINT `fk_idprof` FOREIGN KEY (`idprof`) REFERENCES `profesores` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  UNIQUE KEY `nombreprof_UNIQUE` (`nombreprof`),
+  KEY `FK_nombreProf_profesores_idx` (`nombreprof`),
+  CONSTRAINT `FK_nombreProf_profesores` FOREIGN KEY (`nombreprof`) REFERENCES `profesores` (`nombre`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -54,12 +54,12 @@ DROP TABLE IF EXISTS `cursos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cursos` (
   `idasignatura` int NOT NULL,
-  `idestudiante` int NOT NULL,
+  `nombreestudiante` varchar(45) NOT NULL,
   `notafinal` decimal(4,2) DEFAULT NULL,
-  PRIMARY KEY (`idasignatura`,`idestudiante`),
-  KEY `fk_curso_estudiantes_idx` (`idestudiante`),
-  CONSTRAINT `fk_cursos_asignaturas` FOREIGN KEY (`idasignatura`) REFERENCES `asignaturas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_cursos_estudiantes` FOREIGN KEY (`idestudiante`) REFERENCES `estudiantes` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`idasignatura`,`nombreestudiante`),
+  KEY `FK_nombreEstudiante_cursos_idx` (`nombreestudiante`),
+  CONSTRAINT `FK_idasignatura_cursos` FOREIGN KEY (`idasignatura`) REFERENCES `asignaturas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_nombreEstudiante_cursos` FOREIGN KEY (`nombreestudiante`) REFERENCES `estudiantes` (`nombre`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -80,11 +80,10 @@ DROP TABLE IF EXISTS `estudiantes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `estudiantes` (
-  `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `contrasena` varchar(45) NOT NULL,
-  `cantidadasig` int NOT NULL,
-  PRIMARY KEY (`id`)
+  `cantidadasig` int NOT NULL DEFAULT '0',
+  PRIMARY KEY (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -105,10 +104,9 @@ DROP TABLE IF EXISTS `profesores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `profesores` (
-  `id` int NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
   `contrasena` varchar(45) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -122,35 +120,35 @@ LOCK TABLES `profesores` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `tarea`
+-- Table structure for table `tareas`
 --
 
-DROP TABLE IF EXISTS `tarea`;
+DROP TABLE IF EXISTS `tareas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tarea` (
+CREATE TABLE `tareas` (
   `id` int NOT NULL AUTO_INCREMENT,
   `idasignatura` int NOT NULL,
-  `idestudiante` int NOT NULL,
+  `nombreestudiante` varchar(45) NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `nota` decimal(4,2) DEFAULT NULL,
   `entregado_fecha` date DEFAULT NULL,
   `descripcion` varchar(45) DEFAULT NULL,
-  PRIMARY KEY (`id`,`idasignatura`,`idestudiante`),
+  PRIMARY KEY (`id`,`idasignatura`,`nombreestudiante`),
   KEY `fk_tareas_cursos_idx` (`idasignatura`),
-  KEY `fk_estudiantes_cursos_idx` (`idestudiante`),
-  CONSTRAINT `fk_asignaturas_cursos` FOREIGN KEY (`idasignatura`) REFERENCES `cursos` (`idasignatura`),
-  CONSTRAINT `fk_estudiantes_cursos` FOREIGN KEY (`idestudiante`) REFERENCES `cursos` (`idestudiante`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `FK_nombreestudiante_tareas_idx` (`nombreestudiante`),
+  CONSTRAINT `FK_idasignatura_tareas` FOREIGN KEY (`idasignatura`) REFERENCES `cursos` (`idasignatura`),
+  CONSTRAINT `FK_nombreestudiante_tareas` FOREIGN KEY (`nombreestudiante`) REFERENCES `estudiantes` (`nombre`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tarea`
+-- Dumping data for table `tareas`
 --
 
-LOCK TABLES `tarea` WRITE;
-/*!40000 ALTER TABLE `tarea` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tarea` ENABLE KEYS */;
+LOCK TABLES `tareas` WRITE;
+/*!40000 ALTER TABLE `tareas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tareas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -162,4 +160,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-17 18:30:35
+-- Dump completed on 2024-05-18 14:15:39
