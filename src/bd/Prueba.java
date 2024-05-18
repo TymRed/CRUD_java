@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -62,14 +63,33 @@ public class Prueba {
 		return null;
 	}
 
-	// Boolean for.. idc, testing mb
+	// Podemos separarlo en 2 metodos, uno q solo comprueba el nombre, y otro como este
 	public static boolean hayUsuario(String nombre, String contrasena) {
-		String queryUsuarios = String
-				.format("SELECT nombre FROM estudiantes WHERE nombre = '%s' AND contrasena = '%s' UNION SELECT nombre FROM profesores WHERE nombre = '%s' AND contrasena = '%s'", nombre, contrasena, nombre, contrasena);
-		Statement s;
+		String queryUsuarios = "SELECT nombre FROM estudiantes WHERE nombre = ? AND contrasena = ? UNION SELECT nombre FROM profesores WHERE nombre = ? AND contrasena = ?";
+		PreparedStatement s;
 		try {
-			s = c.createStatement();
-			ResultSet rs = s.executeQuery(queryUsuarios);
+			s = c.prepareStatement(queryUsuarios);
+			s.setString(1, nombre);
+			s.setString(2, contrasena);
+			s.setString(3, nombre);
+			s.setString(4, contrasena);
+			ResultSet rs = s.executeQuery();
+			if (rs.next())
+				return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	//Se puede borrar. Solo estoy probandolo
+	public static boolean hayNombreUsuario(String nombre) {
+		String queryUsuarios = "SELECT nombre FROM estudiantes WHERE nombre = ? UNION SELECT nombre FROM profesores WHERE nombre = ?";
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement(queryUsuarios);
+			s.setString(1, nombre);
+			s.setString(2, nombre);
+			ResultSet rs = s.executeQuery();
 			if (rs.next())
 				return true;
 		} catch (SQLException e) {
@@ -78,20 +98,17 @@ public class Prueba {
 		return false;
 	}
 
-	public static boolean signIn(String nombre, String contrasena) {
-		if (hayUsuario(nombre, contrasena))
-			return false;
-
-		String crearUsuario = "INSERT INTO estudiantes (nombre, contrasena) VALUES ('%s','%s')";
-		Statement s;
+	public static void signIn(String nombre, String contrasena) {
+		String crearUsuario = "INSERT INTO estudiantes (nombre, contrasena) VALUES (?,?)";
+		PreparedStatement s;
 		try {
-			s = c.createStatement();
-			s.executeUpdate(crearUsuario);
-			return true;
+			s = c.prepareStatement(crearUsuario);
+			s.setString(1, nombre);
+			s.setString(2, contrasena);
+			s.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
 	}
 
 }

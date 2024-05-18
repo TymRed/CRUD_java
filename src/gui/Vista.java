@@ -137,15 +137,29 @@ class MiPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == logIn) {
-			boolean comprobado = Prueba.hayUsuario(nombre.getText(), String.valueOf(contrasena.getPassword()));
 			String nombreUsusario = nombre.getText();
 			String contrasenaUsuario = String.valueOf(contrasena.getPassword());
-			System.out.println(String.valueOf(contrasena.getPassword()));
-			if (!comprobado) {
-				errorUsuario.setVisible(true);
+			boolean comprobado = Prueba.hayUsuario(nombreUsusario, contrasenaUsuario);
+//			System.out.println(nombreUsusario);
+//			System.out.println(contrasenaUsuario);
+			if (comprobado) {
+				System.out.println("Loged In");
+			}
+			else {
+				System.out.println("Error, user isn't registered");
 			}
 		} else if (e.getSource() == signIn) {
-			System.out.println("Loged In");
+			String nombreUsuario = nombre.getText();
+			boolean nombreOcupado = Prueba.hayNombreUsuario(nombreUsuario);
+			if (!nombreOcupado) {
+				String contrasenaUsuario = String.valueOf(contrasena.getPassword());
+				Prueba.signIn(nombreUsuario, contrasenaUsuario);
+				System.out.println("Singed In");
+			}
+			else {
+				errorUsuario.setVisible(true);				
+			}
+			
 		}
 	}
 
