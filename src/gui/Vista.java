@@ -141,8 +141,7 @@ class MiPanel extends JPanel implements ActionListener {
 			String nombreUsusario = nombre.getText();
 			String contrasenaUsuario = String.valueOf(contrasena.getPassword());
 			boolean datosCorrectos = Prueba.hayUsuario(nombreUsusario, contrasenaUsuario);
-//			System.out.println(nombreUsusario);
-//			System.out.println(contrasenaUsuario);
+
 			if (datosCorrectos) {
 				System.out.println("Loged In");
 			} else {
@@ -151,12 +150,10 @@ class MiPanel extends JPanel implements ActionListener {
 		} else if (e.getSource() == signIn) {
 			String nombreUsuario = nombre.getText();
 			String contrasenaUsuario = String.valueOf(contrasena.getPassword());
-			System.out.println(nombreUsuario);
-			System.out.println(contrasenaUsuario);
 			boolean nombreOcupado = Prueba.hayNombreUsuario(nombreUsuario);
+			
 			if (nombreOcupado) {
 				System.out.println("Nombre ocupado");
-				
 				return;
 			}
 			boolean nombreAdecuado = comprobarNombre(nombreUsuario);
