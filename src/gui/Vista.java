@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.stream.Stream;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -139,28 +140,68 @@ class MiPanel extends JPanel implements ActionListener {
 		if (e.getSource() == logIn) {
 			String nombreUsusario = nombre.getText();
 			String contrasenaUsuario = String.valueOf(contrasena.getPassword());
-			boolean comprobado = Prueba.hayUsuario(nombreUsusario, contrasenaUsuario);
+			boolean datosCorrectos = Prueba.hayUsuario(nombreUsusario, contrasenaUsuario);
 //			System.out.println(nombreUsusario);
 //			System.out.println(contrasenaUsuario);
-			if (comprobado) {
+			if (datosCorrectos) {
 				System.out.println("Loged In");
-			}
-			else {
-				System.out.println("Error, user isn't registered");
+			} else {
+				System.out.println("Error, usuario no está registrado");
 			}
 		} else if (e.getSource() == signIn) {
 			String nombreUsuario = nombre.getText();
+			String contrasenaUsuario = String.valueOf(contrasena.getPassword());
+			System.out.println(nombreUsuario);
+			System.out.println(contrasenaUsuario);
 			boolean nombreOcupado = Prueba.hayNombreUsuario(nombreUsuario);
-			if (!nombreOcupado) {
-				String contrasenaUsuario = String.valueOf(contrasena.getPassword());
+			if (nombreOcupado) {
+				System.out.println("Nombre ocupado");
+				errorUsuario.setVisible(true); //no debe estar aqui, es solo un ejemplo
+				return;
+			}
+			boolean nombreAdecuado = comprobarNombre(nombreUsuario);
+			boolean contrasenaAdecuada = comprobarContrasena(contrasenaUsuario);
+			
+			if (nombreAdecuado && contrasenaAdecuada) {
 				Prueba.signIn(nombreUsuario, contrasenaUsuario);
-				System.out.println("Singed In");
+				System.out.println("Singed In");				
 			}
 			else {
-				errorUsuario.setVisible(true);				
+				System.out.println("Error");
 			}
-			
+
 		}
+	}
+
+	// Creo q hay q mover este metodo a otra clase, es solo prueba
+	// Se pueden hacer comentarios personalizados para los errores
+	private boolean comprobarNombre(String nombreUsuario) {
+		if (nombreUsuario.isEmpty()) return false;
+		
+		boolean longitudAdecuada = nombreUsuario.length() >= 2 && nombreUsuario.length() <= 16;
+		if (!longitudAdecuada) System.out.println("long con inad");
+		boolean may1 = nombreUsuario.charAt(0) >= 'A' && nombreUsuario.charAt(0) <= 'Z';
+		if (!may1) System.out.println("1 lt no may");
+		boolean adecuado = nombreUsuario.substring(1).matches("[a-z].*");
+		if (!adecuado) System.out.println("no todo min");
+		
+		if (longitudAdecuada && may1 && adecuado) return true;
+		return false;
+	}
+	private boolean comprobarContrasena(String contrasena) {
+		if (contrasena.isEmpty()) return false;
+		
+		boolean longitudAdecuada = contrasena.length() >= 2 && contrasena.length() <= 16;
+		if (!longitudAdecuada) System.out.println("long con inad");
+		boolean hayMin = contrasena.matches(".*[a-z].*");
+		if (!hayMin) System.out.println("No hay min");
+		boolean hayMay = contrasena.matches(".*[A-Z].*");
+		if (!hayMay) System.out.println("No hay may");
+		boolean hayNum = contrasena.matches(".*[1-9].*");
+		if (!hayNum) System.out.println("No hay num");
+		
+		if (longitudAdecuada && hayMin && hayMay && hayNum) return true;
+		return false;
 	}
 
 }
