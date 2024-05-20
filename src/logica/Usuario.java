@@ -1,12 +1,10 @@
 package logica;
 
 public class Usuario {
-	protected int id;
 	protected String nombre;
 	protected String contrasena;
 
-	public Usuario(int id, String nombre, String contrasena) {
-		this.id = id;
+	public Usuario(String nombre, String contrasena) {
 		this.nombre = nombre;
 		this.contrasena = contrasena;
 	}
@@ -14,13 +12,6 @@ public class Usuario {
 	public Usuario() {
 	}
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getNombre() {
 		return nombre;

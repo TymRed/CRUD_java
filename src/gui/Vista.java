@@ -18,6 +18,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import bd.Prueba;
+import logica.Usuario;
 
 public class Vista extends JFrame {
 
@@ -140,11 +141,13 @@ class MiPanel extends JPanel implements ActionListener {
 		if (e.getSource() == logIn) {
 			String nombreUsusario = nombre.getText();
 			String contrasenaUsuario = String.valueOf(contrasena.getPassword());
-			boolean datosCorrectos = Prueba.hayUsuario(nombreUsusario, contrasenaUsuario);
+			Usuario u = Prueba.buscarUsuario(nombreUsusario, contrasenaUsuario);
+			boolean datosCorrectos = u != null;
 
 			if (datosCorrectos) {
 				System.out.println("Loged In");
 				Vista ventana2 = new Vista();
+				
 			} else {
 				System.out.println("Error, usuario no está registrado");
 			}
