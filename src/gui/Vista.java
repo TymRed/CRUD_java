@@ -108,7 +108,7 @@ class MiPanel extends JPanel implements ActionListener {
 		b.setFocusable(false);
 		b.setForeground((new Color(Vista.COLOR1)));
 		b.setFont(new Font("Consolas", Font.PLAIN, 14));
-		b.setMnemonic('s');
+		b.setMnemonic(mnemonic);
 		b.setBackground(new Color(Vista.COLOR3));
 		b.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2, true));
 		b.addActionListener(this);
@@ -117,7 +117,7 @@ class MiPanel extends JPanel implements ActionListener {
 
 	private JLabel crearTextoError() {
 		JLabel t = new JLabel();
-		t.setText("Debe tener entre 4 y 16 caracteres");
+		t.setText("Debe tener entre 4 y 16 caracteres"); // HACER EL ERROR QUE SEA
 		t.setForeground(Color.RED);
 		t.setFont(new Font("Consolas", Font.ITALIC, 13));
 		return t;
@@ -144,6 +144,7 @@ class MiPanel extends JPanel implements ActionListener {
 
 			if (datosCorrectos) {
 				System.out.println("Loged In");
+				Vista ventana2 = new Vista();
 			} else {
 				System.out.println("Error, usuario no está registrado");
 			}
@@ -183,6 +184,7 @@ class MiPanel extends JPanel implements ActionListener {
 		if (longitudAdecuada && may1 && adecuado) return true;
 		return false;
 	}
+	
 	private boolean comprobarContrasena(String contrasena) {
 		if (contrasena.isEmpty()) return false;
 		
