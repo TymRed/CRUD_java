@@ -49,7 +49,10 @@ public class Programa extends JFrame {
 		panelCardLayout.setLayout(new CardLayout(0, 0));
 		panelCardLayout.add(tareaProfesor, "Tarea Profesor");
 		panelCardLayout.add(panelEstudiante, "Panel Estudiante");
-
+		
+//		CardLayout cl = (CardLayout)(panelCardLayout.getLayout());              Asi se cambia de un panel a otro (esas 2 lineas) 
+//		cl.show(panelCardLayout, "Panel Estudiante");
+		
 		this.add(panelCardLayout, BorderLayout.CENTER);
 
 		this.setVisible(true);
@@ -168,88 +171,60 @@ class PanelTareasProfesor extends JPanel {
 //		tareasContenedor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.red, 1),BorderFactory.createEmptyBorder(5,5,5,5)));
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
-		GridBagLayout gbl_tarea1 = new GridBagLayout();
-		gbl_tarea1.columnWeights = new double[]{1.0, 1.0, 0.5, 0.0};
-		JPanel tarea1 = new JPanel(gbl_tarea1);
-		tarea1.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x1f7a8c), 3),BorderFactory.createEmptyBorder(5,5,5,5)));
-		tarea1.setBackground(new Color(0xbfdbf7));
-		tarea1.setPreferredSize(new Dimension(1,40));
-		tareasContenedor.add(tarea1);
+		for(int i = 0; i<10; i++) {
+			JPanel tarea = crearTarea();
+			tareasContenedor.add(tarea);
+			
+		}
 		
-		JLabel nomAl1 = new JLabel("Tymur Kulivar");
-		nomAl1.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_nomAl1 = new GridBagConstraints();
-		gbc_nomAl1.insets = new Insets(0, 0, 0, 5);
-		gbc_nomAl1.gridy = 0;
-		gbc_nomAl1.gridx = 0;
-//		gbc_nomAl1.ipadx = 15;
-		gbc_nomAl1.anchor = GridBagConstraints.WEST;
-		tarea1.add(nomAl1, gbc_nomAl1);
-		
-		JLabel time = new JLabel("10/05/2023");
-		time.setHorizontalAlignment(SwingConstants.LEFT);
-		GridBagConstraints gbc_time = new GridBagConstraints();
-		gbc_time.insets = new Insets(0, 0, 0, 5);
-		gbc_time.anchor = GridBagConstraints.WEST;
-		gbc_time.gridx = 1;
-		gbc_time.gridy = 0;
-//		gbc_lblNewLabel_2.ipadx = 15;
-		tarea1.add(time, gbc_time);
-		
-		JTextField nota = new JTextField();
-		GridBagConstraints gbc_nota = new GridBagConstraints();
-		gbc_nota.fill = GridBagConstraints.HORIZONTAL;
-		gbc_nota.insets = new Insets(0, 0, 0, 5);
-		gbc_nota.gridx = 2;
-		gbc_nota.gridy = 0;
-		tarea1.add(nota, gbc_nota);
-		nota.setColumns(1);
-		
-		JButton submitNota = new JButton("Poner");
-		GridBagConstraints gbc_submitNota = new GridBagConstraints();
-		gbc_submitNota.gridx = 3;
-		gbc_submitNota.gridy = 0;
-		gbc_submitNota.anchor = GridBagConstraints.EAST;
-		tarea1.add(submitNota, gbc_submitNota);
-		
-		JPanel tarea2 = new JPanel();
-		tarea2.setBackground(new Color(0, 255, 0));
-		tarea2.setPreferredSize(new Dimension(1,40));
-		tareasContenedor.add(tarea2);
-		GridBagLayout gbl_tarea2 = new GridBagLayout();
-		gbl_tarea2.columnWidths = new int[]{102, 96, 0};
-		gbl_tarea2.rowHeights = new int[]{19, 0};
-		gbl_tarea2.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_tarea2.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		tarea2.setLayout(gbl_tarea2);
-		
-		JPanel tarea4 = new JPanel();
-		tarea4.setBackground(new Color(128, 255, 0));
-		tarea4.setPreferredSize(new Dimension(1,40));
-		tareasContenedor.add(tarea4);
-		
-		JPanel tarea5 = new JPanel();
-		tarea5.setBackground(new Color(128, 255, 128));
-		tarea5.setPreferredSize(new Dimension(1,40));
-		tareasContenedor.add(tarea5);
-		
-		JPanel tarea6 = new JPanel();
-		tarea6.setBackground(new Color(0, 255, 128));
-		tarea6.setPreferredSize(new Dimension(1,40));
-		tareasContenedor.add(tarea6);
-		
-		JPanel tarea7 = new JPanel();
-		tarea7.setBackground(new Color(0, 128, 64));
-		tarea7.setPreferredSize(new Dimension(1,40));
-		tareasContenedor.add(tarea7);
 		
 		JScrollPane tareasScroll = new JScrollPane(tareasContenedor);
 		tareasScroll.setPreferredSize(new Dimension(200,250));
 		this.add(tareasScroll, BorderLayout.SOUTH);
 		
-		
-//		frame.getContentPane().add(panel, BorderLayout.CENTER);
 
+	}
+	
+	public JPanel crearTarea() {
+		GridBagLayout gbl_tarea1 = new GridBagLayout();
+		gbl_tarea1.columnWeights = new double[]{2.0, 2.0, 0.5, 0.5};
+		
+		JPanel tarea1 = new JPanel(gbl_tarea1);
+		tarea1.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x1f7a8c), 3),BorderFactory.createEmptyBorder(5,5,5,5)));
+		tarea1.setBackground(new Color(0xbfdbf7));
+		tarea1.setPreferredSize(new Dimension(1,40));
+		
+		JLabel nomAl1 = new JLabel("Tymur Kulivar");
+		nomAl1.setHorizontalAlignment(SwingConstants.LEFT);
+		
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(0, 0, 0, 5);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.anchor = GridBagConstraints.WEST;
+		tarea1.add(nomAl1, gbc);
+		
+		JLabel time = new JLabel("10/05/2023");
+		time.setHorizontalAlignment(SwingConstants.LEFT);
+		gbc.gridx = 1;
+		tarea1.add(time, gbc);
+		
+		JTextField nota = new JTextField();
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.gridx = 2;
+		tarea1.add(nota, gbc);
+		nota.setColumns(1);
+		
+		JButton submitNota = new JButton("Poner");
+		submitNota.setBackground(new Color(Vista.COLOR3));
+		submitNota.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x1f7a8c), 1),BorderFactory.createEmptyBorder(7,17,7,17)));
+		submitNota.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		submitNota.setFocusable(false);
+//		gbc.fill = GridBagConstraints.NONE;
+		gbc.gridx = 3;
+		gbc.anchor = GridBagConstraints.EAST;
+		tarea1.add(submitNota, gbc);
+		return tarea1;
 	}
 
 }
