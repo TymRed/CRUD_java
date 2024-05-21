@@ -1,12 +1,13 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.stream.Stream;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -55,6 +56,7 @@ class MiPanel extends JPanel implements ActionListener {
 	JPasswordField contrasena;
 	Image logo, logoU, logoC;
 	JLabel errorUsuario, errorContrasena;
+	static ArrayList<String> errores = new ArrayList<String>();
 
 	public MiPanel() {
 
@@ -77,11 +79,11 @@ class MiPanel extends JPanel implements ActionListener {
 		this.add(signIn);
 		this.add(logIn);
 
-		errorUsuario = crearTextoError();
-		errorUsuario.setBounds(55, 112, 250, 100);
-		errorUsuario.setVisible(false);
+//		errorUsuario = crearTextoError();
+//		errorUsuario.setBounds(55, 112, 250, 100);
+//		errorUsuario.setVisible(false);
 
-		this.add(errorUsuario);
+//		this.add(errorUsuario);
 
 		this.setOpaque(true);
 
@@ -109,6 +111,7 @@ class MiPanel extends JPanel implements ActionListener {
 		b.setForeground((new Color(Vista.COLOR1)));
 		b.setFont(new Font("Consolas", Font.PLAIN, 14));
 		b.setMnemonic(mnemonic);
+		b.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		b.setBackground(new Color(Vista.COLOR3));
 		b.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2, true));
 		b.addActionListener(this);
@@ -117,7 +120,7 @@ class MiPanel extends JPanel implements ActionListener {
 
 	private JLabel crearTextoError() {
 		JLabel t = new JLabel();
-		t.setText("Debe tener entre 4 y 16 caracteres"); // HACER EL ERROR QUE SEA
+		t.setText("Introduce un nombre adecuado");
 		t.setForeground(Color.RED);
 		t.setFont(new Font("Consolas", Font.ITALIC, 13));
 		return t;
@@ -137,6 +140,9 @@ class MiPanel extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
+		VistaError ventanaError;
+
 		if (e.getSource() == logIn) {
 			String nombreUsusario = nombre.getText();
 			String contrasenaUsuario = String.valueOf(contrasena.getPassword());
@@ -144,28 +150,39 @@ class MiPanel extends JPanel implements ActionListener {
 
 			if (datosCorrectos) {
 				System.out.println("Loged In");
-				Vista ventana2 = new Vista();
+				VistaEstudiante ventanaPersonal = new VistaEstudiante(); // Llamar a ventana pertinente
+//				VistaProfesor ventanaPersonal = new VistaProfesor();
 			} else {
-				System.out.println("Error, usuario no está registrado");
+				errores.add("El nombre de usuario y/o contraseña no coinciden.");
+				ventanaError = new VistaError(errores);
+				return;
 			}
+
 		} else if (e.getSource() == signIn) {
 			String nombreUsuario = nombre.getText();
 			String contrasenaUsuario = String.valueOf(contrasena.getPassword());
+
 			boolean nombreOcupado = Prueba.hayNombreUsuario(nombreUsuario);
-			
 			if (nombreOcupado) {
-				System.out.println("Nombre ocupado");
+				errores.add("Nombre de usuario no disponible");
+				ventanaError = new VistaError(errores);
 				return;
 			}
+
 			boolean nombreAdecuado = comprobarNombre(nombreUsuario);
+			if (!nombreAdecuado)
+				return;
+
 			boolean contrasenaAdecuada = comprobarContrasena(contrasenaUsuario);
-			
+			if (!contrasenaAdecuada)
+				return;
+
 			if (nombreAdecuado && contrasenaAdecuada) {
 				Prueba.signIn(nombreUsuario, contrasenaUsuario);
-				System.out.println("Singed In");				
-			}
-			else {
-				System.out.println("Error");
+				System.out.println("Singed In");
+				nombre.setText("");
+				contrasena.setText("");
+				ventanaError = new VistaError(errores);
 			}
 
 		}
@@ -174,26 +191,62 @@ class MiPanel extends JPanel implements ActionListener {
 	// Creo q hay q mover este metodo a otra clase, es solo prueba
 	// Se pueden hacer comentarios personalizados para los errores
 	private boolean comprobarNombre(String nombreUsuario) {
-		if (nombreUsuario.isEmpty()) return false;
-		
-		boolean longitudAdecuada = nombreUsuario.length() >= 2 && nombreUsuario.length() <= 16;
-		if (!longitudAdecuada) errorUsuario.setVisible(true);
+
+		VistaError ventanaError;
+
+		boolean longitudAdecuada = nombreUsuario.length() >= 4 && nombreUsuario.length() <= 16;
+
+		if (nombreUsuario.isEmpty() || !longitudAdecuada) {
+			errores.add("El nombre debe tener entre 4 y 16 caracteres.");
+			ventanaError = new VistaError(errores);
+			return false;
+		}
+
 		boolean may1 = nombreUsuario.charAt(0) >= 'A' && nombreUsuario.charAt(0) <= 'Z';
-		boolean adecuado = nombreUsuario.substring(1).matches("[a-z].*");
-		
-		if (longitudAdecuada && may1 && adecuado) return true;
+		boolean adecuado = nombreUsuario.substring(1).matches("[a-z]+");
+
+		if (longitudAdecuada && may1 && adecuado)
+			return true;
+
+		if (!may1) {
+			errores.add("El nombre debe comenzar por mayúscula.");
+		} else if (!adecuado) {
+			errores.add("El nombre debe comenzar por letra mayúscula.");
+			errores.add("El resto de letras deben minúsculas.");
+		}
+		ventanaError = new VistaError(errores);
+
 		return false;
+
 	}
-	
+
 	private boolean comprobarContrasena(String contrasena) {
-		if (contrasena.isEmpty()) return false;
-		
-		boolean longitudAdecuada = contrasena.length() >= 2 && contrasena.length() <= 16;
+
+		VistaError ventanaError;
+		boolean longitudAdecuada = contrasena.length() >= 4 && contrasena.length() <= 16;
+
+		if (contrasena.isEmpty() || !longitudAdecuada) {
+			errores.add("La contraseña debe tener entre 4 y 16 caracteres.");
+			ventanaError = new VistaError(errores);
+			return false;
+		}
+
 		boolean hayMin = contrasena.matches(".*[a-z].*");
 		boolean hayMay = contrasena.matches(".*[A-Z].*");
 		boolean hayNum = contrasena.matches(".*[1-9].*");
-		
-		if (longitudAdecuada && hayMin && hayMay && hayNum) return true;
+
+		if (longitudAdecuada && hayMin && hayMay && hayNum)
+			return true;
+
+		if (!hayMin)
+			errores.add("La contraseña debe tener al menos una letra minúscula.");
+		if (!hayMay)
+			errores.add("La contraseña debe tener al menos una letra mayúscula.");
+		if (!hayNum)
+			errores.add("La contraseña debe tener al menos un número.");
+
+		ventanaError = new VistaError(errores);
+
 		return false;
 	}
 
