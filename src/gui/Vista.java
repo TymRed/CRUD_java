@@ -19,6 +19,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import bd.Prueba;
+import logica.Usuario;
 
 public class Vista extends JFrame {
 
@@ -146,12 +147,14 @@ class MiPanel extends JPanel implements ActionListener {
 		if (e.getSource() == logIn) {
 			String nombreUsusario = nombre.getText();
 			String contrasenaUsuario = String.valueOf(contrasena.getPassword());
-			boolean datosCorrectos = Prueba.hayUsuario(nombreUsusario, contrasenaUsuario);
+			Usuario u = Prueba.buscarUsuario(nombreUsusario, contrasenaUsuario);
+			boolean datosCorrectos = u != null;
 
 			if (datosCorrectos) {
 				System.out.println("Loged In");
 				VistaEstudiante ventanaPersonal = new VistaEstudiante(); // Llamar a ventana pertinente
 //				VistaProfesor ventanaPersonal = new VistaProfesor();
+				
 			} else {
 				errores.add("El nombre de usuario y/o contraseña no coinciden.");
 				ventanaError = new VistaError(errores);
@@ -203,7 +206,7 @@ class MiPanel extends JPanel implements ActionListener {
 		}
 
 		boolean may1 = nombreUsuario.charAt(0) >= 'A' && nombreUsuario.charAt(0) <= 'Z';
-		boolean adecuado = nombreUsuario.substring(1).matches("[a-z]+");
+		boolean adecuado = nombreUsuario.substring(1).matches("[a-z]*");
 
 		if (longitudAdecuada && may1 && adecuado)
 			return true;

@@ -7,9 +7,8 @@ public class Estudiante extends Usuario{
 	public Estudiante() {
 		super();
 	}
-	public Estudiante(int id, String nombre, String contrasena, int cantidadAsig) {
-		super(id, nombre, contrasena);
-		this.cantidadAsig = cantidadAsig;
+	public Estudiante(String nombre, String contrasena) {
+		super(nombre, contrasena);
 	}
 	
 	

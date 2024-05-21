@@ -11,6 +11,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
 
+import logica.Estudiante;
+import logica.Profesor;
+import logica.Usuario;
+
 public class Prueba {
 	private static Properties prop = cargarConf();
 	private static String url = "jdbc:mysql://localhost:3306/crud";
@@ -64,8 +68,8 @@ public class Prueba {
 	}
 
 	// Podemos separarlo en 2 metodos, uno q solo comprueba el nombre, y otro como este
-	public static boolean hayUsuario(String nombre, String contrasena) {
-		String queryUsuarios = "SELECT nombre FROM estudiantes WHERE nombre = ? AND contrasena = ? UNION SELECT nombre FROM profesores WHERE nombre = ? AND contrasena = ?";
+	public static Usuario buscarUsuario(String nombre, String contrasena) {
+		String queryUsuarios = "SELECT *,'estudiante' FROM estudiantes WHERE nombre = ? AND contrasena = ? UNION SELECT *, 'profesor' FROM profesores WHERE nombre = ? AND contrasena = ?";
 		PreparedStatement s;
 		try {
 			s = c.prepareStatement(queryUsuarios);
@@ -74,12 +78,22 @@ public class Prueba {
 			s.setString(3, nombre);
 			s.setString(4, contrasena);
 			ResultSet rs = s.executeQuery();
-			if (rs.next())
-				return true;
+			if (rs.next()) {
+				Usuario u;
+				if (rs.getString(3).equals("estudiante")) {
+					u = new Estudiante(rs.getString(1), rs.getString(2));
+				}
+				else {
+					u = new Profesor(rs.getString(1), rs.getString(2));
+				}
+				return u;
+				
+			}
+					
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 	//Se puede borrar. Solo estoy probandolo
 	public static boolean hayNombreUsuario(String nombre) {
