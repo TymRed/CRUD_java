@@ -20,9 +20,9 @@ public class VistaError extends JFrame {
 
 	public VistaError(ArrayList<String> errores) {
 
-		ImageIcon icono = new ImageIcon("miniLogoNoodle.png");
-		ImageIcon iconoExito = new ImageIcon("exito.png");
-		ImageIcon iconoError = new ImageIcon("error.png");
+		ImageIcon icono = new ImageIcon("images//miniLogoNoodle.png");
+		ImageIcon iconoExito = new ImageIcon("images//exito.png");
+		ImageIcon iconoError = new ImageIcon("images//error.png");
 
 		this.setTitle(errores.isEmpty() ? "Éxito" : "Errores");
 		this.setIconImage(errores.isEmpty() ? iconoExito.getImage() : iconoError.getImage());
@@ -72,7 +72,7 @@ public class VistaError extends JFrame {
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-			Image iconoExito = new ImageIcon("exito.png").getImage();
+			Image iconoExito = new ImageIcon("images//exito.png").getImage();
 			if (PanelError.exito) {
 				g.drawImage(iconoExito, 87, 44, 20, 20, this);
 			}

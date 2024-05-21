@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 public abstract class VistaPersonal extends JFrame {
 
 	public VistaPersonal() {
-		ImageIcon icono = new ImageIcon("miniLogoNoodle.png");
+		ImageIcon icono = new ImageIcon("images//miniLogoNoodle.png");
 
 		this.setIconImage(icono.getImage());
 		this.setTitle("Ñoodle");
@@ -52,7 +52,7 @@ class PanelPersonal extends JPanel {
 		botonSalir.setBorderPainted(false);
 		botonSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-		iconoSalir = new ImageIcon("atras.png");
+		iconoSalir = new ImageIcon("images//atras.png");
 		Image imagen = iconoSalir.getImage();
 		Image imagenRedimensionada = imagen.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
 		iconoSalir = new ImageIcon(imagenRedimensionada);
@@ -68,7 +68,7 @@ class PanelPersonal extends JPanel {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 //		this.setFont(new Font("Consolas", Font.BOLD, 25));
-		logo = new ImageIcon("logoNoodle.png").getImage();
+		logo = new ImageIcon("images//logoNoodle.png").getImage();
 		this.setFont(new Font("Consolas", Font.BOLD, 28));
 		g.drawImage(logo, 60, 50, 150, 50, null);
 	}

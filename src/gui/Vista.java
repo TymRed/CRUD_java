@@ -32,7 +32,7 @@ public class Vista extends JFrame {
 
 	public Vista() {
 
-		ImageIcon icono = new ImageIcon("miniLogoNoodle.png");
+		ImageIcon icono = new ImageIcon("images//miniLogoNoodle.png");
 
 		this.setIconImage(icono.getImage());
 		this.setTitle("Ñoodle");
@@ -131,9 +131,9 @@ class MiPanel extends JPanel implements ActionListener {
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 //		this.setFont(new Font("Consolas", Font.BOLD, 25));
-		logo = new ImageIcon("logoNoodle.png").getImage();
-		logoU = new ImageIcon("usuario.png").getImage();
-		logoC = new ImageIcon("contrasena.png").getImage();
+		logo = new ImageIcon("images//logoNoodle.png").getImage();
+		logoU = new ImageIcon("images//usuario.png").getImage();
+		logoC = new ImageIcon("images//contrasena.png").getImage();
 		g.drawImage(logo, 87, 45, 150, 50, null);
 		g.drawImage(logoU, 30, 133, 18, 18, null);
 		g.drawImage(logoC, 30, 183, 18, 18, null);
