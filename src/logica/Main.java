@@ -9,6 +9,6 @@ public class Main {
 		Usuario u = new Usuario();
 		Programa v2 = new Programa(u);
 //		Vista ventana1 = new Vista();
-		
+
 	}
 }
