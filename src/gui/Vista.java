@@ -19,6 +19,8 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import bd.Prueba;
+import logica.Estudiante;
+import logica.Profesor;
 import logica.Usuario;
 
 public class Vista extends JFrame {
@@ -119,13 +121,15 @@ class MiPanel extends JPanel implements ActionListener {
 		return b;
 	}
 
-	private JLabel crearTextoError() {
-		JLabel t = new JLabel();
-		t.setText("Introduce un nombre adecuado");
-		t.setForeground(Color.RED);
-		t.setFont(new Font("Consolas", Font.ITALIC, 13));
-		return t;
-	}
+//	SI ESO METER (LETRAS EN ROJO)
+//	
+//	private JLabel crearTextoError() {
+//		JLabel t = new JLabel();
+//		t.setText("Introduce un nombre adecuado");
+//		t.setForeground(Color.RED);
+//		t.setFont(new Font("Consolas", Font.ITALIC, 13));
+//		return t;
+//	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -152,9 +156,11 @@ class MiPanel extends JPanel implements ActionListener {
 
 			if (datosCorrectos) {
 				System.out.println("Loged In");
-				VistaEstudiante ventanaPersonal = new VistaEstudiante(); // Llamar a ventana pertinente
-//				VistaProfesor ventanaPersonal = new VistaProfesor();
-				
+				if (u instanceof Estudiante) {
+					VistaEstudiante ventanaPersonal = new VistaEstudiante(u); // Llamar al que es
+				} else if (u instanceof Profesor) {
+//				VistaProfesor ventanaPersonal = new VistaProfesor(u);	// Llamar a ventana Profesor				
+				}
 			} else {
 				errores.add("El nombre de usuario y/o contraseña no coinciden.");
 				ventanaError = new VistaError(errores);
