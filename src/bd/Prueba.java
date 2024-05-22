@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 
 import logica.Estudiante;
@@ -121,6 +122,38 @@ public class Prueba {
 			s.setString(2, contrasena);
 			s.executeUpdate();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void crearListaNombreTareas(ArrayList<String> tareas) {
+		String query = "SELECT distinct nombre FROM tareas WHERE idasignatura = 1";
+		try {
+			Statement s = c.createStatement();
+			ResultSet rs = s.executeQuery(query);
+			while (rs.next()) {
+				tareas.add(rs.getString(1));		
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void buscarTareas(ArrayList<ArrayList<String>> tareas) {
+		String query = "select nombreestudiante, entregado_fecha from tareas where idasignatura = 1 and id = 1";
+		try {
+			int i = 0;                               // Hay que mejorar!!!!!!!!!!
+			Statement s = c.createStatement();
+			ResultSet rs = s.executeQuery(query);
+			while (rs.next()) {
+				tareas.add(new ArrayList<>());
+				tareas.get(i).add(rs.getString(1));
+				tareas.get(i).add(rs.getString(2));
+				i++;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
