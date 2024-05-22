@@ -25,7 +25,7 @@ DROP TABLE IF EXISTS `asignaturas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `asignaturas` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `nombreprof` varchar(45) NOT NULL,
   `nombre` varchar(45) NOT NULL,
   `cantidadalum` int NOT NULL DEFAULT '0',
@@ -42,6 +42,7 @@ CREATE TABLE `asignaturas` (
 
 LOCK TABLES `asignaturas` WRITE;
 /*!40000 ALTER TABLE `asignaturas` DISABLE KEYS */;
+INSERT INTO `asignaturas` VALUES (1,'Prof1','Prog',0),(2,'Prof2','BBDD',0),(3,'Prof3','SISI',0);
 /*!40000 ALTER TABLE `asignaturas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,6 +70,7 @@ CREATE TABLE `cursos` (
 
 LOCK TABLES `cursos` WRITE;
 /*!40000 ALTER TABLE `cursos` DISABLE KEYS */;
+INSERT INTO `cursos` VALUES (1,'Fran',NULL),(1,'Javi',NULL),(3,'Tym',NULL);
 /*!40000 ALTER TABLE `cursos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -82,7 +84,6 @@ DROP TABLE IF EXISTS `estudiantes`;
 CREATE TABLE `estudiantes` (
   `nombre` varchar(45) NOT NULL,
   `contrasena` varchar(45) NOT NULL,
-  `cantidadasig` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`nombre`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -93,6 +94,7 @@ CREATE TABLE `estudiantes` (
 
 LOCK TABLES `estudiantes` WRITE;
 /*!40000 ALTER TABLE `estudiantes` DISABLE KEYS */;
+INSERT INTO `estudiantes` VALUES ('Fran','aa'),('Javi','aa'),('Tym','aa');
 /*!40000 ALTER TABLE `estudiantes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -116,6 +118,7 @@ CREATE TABLE `profesores` (
 
 LOCK TABLES `profesores` WRITE;
 /*!40000 ALTER TABLE `profesores` DISABLE KEYS */;
+INSERT INTO `profesores` VALUES ('Prof1','aa'),('Prof2','aa'),('Prof3','aa');
 /*!40000 ALTER TABLE `profesores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -127,7 +130,7 @@ DROP TABLE IF EXISTS `tareas`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tareas` (
-  `id` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `idasignatura` int NOT NULL,
   `nombreestudiante` varchar(45) NOT NULL,
   `nombre` varchar(45) NOT NULL,
@@ -137,7 +140,7 @@ CREATE TABLE `tareas` (
   PRIMARY KEY (`id`,`idasignatura`,`nombreestudiante`),
   KEY `fk_tareas_cursos_idx` (`idasignatura`),
   KEY `FK_nombreestudiante_tareas_idx` (`nombreestudiante`),
-  CONSTRAINT `FK_idasignatura_tareas` FOREIGN KEY (`idasignatura`) REFERENCES `cursos` (`idasignatura`),
+  CONSTRAINT `FK_idasignatura_tareas` FOREIGN KEY (`idasignatura`) REFERENCES `cursos` (`idasignatura`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_nombreestudiante_tareas` FOREIGN KEY (`nombreestudiante`) REFERENCES `estudiantes` (`nombre`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -148,6 +151,7 @@ CREATE TABLE `tareas` (
 
 LOCK TABLES `tareas` WRITE;
 /*!40000 ALTER TABLE `tareas` DISABLE KEYS */;
+INSERT INTO `tareas` VALUES (1,1,'Fran','Tarea1',NULL,'2024-05-22',NULL),(1,1,'Javi','Tarea1',NULL,'2024-05-22',NULL),(1,3,'Tym','Tarea1',NULL,'2024-05-22',NULL),(2,1,'Javi','Tarea2',NULL,'2024-05-22',NULL),(3,1,'Fran','Tarea3',NULL,'2024-05-22',NULL);
 /*!40000 ALTER TABLE `tareas` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -160,4 +164,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-18 14:15:39
+-- Dump completed on 2024-05-22 16:15:48
