@@ -54,7 +54,8 @@ public class Programa extends JFrame {
 		panelCardLayout.add(tareaProfesor, "Tarea Profesor");
 		panelCardLayout.add(panelEstudiante, "Panel Estudiante");
 
-//		CardLayout cl = (CardLayout)(panelCardLayout.getLayout());              Asi se cambia de un panel a otro (esas 2 lineas) 
+//		CardLayout cl = (CardLayout)(panelCardLayout.getLayout());
+//		Asi se cambia de un panel a otro (esas 2 lineas) 
 //		cl.show(panelCardLayout, "Panel Estudiante");
 
 		this.add(panelCardLayout, BorderLayout.CENTER);
