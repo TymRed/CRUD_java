@@ -13,6 +13,9 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -26,6 +29,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import bd.Prueba;
 import logica.Usuario;
 
 public class Programa extends JFrame {
@@ -39,9 +43,9 @@ public class Programa extends JFrame {
 		this.setSize(800, 500);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
-		
+
 		JPanel panelEstudiante = new PanelPrincipalEstudiante(u); // 3
-		
+
 		JPanel tareaProfesor = new PanelTareasProfesor(u); // 5
 
 		JPanel panelCardLayout = new JPanel();
@@ -49,10 +53,10 @@ public class Programa extends JFrame {
 		panelCardLayout.setLayout(new CardLayout(0, 0));
 		panelCardLayout.add(tareaProfesor, "Tarea Profesor");
 		panelCardLayout.add(panelEstudiante, "Panel Estudiante");
-		
+
 //		CardLayout cl = (CardLayout)(panelCardLayout.getLayout());              Asi se cambia de un panel a otro (esas 2 lineas) 
 //		cl.show(panelCardLayout, "Panel Estudiante");
-		
+
 		this.add(panelCardLayout, BorderLayout.CENTER);
 
 		this.setVisible(true);
@@ -118,30 +122,32 @@ class PanelPrincipalEstudiante extends JPanel {
 
 }
 
-class PanelTareasProfesor extends JPanel {
-
+class PanelTareasProfesor extends JPanel implements ItemListener {
+	JComboBox<String> eligirTarea;
+	
 	public PanelTareasProfesor(Usuario u) {
-		
-		this.setSize(800,500);
+
+		this.setSize(800, 500);
 		this.setBackground(new Color(0xe1e5f2));
-		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x022b3a), 2),BorderFactory.createEmptyBorder(20,50,20,50)));
+		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x022b3a), 2),
+				BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		this.setLayout(new BorderLayout(0, 0));
 
 		JPanel paneCardLayout = new JPanel();
-		paneCardLayout.setSize(800,500);
+		paneCardLayout.setSize(800, 500);
 		paneCardLayout.setLayout(new CardLayout(0, 0));
 		paneCardLayout.add(this, "Tareas Profe");
-		
+
 		JPanel infoAsignaturaContenedor = new JPanel();
 		infoAsignaturaContenedor.setBackground(new Color(0xe1e5f2));
-		infoAsignaturaContenedor.setPreferredSize(new Dimension(100,130));
+		infoAsignaturaContenedor.setPreferredSize(new Dimension(100, 130));
 		this.add(infoAsignaturaContenedor, BorderLayout.NORTH);
 		infoAsignaturaContenedor.setLayout(null);
-		
+
 		JLabel nombAsig = new JLabel("Prog");
 		nombAsig.setBounds(0, 10, 71, 13);
 		infoAsignaturaContenedor.add(nombAsig);
-		
+
 		JButton atras = new JButton("Atras");
 		atras.setFocusPainted(false);
 		atras.setBounds(582, 0, 100, 100);
@@ -150,74 +156,83 @@ class PanelTareasProfesor extends JPanel {
 
 		
 		
-		String[] array = {"Tarea1", "tarea2"};
 		JPanel contenedorBotones = new JPanel();
 		contenedorBotones.setBackground(new Color(0xe1e5f2));
 		contenedorBotones.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 		this.add(contenedorBotones);
-		
-		JComboBox elegirTarea = new JComboBox(array);
-		contenedorBotones.add(elegirTarea, BorderLayout.WEST);
-		
+
+		ArrayList<String> nombresDeTareas = new ArrayList<String>();
+		Prueba.crearListaNombreTareas(nombresDeTareas);
+		eligirTarea = new JComboBox<String>(nombresDeTareas.stream().toArray(String[]::new));
+		eligirTarea.addItemListener(this);
+		contenedorBotones.add(eligirTarea, BorderLayout.WEST);
+
 		JButton addTarea = new JButton("+");
 		contenedorBotones.add(addTarea, BorderLayout.CENTER);
-		
+
 		JButton removeTarea = new JButton("-");
 		contenedorBotones.add(removeTarea, BorderLayout.EAST);
-		
+
 		
 		
 		JPanel tareasContenedor = new JPanel();
 //		tareasContenedor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.red, 1),BorderFactory.createEmptyBorder(5,5,5,5)));
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
-		for(int i = 0; i<10; i++) {
-			JPanel tarea = crearTarea();
-			tareasContenedor.add(tarea);
+		ArrayList<ArrayList<String>> tareas = new ArrayList<ArrayList<String>>(); //Hay que mejorar
+		Prueba.buscarTareas(tareas);
+		
+		for (ArrayList<String> tareaInfo : tareas) {
+			String nombreAlumno = tareaInfo.get(0);
+			String fecha = tareaInfo.get(0); //cambiar a date
 			
+			JPanel tarea = crearTarea(nombreAlumno,fecha);
+			tareasContenedor.add(tarea);
+
 		}
-		
-		
+
 		JScrollPane tareasScroll = new JScrollPane(tareasContenedor);
-		tareasScroll.setPreferredSize(new Dimension(200,250));
+		tareasScroll.setPreferredSize(new Dimension(200, 250));
 		this.add(tareasScroll, BorderLayout.SOUTH);
-		
 
 	}
-	
-	public JPanel crearTarea() {
+
+	public JPanel crearTarea(String nombre, String fecha) {
 		GridBagLayout gbl_tarea1 = new GridBagLayout();
-		gbl_tarea1.columnWeights = new double[]{2.0, 2.0, 0.5, 0.5};
-		
+		gbl_tarea1.columnWeights = new double[] { 2.0, 2.0, 0.5, 0.5 };
+
 		JPanel tarea1 = new JPanel(gbl_tarea1);
-		tarea1.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x1f7a8c), 3),BorderFactory.createEmptyBorder(5,5,5,5)));
+		tarea1.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x1f7a8c), 3),
+				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		tarea1.setBackground(new Color(0xbfdbf7));
-		tarea1.setPreferredSize(new Dimension(1,40));
-		
-		JLabel nomAl1 = new JLabel("Tymur Kulivar");
+		tarea1.setPreferredSize(new Dimension(1, 40));
+		tarea1.setMaximumSize(new Dimension(4000,40)); //4000 es limite al cual nunca llegaremos
+
+		JLabel nomAl1 = new JLabel(nombre);
 		nomAl1.setHorizontalAlignment(SwingConstants.LEFT);
-		
+
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.insets = new Insets(0, 0, 0, 5);
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.WEST;
 		tarea1.add(nomAl1, gbc);
-		
-		JLabel time = new JLabel("10/05/2023");
+
+		JLabel time = new JLabel(fecha);
 		time.setHorizontalAlignment(SwingConstants.LEFT);
 		gbc.gridx = 1;
 		tarea1.add(time, gbc);
-		
+
 		JTextField nota = new JTextField();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.gridx = 2;
 		tarea1.add(nota, gbc);
 		nota.setColumns(1);
-		
+
 		JButton submitNota = new JButton("Poner");
 		submitNota.setBackground(new Color(Vista.COLOR3));
-		submitNota.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x1f7a8c), 1),BorderFactory.createEmptyBorder(7,17,7,17)));
+		submitNota.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x1f7a8c), 1),
+				BorderFactory.createEmptyBorder(7, 17, 7, 17)));
 		submitNota.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		submitNota.setFocusable(false);
 //		gbc.fill = GridBagConstraints.NONE;
@@ -225,6 +240,14 @@ class PanelTareasProfesor extends JPanel {
 		gbc.anchor = GridBagConstraints.EAST;
 		tarea1.add(submitNota, gbc);
 		return tarea1;
+	}
+
+	@Override
+	public void itemStateChanged(ItemEvent event) {
+		if (event.getStateChange() == ItemEvent.SELECTED) {
+			String selectedValue = eligirTarea.getSelectedItem().toString();
+			System.out.println(selectedValue);
+		}
 	}
 
 }
