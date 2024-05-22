@@ -127,7 +127,7 @@ public class Prueba {
 	}
 
 	public static void crearListaNombreTareas(ArrayList<String> tareas) {
-		String query = "SELECT distinct nombre FROM tareas WHERE idasignatura = 1";
+		String query = "SELECT distinct nombre FROM tareas";
 		try {
 			Statement s = c.createStatement();
 			ResultSet rs = s.executeQuery(query);
@@ -141,7 +141,7 @@ public class Prueba {
 	}
 
 	public static void buscarTareas(ArrayList<ArrayList<String>> tareas) {
-		String query = "select nombreestudiante, entregado_fecha from tareas where idasignatura = 1 and id = 1";
+		String query = "SELECT nombre_estudiante, entregado_fecha FROM tareas where nombre = 'Tarea1' and nombre_asignatura = 'Prog'";
 		try {
 			int i = 0;                               // Hay que mejorar!!!!!!!!!!
 			Statement s = c.createStatement();
