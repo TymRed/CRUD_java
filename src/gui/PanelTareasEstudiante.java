@@ -71,7 +71,7 @@ class PanelTareasEstudiante extends JPanel implements ItemListener {
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
 		ArrayList<ArrayList<String>> tareas = new ArrayList<ArrayList<String>>(); // Hay que mejorar
-		Prueba.buscarTareas(tareas, "Prog");
+		Prueba.buscarTareasEstudiante(tareas, "Prog");
 
 		for (ArrayList<String> tareaInfo : tareas) {
 			String nombreAlumno = tareaInfo.get(0);

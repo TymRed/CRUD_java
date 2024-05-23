@@ -7,6 +7,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+
+import bd.Prueba;
+import gui.VistaError.PanelError;
+import logica.Estudiante;
+import logica.Profesor;
 import logica.Usuario;
 
 public class Programa extends JFrame {
@@ -40,8 +45,13 @@ public class Programa extends JFrame {
 
 		CardLayout cl = (CardLayout) (panelCardLayout.getLayout());
 //		Asi se cambia de un panel a otro (esas 2 lineas) 
-		cl.show(panelCardLayout, "Panel Tareas Profesor");
 
+		if (u instanceof Estudiante) {
+			cl.show(panelCardLayout, "Panel Estudiante");						
+		}
+		else if (u instanceof Profesor) {
+			cl.show(panelCardLayout, "Panel Profesor");			
+		}
 
 		this.add(panelCardLayout, BorderLayout.CENTER);
 

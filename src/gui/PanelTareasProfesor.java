@@ -81,7 +81,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener {
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
 		ArrayList<ArrayList<String>> tareas = new ArrayList<ArrayList<String>>(); // Hay que mejorar
-		Prueba.buscarTareas(tareas, "Tarea1"); //mejorable
+		Prueba.buscarEntregasProfesor(tareas, "Tarea1"); //mejorable
 
 		bucleTareas(tareas);
 
@@ -163,7 +163,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener {
 			System.out.println(selectedValue);
 			
 			ArrayList<ArrayList<String>> tareas = new ArrayList<ArrayList<String>>(); // Hay que mejorar
-			Prueba.buscarTareas(tareas, selectedValue);
+			Prueba.buscarEntregasProfesor(tareas, selectedValue);
 
 			bucleTareas(tareas);
 		}
