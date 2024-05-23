@@ -40,6 +40,7 @@ import logica.Usuario;
 
 public class Programa extends JFrame {
 
+	static JPanel panelCardLayout;
 	public Programa(Usuario u) {
 		ImageIcon icono = new ImageIcon("images//miniLogoNoodle.png");
 
@@ -58,13 +59,13 @@ public class Programa extends JFrame {
 
 		JPanel tareaEstudiante = new PanelTareasEstudiante(u); // 5
 
-		JPanel panelCardLayout = new JPanel();
+		panelCardLayout = new JPanel();
 		panelCardLayout.setSize(800, 500);
 		panelCardLayout.setLayout(new CardLayout(0, 0));
-		panelCardLayout.add(tareaProfesor, "Panel Tarea Profesor");
 		panelCardLayout.add(panelEstudiante, "Panel Estudiante");
-		panelCardLayout.add(tareaEstudiante, "Panel Tareas Estudiante");
+//		panelCardLayout.add(tareaEstudiante, "Panel Tareas Estudiante");
 		panelCardLayout.add(panelProfesor, "Panel Profesor");
+//		panelCardLayout.add(tareaProfesor, "Panel Tarea Profesor");
 
 
 		CardLayout cl = (CardLayout) (panelCardLayout.getLayout());

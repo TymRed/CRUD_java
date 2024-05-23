@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import logica.Estudiante;
 import logica.Profesor;
+import logica.Tarea;
 import logica.Usuario;
 
 public class Prueba {
@@ -140,19 +141,16 @@ public class Prueba {
 		}
 	}
 
-	public static void buscarTareas(ArrayList<ArrayList<String>> tareas, String nombreTarea) {
+	public static void buscarTareas(ArrayList<Tarea> tareas, String nombreTarea) {
 		String query = "SELECT nombre_estudiante, entregado_fecha FROM tareas where nombre = ? and nombre_asignatura = 'Prog'";
 		PreparedStatement s;
 		try {
-			int i = 0;                               // Hay que mejorar!!!!!!!!!!
 			s = c.prepareStatement(query);
 			s.setString(1, nombreTarea);
 			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
-				tareas.add(new ArrayList<>());
-				tareas.get(i).add(rs.getString(1));
-				tareas.get(i).add(rs.getString(2));
-				i++;
+				Tarea tarea = new Tarea(rs.getString(1), rs.getString(1));
+				tareas.add(tarea);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

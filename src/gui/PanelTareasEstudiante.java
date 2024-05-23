@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
 import bd.Prueba;
+import logica.Tarea;
 import logica.Usuario;
 
 class PanelTareasEstudiante extends JPanel implements ItemListener {
@@ -70,12 +71,12 @@ class PanelTareasEstudiante extends JPanel implements ItemListener {
 //		tareasContenedor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.red, 1),BorderFactory.createEmptyBorder(5,5,5,5)));
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
-		ArrayList<ArrayList<String>> tareas = new ArrayList<ArrayList<String>>(); // Hay que mejorar
+		ArrayList<Tarea> tareas = new ArrayList<Tarea>(); // Hay que mejorar
 		Prueba.buscarTareas(tareas, "Prog");
 
-		for (ArrayList<String> tareaInfo : tareas) {
-			String nombreAlumno = tareaInfo.get(0);
-			String fecha = tareaInfo.get(1); // cambiar a date
+		for (Tarea tareaInfo : tareas) {
+			String nombreAlumno = tareaInfo.getNombreAlumno();
+			String fecha = tareaInfo.getFechaEntrega(); // cambiar a date
 
 			JPanel tarea = crearTarea(nombreAlumno, fecha);
 			tareasContenedor.add(tarea);

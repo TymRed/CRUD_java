@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import bd.Prueba;
+import logica.Tarea;
 import logica.Usuario;
 
 class PanelTareasProfesor extends JPanel implements ItemListener {
@@ -80,7 +81,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener {
 //		tareasContenedor.setBord er(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.red, 1),BorderFactory.createEmptyBorder(5,5,5,5)));
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
-		ArrayList<ArrayList<String>> tareas = new ArrayList<ArrayList<String>>(); // Hay que mejorar
+		ArrayList<Tarea> tareas = new ArrayList<Tarea>(); // Hay que mejorar
 		Prueba.buscarTareas(tareas, "Tarea1"); //mejorable
 
 		bucleTareas(tareas);
@@ -91,11 +92,11 @@ class PanelTareasProfesor extends JPanel implements ItemListener {
 
 	}
 
-	public void bucleTareas(ArrayList<ArrayList<String>> tareas) {
+	public void bucleTareas(ArrayList<Tarea> tareas) {
 		tareasContenedor.removeAll();
-		for (ArrayList<String> tareaInfo : tareas) {
-			String nombreAlumno = tareaInfo.get(0);
-			String fecha = tareaInfo.get(1); // cambiar a date
+		for (Tarea tareaInfo : tareas) {
+			String nombreAlumno = tareaInfo.getNombreAlumno();
+			String fecha = tareaInfo.getFechaEntrega(); // cambiar a date
 
 			JPanel tarea = crearTarea(nombreAlumno, fecha);
 			tareasContenedor.add(tarea);
@@ -162,7 +163,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener {
 			String selectedValue = eligirTarea.getSelectedItem().toString();
 			System.out.println(selectedValue);
 			
-			ArrayList<ArrayList<String>> tareas = new ArrayList<ArrayList<String>>(); // Hay que mejorar
+			ArrayList<Tarea> tareas = new ArrayList<Tarea>();
 			Prueba.buscarTareas(tareas, selectedValue);
 
 			bucleTareas(tareas);

@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -21,10 +22,13 @@ import logica.Usuario;
 
 class PanelPrincipalProfesor extends JPanel implements ActionListener {
 
-	JButton asignatura1, asignatura2, asignatura3, asignatura4;
+	JButton asignaturaBoton, boletinBoton;
 
+	Usuario u;
 	public PanelPrincipalProfesor(Usuario u) {
 
+		this.u = u;
+		
 		this.setSize(800, 500);
 		this.setBackground(new Color(Vista.COLOR4));
 		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2),
@@ -43,11 +47,11 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2),
 						BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
-		asignatura1 = crearBoton("PROG");
-		asignaturasContenedor.add(asignatura1);
+		asignaturaBoton = crearBoton("PROG");
+		asignaturasContenedor.add(asignaturaBoton);
 
-		asignatura2 = crearBoton("Imprimir boletín");
-		asignaturasContenedor.add(asignatura2);
+		boletinBoton = crearBoton("Imprimir boletín");
+		asignaturasContenedor.add(boletinBoton);
 
 	}
 
@@ -64,9 +68,12 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == asignatura1) {
-			System.out.println("1"); // Constructor Ventana Asig
-		} else if (e.getSource() == asignatura2) {
+		if (e.getSource() == asignaturaBoton) {
+			JPanel tareaProfesor = new PanelTareasProfesor(u);
+			Programa.panelCardLayout.add(tareaProfesor, "Panel Tarea Profesor");
+			CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
+			cl.show(Programa.panelCardLayout, "Panel Tarea Profesor");
+		} else if (e.getSource() == boletinBoton) {
 			System.out.println("2"); // Sacar .txt
 		}
 	}

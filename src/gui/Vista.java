@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -17,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import bd.Prueba;
 import logica.Estudiante;
@@ -38,7 +40,8 @@ public class Vista extends JFrame {
 
 		this.setIconImage(icono.getImage());
 		this.setTitle("Ñoodle");
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//lo he comentado, ya que esto me cerraba la segunda ventana tambien
+//		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(350, 350);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
@@ -156,7 +159,9 @@ class MiPanel extends JPanel implements ActionListener {
 
 			if (datosCorrectos) {
 				System.out.println("Loged In");
-				Programa programa = new Programa(u); // Llamar al que es
+				Programa programa = new Programa(u);
+				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this); //para acceder al frame
+				topFrame.dispatchEvent(new WindowEvent(topFrame, WindowEvent.WINDOW_CLOSING)); //Para cerrar
 			} else {
 				errores.add("El nombre de usuario y/o contraseña no coinciden.");
 				ventanaError = new VistaError(errores);
