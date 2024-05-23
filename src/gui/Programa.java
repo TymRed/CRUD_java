@@ -13,6 +13,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -54,9 +56,9 @@ public class Programa extends JFrame {
 		panelCardLayout.add(tareaProfesor, "Tarea Profesor");
 		panelCardLayout.add(panelEstudiante, "Panel Estudiante");
 
-//		CardLayout cl = (CardLayout)(panelCardLayout.getLayout());
+		CardLayout cl = (CardLayout) (panelCardLayout.getLayout());
 //		Asi se cambia de un panel a otro (esas 2 lineas) 
-//		cl.show(panelCardLayout, "Panel Estudiante");
+		cl.show(panelCardLayout, "Panel Estudiante");
 
 		this.add(panelCardLayout, BorderLayout.CENTER);
 
@@ -65,7 +67,9 @@ public class Programa extends JFrame {
 
 }
 
-class PanelPrincipalEstudiante extends JPanel {
+class PanelPrincipalEstudiante extends JPanel implements ActionListener {
+
+	JButton asignatura1, asignatura2, asignatura3, asignatura4;
 
 	public PanelPrincipalEstudiante(Usuario u) {
 
@@ -87,45 +91,62 @@ class PanelPrincipalEstudiante extends JPanel {
 				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2),
 						BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
-		JButton asignatura1 = new JButton("PROG");
+		asignatura1 = new JButton("PROG");
 		asignatura1.setBackground(new Color(Vista.COLOR3));
 		asignatura1.setFont(new Font("Consolas", Font.BOLD, 18));
 		asignatura1.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2));
 		asignatura1.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		asignatura1.setFocusable(false);
+		asignatura1.addActionListener(this);
 		asignaturasContenedor.add(asignatura1);
 
-		JButton asignatura2 = new JButton("BBDD");
+		asignatura2 = new JButton("BBDD");
 		asignatura2.setBackground(new Color(Vista.COLOR3));
 		asignatura2.setFont(new Font("Consolas", Font.BOLD, 18));
 		asignatura2.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2));
 		asignatura2.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		asignatura2.setFocusable(false);
+		asignatura2.addActionListener(this);
 		asignaturasContenedor.add(asignatura2);
 
-		JButton asignatura3 = new JButton("LGMS");
+		asignatura3 = new JButton("LGMS");
 		asignatura3.setBackground(new Color(Vista.COLOR3));
 		asignatura3.setFont(new Font("Consolas", Font.BOLD, 18));
 		asignatura3.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2));
 		asignatura3.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		asignatura3.setFocusable(false);
+		asignatura3.addActionListener(this);
 		asignaturasContenedor.add(asignatura3);
 
-		JButton asignatura4 = new JButton("SISI");
+		asignatura4 = new JButton("SISI");
 		asignatura4.setBackground(new Color(Vista.COLOR3));
 		asignatura4.setFont(new Font("Consolas", Font.BOLD, 18));
 		asignatura4.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2));
 		asignatura4.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		asignatura4.setFocusable(false);
+		asignatura4.addActionListener(this);
 		asignaturasContenedor.add(asignatura4);
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == asignatura1) {
+			System.out.println("1"); // Constructor Ventana Asig
+		} else if (e.getSource() == asignatura2) {
+			System.out.println("2"); // Constructor Ventana Asig
+		} else if (e.getSource() == asignatura3) {
+			System.out.println("3"); // Constructor Ventana Asig
+		} else if (e.getSource() == asignatura4) {
+			System.out.println("4"); // Constructor Ventana Asig
+		}
 	}
 
 }
 
 class PanelTareasProfesor extends JPanel implements ItemListener {
 	JComboBox<String> eligirTarea;
-	
+
 	public PanelTareasProfesor(Usuario u) {
 
 		this.setSize(800, 500);
@@ -155,8 +176,6 @@ class PanelTareasProfesor extends JPanel implements ItemListener {
 		atras.setBackground(Color.red);
 		infoAsignaturaContenedor.add(atras);
 
-		
-		
 		JPanel contenedorBotones = new JPanel();
 		contenedorBotones.setBackground(new Color(0xe1e5f2));
 		contenedorBotones.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
@@ -174,20 +193,18 @@ class PanelTareasProfesor extends JPanel implements ItemListener {
 		JButton removeTarea = new JButton("-");
 		contenedorBotones.add(removeTarea, BorderLayout.EAST);
 
-		
-		
 		JPanel tareasContenedor = new JPanel();
 //		tareasContenedor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.red, 1),BorderFactory.createEmptyBorder(5,5,5,5)));
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
-		ArrayList<ArrayList<String>> tareas = new ArrayList<ArrayList<String>>(); //Hay que mejorar
+		ArrayList<ArrayList<String>> tareas = new ArrayList<ArrayList<String>>(); // Hay que mejorar
 		Prueba.buscarTareas(tareas);
-		
+
 		for (ArrayList<String> tareaInfo : tareas) {
 			String nombreAlumno = tareaInfo.get(0);
-			String fecha = tareaInfo.get(0); //cambiar a date
-			
-			JPanel tarea = crearTarea(nombreAlumno,fecha);
+			String fecha = tareaInfo.get(1); // cambiar a date
+
+			JPanel tarea = crearTarea(nombreAlumno, fecha);
 			tareasContenedor.add(tarea);
 
 		}
@@ -207,7 +224,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener {
 				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 		tarea1.setBackground(new Color(0xbfdbf7));
 		tarea1.setPreferredSize(new Dimension(1, 40));
-		tarea1.setMaximumSize(new Dimension(4000,40)); //4000 es limite al cual nunca llegaremos
+		tarea1.setMaximumSize(new Dimension(4000, 40)); // 4000 es limite al cual nunca llegaremos
 
 		JLabel nomAl1 = new JLabel(nombre);
 		nomAl1.setHorizontalAlignment(SwingConstants.LEFT);
