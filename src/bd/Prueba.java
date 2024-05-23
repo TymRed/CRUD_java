@@ -140,12 +140,14 @@ public class Prueba {
 		}
 	}
 
-	public static void buscarTareas(ArrayList<ArrayList<String>> tareas) {
-		String query = "SELECT nombre_estudiante, entregado_fecha FROM tareas where nombre = 'Tarea1' and nombre_asignatura = 'Prog'";
+	public static void buscarTareas(ArrayList<ArrayList<String>> tareas, String nombreTarea) {
+		String query = "SELECT nombre_estudiante, entregado_fecha FROM tareas where nombre = ? and nombre_asignatura = 'Prog'";
+		PreparedStatement s;
 		try {
 			int i = 0;                               // Hay que mejorar!!!!!!!!!!
-			Statement s = c.createStatement();
-			ResultSet rs = s.executeQuery(query);
+			s = c.prepareStatement(query);
+			s.setString(1, nombreTarea);
+			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				tareas.add(new ArrayList<>());
 				tareas.get(i).add(rs.getString(1));
