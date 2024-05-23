@@ -68,7 +68,8 @@ public class Prueba {
 		return null;
 	}
 
-	// Podemos separarlo en 2 metodos, uno q solo comprueba el nombre, y otro como este
+	// Podemos separarlo en 2 metodos, uno q solo comprueba el nombre, y otro como
+	// este
 	public static Usuario buscarUsuario(String nombre, String contrasena) {
 		String queryUsuarios = "SELECT *,'estudiante' FROM estudiantes WHERE nombre = ? AND contrasena = ? UNION SELECT *, 'profesor' FROM profesores WHERE nombre = ? AND contrasena = ?";
 		PreparedStatement s;
@@ -83,20 +84,20 @@ public class Prueba {
 				Usuario u;
 				if (rs.getString(3).equals("estudiante")) {
 					u = new Estudiante(rs.getString(1), rs.getString(2));
-				}
-				else {
+				} else {
 					u = new Profesor(rs.getString(1), rs.getString(2));
 				}
 				return u;
-				
+
 			}
-					
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
-	//Se puede borrar. Solo estoy probandolo
+
+	// Se puede borrar. Solo estoy probandolo
 	public static boolean hayNombreUsuario(String nombre) {
 		String queryUsuarios = "SELECT nombre FROM estudiantes WHERE nombre = ? UNION SELECT nombre FROM profesores WHERE nombre = ?";
 		PreparedStatement s;
@@ -132,7 +133,7 @@ public class Prueba {
 			Statement s = c.createStatement();
 			ResultSet rs = s.executeQuery(query);
 			while (rs.next()) {
-				tareas.add(rs.getString(1));		
+				tareas.add(rs.getString(1));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -140,13 +141,33 @@ public class Prueba {
 		}
 	}
 
-	public static void buscarTareas(ArrayList<ArrayList<String>> tareas, String nombreTarea) {
+	public static void buscarEntregasProfesor(ArrayList<ArrayList<String>> tareas, String nombreTarea) {
 		String query = "SELECT nombre_estudiante, entregado_fecha FROM tareas where nombre = ? and nombre_asignatura = 'Prog'";
 		PreparedStatement s;
 		try {
-			int i = 0;                               // Hay que mejorar!!!!!!!!!!
+			int i = 0; // Hay que mejorar!!!!!!!!!!
 			s = c.prepareStatement(query);
 			s.setString(1, nombreTarea);
+			ResultSet rs = s.executeQuery();
+			while (rs.next()) {
+				tareas.add(new ArrayList<>());
+				tareas.get(i).add(rs.getString(1));
+				tareas.get(i).add(rs.getString(2));
+				i++;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void buscarTareasEstudiante(ArrayList<ArrayList<String>> tareas, String nombreAsig) {
+		String query = "SELECT NOMBRE, DESCRIPCION FROM TAREAS WHERE NOMBRE_ASIGNATURA = ?;";
+		PreparedStatement s;
+		try {
+			int i = 0; // Hay que mejorar!!!!!!!!!!
+			s = c.prepareStatement(query);
+			s.setString(1, nombreAsig);
 			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				tareas.add(new ArrayList<>());
