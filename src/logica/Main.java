@@ -1,7 +1,6 @@
 package logica;
 
 import gui.Programa;
-import gui.Vista;
 
 public class Main {
 	public static void main(String[] args) {
@@ -9,6 +8,10 @@ public class Main {
 		Usuario u = new Usuario();
 		Programa v2 = new Programa(u);
 //		Vista ventana1 = new Vista();
-
+		
+		
+//		ArrayList<String> errores = new ArrayList<String>();
+//		VistaEnvio pruebaEnvio = new VistaEnvio(errores);
+		
 	}
 }

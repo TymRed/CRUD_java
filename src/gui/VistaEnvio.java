@@ -6,47 +6,54 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class VistaError extends JFrame {
+public class VistaEnvio extends JFrame {
 
-	public VistaError(ArrayList<String> errores) {
+	public VistaEnvio(ArrayList<String> errores) {
 
 		ImageIcon icono = new ImageIcon("images//miniLogoNoodle.png");
-		ImageIcon iconoExito = new ImageIcon("images//exito.png");
-		ImageIcon iconoError = new ImageIcon("images//error.png");
 
 		this.setTitle(errores.isEmpty() ? "Éxito" : "Errores");
-		this.setIconImage(errores.isEmpty() ? iconoExito.getImage() : iconoError.getImage());
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setSize(460, 150);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 
-		PanelError panelError = new PanelError(errores);
-		this.add(panelError);
+		PanelEnvio panelEnvio = new PanelEnvio(errores);
+		this.add(panelEnvio);
 
 		this.setVisible(true);
 
 	}
 
-	public class PanelError extends JPanel {
+	public class PanelEnvio extends JPanel implements ActionListener {
 
 		private static boolean exito;
-
-		public PanelError(ArrayList<String> errores) {
+		JButton botonEnviar;
+		
+		public PanelEnvio(ArrayList<String> errores) {
 			this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 			this.setBackground(new Color(Vista.COLOR4));
 			this.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 3));
 
+			botonEnviar = new JButton("Enviar");
+			botonEnviar.setSize(100, 100);
+			botonEnviar.addActionListener(this);
+			this.add(botonEnviar);
+			
 			this.add(Box.createVerticalGlue());
 
 			JLabel textoLabel;
@@ -73,8 +80,16 @@ public class VistaError extends JFrame {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Image iconoExito = new ImageIcon("images//exito.png").getImage();
-			if (PanelError.exito) {
-				g.drawImage(iconoExito, 87, 44, 20, 20, this);
+//				if (PanelError.exito) {
+//					g.drawImage(iconoExito, 87, 44, 20, 20, this);
+//				}
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource()==botonEnviar) {
+				JFileChooser enviador = new JFileChooser();
+				enviador.showOpenDialog(null);
 			}
 		}
 
