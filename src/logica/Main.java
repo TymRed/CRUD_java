@@ -9,7 +9,6 @@ public class Main {
 		Programa v2 = new Programa(u);
 //		Vista ventana1 = new Vista();
 		
-		
 //		ArrayList<String> errores = new ArrayList<String>();
 //		VistaEnvio pruebaEnvio = new VistaEnvio(errores);
 		
