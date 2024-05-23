@@ -156,11 +156,7 @@ class MiPanel extends JPanel implements ActionListener {
 
 			if (datosCorrectos) {
 				System.out.println("Loged In");
-				if (u instanceof Estudiante) {
-					Programa ventana3 = new Programa(u); // Llamar al que es
-				} else if (u instanceof Profesor) {
-//				VistaProfesor ventanaPersonal = new VistaProfesor(u);	// Llamar a ventana Profesor
-				}
+				Programa programa = new Programa(u); // Llamar al que es
 			} else {
 				errores.add("El nombre de usuario y/o contraseña no coinciden.");
 				ventanaError = new VistaError(errores);
