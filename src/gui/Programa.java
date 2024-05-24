@@ -51,29 +51,24 @@ public class Programa extends JFrame {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 
-		JPanel panelProfesor = new PanelPrincipalProfesor(u); // 2
-		
-		JPanel panelEstudiante = new PanelPrincipalEstudiante(u); // 3
-
-		JPanel tareaProfesor = new PanelTareasProfesor(u); // 4
-
-		JPanel tareaEstudiante = new PanelTareasEstudiante(u); // 5
 
 		panelCardLayout = new JPanel();
 		panelCardLayout.setSize(800, 500);
 		panelCardLayout.setLayout(new CardLayout(0, 0));
-		panelCardLayout.add(panelEstudiante, "Panel Estudiante");
 //		panelCardLayout.add(tareaEstudiante, "Panel Tareas Estudiante");
-		panelCardLayout.add(panelProfesor, "Panel Profesor");
 //		panelCardLayout.add(tareaProfesor, "Panel Tarea Profesor");
 
 
 		CardLayout cl = (CardLayout) (panelCardLayout.getLayout());
 //		Asi se cambia de un panel a otro (esas 2 lineas) 
 		if (u instanceof Estudiante) {
+			JPanel panelEstudiante = new PanelPrincipalEstudiante(u); // 3
+			panelCardLayout.add(panelEstudiante, "Panel Estudiante");
 			cl.show(panelCardLayout, "Panel Estudiante");						
 		}
 		else if (u instanceof Profesor) {
+			JPanel panelProfesor = new PanelPrincipalProfesor(u); // 2
+			panelCardLayout.add(panelProfesor, "Panel Profesor");
 			cl.show(panelCardLayout, "Panel Profesor");			
 		}
 

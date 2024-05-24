@@ -3,7 +3,7 @@ package logica;
 public class Asignatura {
 
 	private String nombre;
-	private double notaMedia;
+	private Double notaMedia; //Para poder hacer null
 
 	public Asignatura() {
 	}

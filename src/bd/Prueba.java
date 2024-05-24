@@ -12,6 +12,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import logica.Asignatura;
 import logica.Estudiante;
 import logica.Profesor;
 import logica.Tarea;
@@ -127,11 +128,13 @@ public class Prueba {
 		}
 	}
 
-	public static void crearListaNombreTareas(ArrayList<String> tareas) {
-		String query = "SELECT distinct nombre FROM tareas";
+	public static void crearListaNombreTareas(ArrayList<String> tareas, String nombreAsig) {
+		String query = "SELECT distinct nombre FROM tareas where nombre_asignatura = ?";
+		PreparedStatement s;
 		try {
-			Statement s = c.createStatement();
-			ResultSet rs = s.executeQuery(query);
+			s = c.prepareStatement(query);
+			s.setString(1, nombreAsig);
+			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				tareas.add(rs.getString(1));		
 			}
@@ -141,21 +144,60 @@ public class Prueba {
 		}
 	}
 
-	public static void buscarTareas(ArrayList<Tarea> tareas, String nombreTarea) {
-		String query = "SELECT nombre_estudiante, entregado_fecha FROM tareas where nombre = ? and nombre_asignatura = 'Prog'";
+	public static Asignatura buscarAsignaturaProf(String nombreprof){
+		String query = "SELECT nombre FROM asignaturas where nombreprof = ?";
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement(query);
+			s.setString(1, nombreprof);
+			ResultSet rs = s.executeQuery();
+			while (rs.next()) {
+				Asignatura asig = new Asignatura();
+				asig.setNombre(rs.getString(1));
+				return asig;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static void buscarEntregas(ArrayList<Tarea> tareas, String nombreTarea, String nombreAsig) {
+		String query = "SELECT nombre_estudiante, entregado_fecha, nota FROM tareas where nombre = ? and nombre_asignatura = ?";
 		PreparedStatement s;
 		try {
 			s = c.prepareStatement(query);
 			s.setString(1, nombreTarea);
+			s.setString(2, nombreAsig);			
 			ResultSet rs = s.executeQuery();
-			while (rs.next()) {
-				Tarea tarea = new Tarea(rs.getString(1), rs.getString(1));
+			while (rs.next()) { //debe ser if
+				Tarea tarea = new Tarea(nombreTarea,rs.getString(1), rs.getString(2), rs.getDouble(3));
 				tareas.add(tarea);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	public static void ponerNotaEstudiante(Double nota, String nombreTarea, String nombreEstud, String nombreAsig) {
+		String query =  "UPDATE tareas SET nota = ? WHERE nombre = ? and nombre_asignatura = ? and nombre_estudiante = ?";
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement(query);
+			s.setDouble(1, nota);
+			s.setString(2, nombreTarea);			
+			s.setString(3, nombreAsig);
+			s.setString(4, nombreEstud);	
+			System.out.println(s);
+			s.executeUpdate();
+			System.out.println("La nota puesta");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 }
