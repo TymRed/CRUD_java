@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -14,18 +15,28 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
+import bd.Prueba;
+import logica.Asignatura;
 import logica.Usuario;
 
 class PanelPrincipalProfesor extends JPanel implements ActionListener {
 
-	JButton asignatura1, asignatura2, asignatura3, asignatura4;
-	private Programa programa;
 
-	public PanelPrincipalProfesor(Usuario u, Programa programa) {
-		this.programa = programa;
+	JButton asignaturaBoton, boletinBoton;
+
+	Usuario prof;
+	Asignatura asig;
+	
+	public PanelPrincipalProfesor(Usuario u) {
+
+		this.prof = u;
+		this.asig = Prueba.buscarAsignaturaProfesor(u.getNombre());
+		
 		this.setSize(800, 500);
 		this.setBackground(new Color(Vista.COLOR4));
 		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2),
@@ -44,11 +55,11 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2),
 						BorderFactory.createEmptyBorder(10, 10, 10, 10)));
 
-		asignatura1 = crearBoton("PROG");
-		asignaturasContenedor.add(asignatura1);
+		asignaturaBoton = crearBoton(asig.getNombre());
+		asignaturasContenedor.add(asignaturaBoton);
 
-		asignatura2 = crearBoton("Imprimir boletín");
-		asignaturasContenedor.add(asignatura2);
+		boletinBoton = crearBoton("Imprimir boletín");
+		asignaturasContenedor.add(boletinBoton);
 
 	}
 
@@ -65,9 +76,12 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == asignatura1) {
-			System.out.println("1"); // Constructor Ventana Asig
-		} else if (e.getSource() == asignatura2) {
+		if (e.getSource() == asignaturaBoton) {
+			JPanel tareaProfesor = new PanelTareasProfesor(prof, asig);
+			Programa.panelCardLayout.add(tareaProfesor, "Panel Tarea Profesor");
+			CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
+			cl.show(Programa.panelCardLayout, "Panel Tarea Profesor");
+		} else if (e.getSource() == boletinBoton) {
 			System.out.println("2"); // Sacar .txt
 		}
 	}
@@ -122,7 +136,8 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == botonSalir) {
 				Vista ventana = new Vista();
-				programa.dispose();
+				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this); // para acceder al frame
+				topFrame.dispose();
 			}
 		}
 

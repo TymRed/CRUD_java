@@ -19,21 +19,26 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import bd.Prueba;
+import logica.Tarea;
 import logica.Usuario;
 
 class PanelTareasEstudiante extends JPanel implements ItemListener, ActionListener {
 	JComboBox<String> eligirTarea;
 	private Programa programa;
 	private JButton botonAtras;
+	Usuario u;
 
 	public PanelTareasEstudiante(Usuario u, Programa programa) {
 		this.programa = programa;
+		this.u = u;
 		this.setSize(800, 500);
 		this.setBackground(new Color(0xe1e5f2));
 		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x022b3a), 2),
@@ -77,12 +82,12 @@ class PanelTareasEstudiante extends JPanel implements ItemListener, ActionListen
 //		tareasContenedor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.red, 1),BorderFactory.createEmptyBorder(5,5,5,5)));
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
-		ArrayList<ArrayList<String>> tareas = new ArrayList<ArrayList<String>>(); // Hay que mejorar
-		Prueba.buscarTareasEstudiante(tareas, "Prog");
+		ArrayList<Tarea> tareas = new ArrayList<Tarea>(); // Hay que mejorar
+//		Prueba.buscarTareasEstudiante(tareas, "Prog");
 
-		for (ArrayList<String> tareaInfo : tareas) {
-			String nombreAlumno = tareaInfo.get(0);
-			String fecha = tareaInfo.get(1); // cambiar a date
+		for (Tarea tareaInfo : tareas) {
+			String nombreAlumno = tareaInfo.getNombreEstudiante();
+			String fecha = tareaInfo.getFechaEntrega(); // cambiar a date
 
 			JPanel tarea = crearTarea(nombreAlumno, fecha);
 			tareasContenedor.add(tarea);
@@ -145,8 +150,10 @@ class PanelTareasEstudiante extends JPanel implements ItemListener, ActionListen
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == botonAtras) {
-			Vista ventana = new Vista();
-            programa.dispose();
+			JPanel panelEstudiante = new PanelPrincipalEstudiante(u); // 3
+			Programa.panelCardLayout.add(panelEstudiante, "Panel Estudiante");
+			CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
+			cl.show(Programa.panelCardLayout, "Panel Estudiante");
 		}
 	}
 

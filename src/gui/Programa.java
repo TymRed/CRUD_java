@@ -16,7 +16,7 @@ import logica.Usuario;
 
 public class Programa extends JFrame {
 
-	JPanel panelCardLayout;
+	static JPanel panelCardLayout;
 	
 	public Programa(Usuario u) {
 		ImageIcon icono = new ImageIcon("images//miniLogoNoodle.png");
@@ -28,31 +28,25 @@ public class Programa extends JFrame {
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
 
-		JPanel panelProfesor = new PanelPrincipalProfesor(u, this); // 2
-		
-		JPanel panelEstudiante = new PanelPrincipalEstudiante(u, this); // 3
-
-		JPanel tareaProfesor = new PanelTareasProfesor(u, this); // 4
-
-		JPanel tareaEstudiante = new PanelTareasEstudiante(u, this); // 5
-	
 		panelCardLayout = new JPanel();
 		panelCardLayout.setSize(800, 500);
 		panelCardLayout.setLayout(new CardLayout(0, 0));
-		panelCardLayout.add(tareaProfesor, "Panel Tarea Profesor");
-		panelCardLayout.add(panelEstudiante, "Panel Estudiante");
-		panelCardLayout.add(tareaEstudiante, "Panel Tareas Estudiante");
-		panelCardLayout.add(panelProfesor, "Panel Profesor");
+//		panelCardLayout.add(tareaEstudiante, "Panel Tareas Estudiante");
+//		panelCardLayout.add(tareaProfesor, "Panel Tarea Profesor");
 
 
 		CardLayout cl = (CardLayout) (panelCardLayout.getLayout());
 //		Asi se cambia de un panel a otro (esas 2 lineas) 
 
 		if (u instanceof Estudiante) {
-			cl.show(panelCardLayout, "Panel Tareas Estudiante");
+			JPanel panelEstudiante = new PanelPrincipalEstudiante(u); // 3
+			panelCardLayout.add(panelEstudiante, "Panel Estudiante");
+			cl.show(panelCardLayout, "Panel Estudiante");						
 		}
 		else if (u instanceof Profesor) {
-			cl.show(panelCardLayout, "Panel Tareas Profesor");
+			JPanel panelProfesor = new PanelPrincipalProfesor(u); // 2
+			panelCardLayout.add(panelProfesor, "Panel Profesor");
+			cl.show(panelCardLayout, "Panel Profesor");			
 		}
 
 		this.add(panelCardLayout, BorderLayout.CENTER);

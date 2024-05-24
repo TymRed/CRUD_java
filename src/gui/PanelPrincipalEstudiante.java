@@ -10,22 +10,23 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import logica.Usuario;
 
 class PanelPrincipalEstudiante extends JPanel implements ActionListener {
 
 	JButton asignatura1, asignatura2, asignatura3, asignatura4, botonSalir;
-	private Programa programa;
 
-	public PanelPrincipalEstudiante(Usuario u, Programa programa) {
-		this.programa = programa;
+	public PanelPrincipalEstudiante(Usuario u) {
 		this.setSize(800, 500);
 		this.setBackground(new Color(Vista.COLOR4));
 		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2),
@@ -131,7 +132,8 @@ class PanelPrincipalEstudiante extends JPanel implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if (e.getSource() == botonSalir) {
 				Vista ventana = new Vista();
-				programa.dispose();
+				JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this); // para acceder al frame
+				topFrame.dispose();
 			}
 		}
 	}
