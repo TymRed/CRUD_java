@@ -150,6 +150,8 @@ class PanelTareasProfesor extends JPanel implements ItemListener {
 	    
 //	    System.out.println(tareaInfo.getNota());
 	    if (tareaInfo.getNota() != null) {
+	    	nota.setText(tareaInfo.getNota() + "");
+	    	nota.setBackground(tareaInfo.getNota() >= 5 ? Color.green : Color.red);
 	    	nota.setEnabled(false);
 	    }
 
@@ -162,8 +164,15 @@ class PanelTareasProfesor extends JPanel implements ItemListener {
 	    submitNota.setFocusable(false);
 	    submitNota.addActionListener(new ActionListener() { //Para poder hacerlo con varios botones
 	        public void actionPerformed(ActionEvent e) {
-	        	double notaD = Double.parseDouble(nota.getText());
+	        	Double notaD = Double.parseDouble(nota.getText());
 	            Prueba.ponerNotaEstudiante(notaD, tareaInfo.getNombre(), nombreEstud.getText(), asig.getNombre());
+	            
+	            if (notaD != null) {
+	    	    	nota.setText(notaD + "");
+	    	    	nota.setBackground(notaD >= 5 ? Color.green : Color.red);
+	    	    	nota.setEnabled(false);
+	    	    }
+	            repaint();
 	        }
 	    });
 	    gbc.insets = new Insets(0, 0, 0, 0);
