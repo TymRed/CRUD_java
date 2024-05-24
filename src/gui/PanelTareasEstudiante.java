@@ -9,6 +9,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -25,11 +27,13 @@ import javax.swing.SwingConstants;
 import bd.Prueba;
 import logica.Usuario;
 
-class PanelTareasEstudiante extends JPanel implements ItemListener {
+class PanelTareasEstudiante extends JPanel implements ItemListener, ActionListener {
 	JComboBox<String> eligirTarea;
+	private Programa programa;
+	private JButton botonAtras;
 
-	public PanelTareasEstudiante(Usuario u) {
-
+	public PanelTareasEstudiante(Usuario u, Programa programa) {
+		this.programa = programa;
 		this.setSize(800, 500);
 		this.setBackground(new Color(0xe1e5f2));
 		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x022b3a), 2),
@@ -60,13 +64,16 @@ class PanelTareasEstudiante extends JPanel implements ItemListener {
 		textoAsig.setBounds(0, 145, 180, 20);
 		infoAsignaturaContenedor.add(textoAsig);
 
-		JButton atras = new JButton("Atras");
-		atras.setFocusPainted(false);
-		atras.setBounds(582, 0, 100, 100);
-		atras.setBackground(Color.red);
-		infoAsignaturaContenedor.add(atras);
+		botonAtras = new JButton("Atras");
+		botonAtras.setFocusPainted(false);
+		botonAtras.setBounds(582, 0, 100, 100);
+		botonAtras.setBackground(Color.red);
+		botonAtras.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		botonAtras.addActionListener(this);
+		infoAsignaturaContenedor.add(botonAtras);
 
 		JPanel tareasContenedor = new JPanel();
+		tareasContenedor.setBackground(new Color(Vista.COLOR2));
 //		tareasContenedor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.red, 1),BorderFactory.createEmptyBorder(5,5,5,5)));
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
@@ -115,7 +122,7 @@ class PanelTareasEstudiante extends JPanel implements ItemListener {
 		tarea1.add(time, gbc);
 
 		JButton submitNota = new JButton("Enviar");
-		submitNota.setBackground(new Color(Vista.COLOR3));
+		submitNota.setBackground(new Color(Vista.COLOR4));
 		submitNota.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x1f7a8c), 1),
 				BorderFactory.createEmptyBorder(7, 17, 7, 17)));
 		submitNota.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -132,6 +139,14 @@ class PanelTareasEstudiante extends JPanel implements ItemListener {
 		if (event.getStateChange() == ItemEvent.SELECTED) {
 			String selectedValue = eligirTarea.getSelectedItem().toString();
 			System.out.println(selectedValue);
+		}
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == botonAtras) {
+			Vista ventana = new Vista();
+            programa.dispose();
 		}
 	}
 

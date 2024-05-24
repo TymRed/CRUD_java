@@ -19,8 +19,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import bd.Prueba;
-import logica.Estudiante;
-import logica.Profesor;
 import logica.Usuario;
 
 public class Vista extends JFrame {
@@ -50,37 +48,35 @@ public class Vista extends JFrame {
 
 	}
 
-}
+	class MiPanel extends JPanel implements ActionListener {
 
-class MiPanel extends JPanel implements ActionListener {
+		JButton signIn, logIn;
+		JTextField nombre;
+		JPasswordField contrasena;
+		Image logo, logoU, logoC;
+		JLabel errorUsuario, errorContrasena;
+		static ArrayList<String> errores = new ArrayList<String>();
 
-	JButton signIn, logIn;
-	JTextField nombre;
-	JPasswordField contrasena;
-	Image logo, logoU, logoC;
-	JLabel errorUsuario, errorContrasena;
-	static ArrayList<String> errores = new ArrayList<String>();
+		public MiPanel() {
 
-	public MiPanel() {
+			this.setLayout(null);
+			this.setBackground(new Color(Vista.COLOR4));
+			this.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 3));
 
-		this.setLayout(null);
-		this.setBackground(new Color(Vista.COLOR4));
-		this.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 3));
+			nombre = crearCampoTexto("Usuario");
+			nombre.setBounds(55, 130, 225, 25);
+			contrasena = crearCampoContrasena();
+			contrasena.setBounds(55, 180, 225, 25);
 
-		nombre = crearCampoTexto("Usuario");
-		nombre.setBounds(55, 130, 225, 25);
-		contrasena = crearCampoContrasena();
-		contrasena.setBounds(55, 180, 225, 25);
+			this.add(nombre);
+			this.add(contrasena);
 
-		this.add(nombre);
-		this.add(contrasena);
-
-		signIn = crearBoton("Sign in", 's');
-		signIn.setBounds(55, 230, 80, 30);
-		logIn = crearBoton("Log in", 'l');
-		logIn.setBounds(200, 230, 80, 30);
-		this.add(signIn);
-		this.add(logIn);
+			signIn = crearBoton("Sign in", 's');
+			signIn.setBounds(55, 230, 80, 30);
+			logIn = crearBoton("Log in", 'l');
+			logIn.setBounds(200, 230, 80, 30);
+			this.add(signIn);
+			this.add(logIn);
 
 //		errorUsuario = crearTextoError();
 //		errorUsuario.setBounds(55, 112, 250, 100);
@@ -88,38 +84,38 @@ class MiPanel extends JPanel implements ActionListener {
 
 //		this.add(errorUsuario);
 
-		this.setOpaque(true);
+			this.setOpaque(true);
 
-	}
+		}
 
-	private JTextField crearCampoTexto(String texto) {
-		JTextField t = new JTextField(texto);
-		t.setForeground(Color.GRAY);
-		t.setFont(new Font("Consolas", Font.PLAIN, 18));
-		t.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1).brighter().brighter(), 2));
-		return t;
-	}
+		private JTextField crearCampoTexto(String texto) {
+			JTextField t = new JTextField(texto);
+			t.setForeground(Color.GRAY);
+			t.setFont(new Font("Consolas", Font.PLAIN, 18));
+			t.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1).brighter().brighter(), 2));
+			return t;
+		}
 
-	private JPasswordField crearCampoContrasena() {
-		JPasswordField contrasena = new JPasswordField();
-		contrasena.setForeground(Color.GRAY);
-		contrasena.setFont(new Font("Consolas", Font.PLAIN, 18));
-		contrasena.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1).brighter().brighter(), 2));
-		return contrasena;
-	}
+		private JPasswordField crearCampoContrasena() {
+			JPasswordField contrasena = new JPasswordField();
+			contrasena.setForeground(Color.GRAY);
+			contrasena.setFont(new Font("Consolas", Font.PLAIN, 18));
+			contrasena.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1).brighter().brighter(), 2));
+			return contrasena;
+		}
 
-	private JButton crearBoton(String texto, char mnemonic) {
-		JButton b = new JButton(texto);
-		b.setFocusable(false);
-		b.setForeground((new Color(Vista.COLOR1)));
-		b.setFont(new Font("Consolas", Font.PLAIN, 14));
-		b.setMnemonic(mnemonic);
-		b.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		b.setBackground(new Color(Vista.COLOR3));
-		b.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2, true));
-		b.addActionListener(this);
-		return b;
-	}
+		private JButton crearBoton(String texto, char mnemonic) {
+			JButton b = new JButton(texto);
+			b.setFocusable(false);
+			b.setForeground((new Color(Vista.COLOR1)));
+			b.setFont(new Font("Consolas", Font.PLAIN, 14));
+			b.setMnemonic(mnemonic);
+			b.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			b.setBackground(new Color(Vista.COLOR3));
+			b.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2, true));
+			b.addActionListener(this);
+			return b;
+		}
 
 //	SI ESO METER (LETRAS EN ROJO)
 //	
@@ -131,128 +127,131 @@ class MiPanel extends JPanel implements ActionListener {
 //		return t;
 //	}
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
 //		this.setFont(new Font("Consolas", Font.BOLD, 25));
-		logo = new ImageIcon("images//logoNoodle.png").getImage();
-		logoU = new ImageIcon("images//usuario.png").getImage();
-		logoC = new ImageIcon("images//contrasena.png").getImage();
-		g.drawImage(logo, 87, 45, 150, 50, null);
-		g.drawImage(logoU, 30, 133, 18, 18, null);
-		g.drawImage(logoC, 30, 183, 18, 18, null);
-	}
+			logo = new ImageIcon("images//logoNoodle.png").getImage();
+			logoU = new ImageIcon("images//usuario.png").getImage();
+			logoC = new ImageIcon("images//contrasena.png").getImage();
+			g.drawImage(logo, 87, 45, 150, 50, null);
+			g.drawImage(logoU, 30, 133, 18, 18, null);
+			g.drawImage(logoC, 30, 183, 18, 18, null);
+		}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
+		@Override
+		public void actionPerformed(ActionEvent e) {
 
-		VistaError ventanaError;
+			VistaError ventanaError;
 
-		if (e.getSource() == logIn) {
-			String nombreUsusario = nombre.getText();
-			String contrasenaUsuario = String.valueOf(contrasena.getPassword());
-			Usuario u = Prueba.buscarUsuario(nombreUsusario, contrasenaUsuario);
-			boolean datosCorrectos = u != null;
+			if (e.getSource() == logIn) {
+				String nombreUsusario = nombre.getText();
+				String contrasenaUsuario = String.valueOf(contrasena.getPassword());
+				Usuario u = Prueba.buscarUsuario(nombreUsusario, contrasenaUsuario);
+				boolean datosCorrectos = u != null;
 
-			if (datosCorrectos) {
-				System.out.println("Loged In");
-				Programa programa = new Programa(u); // Llamar al que es
-			} else {
-				errores.add("El nombre de usuario y/o contraseña no coinciden.");
+				if (datosCorrectos) {
+					System.out.println("Loged In");
+					Programa programa = new Programa(u);
+					Vista.this.dispose();
+				} else {
+					errores.add("El nombre de usuario y/o contraseña no coinciden.");
+					ventanaError = new VistaError(errores);
+					return;
+				}
+
+			} else if (e.getSource() == signIn) {
+				String nombreUsuario = nombre.getText();
+				String contrasenaUsuario = String.valueOf(contrasena.getPassword());
+
+				boolean nombreOcupado = Prueba.hayNombreUsuario(nombreUsuario);
+				if (nombreOcupado) {
+					errores.add("Nombre de usuario no disponible");
+					ventanaError = new VistaError(errores);
+					return;
+				}
+
+				boolean nombreAdecuado = comprobarNombre(nombreUsuario);
+				if (!nombreAdecuado)
+					return;
+
+				boolean contrasenaAdecuada = comprobarContrasena(contrasenaUsuario);
+				if (!contrasenaAdecuada)
+					return;
+
+				if (nombreAdecuado && contrasenaAdecuada) {
+					Prueba.signIn(nombreUsuario, contrasenaUsuario);
+					System.out.println("Singed In");
+					nombre.setText("");
+					contrasena.setText("");
+					ventanaError = new VistaError(errores);
+				}
+
+			}
+		}
+
+		// Creo q hay q mover este metodo a otra clase, es solo prueba
+		// Se pueden hacer comentarios personalizados para los errores
+		private boolean comprobarNombre(String nombreUsuario) {
+
+			VistaError ventanaError;
+
+			boolean longitudAdecuada = nombreUsuario.length() >= 4 && nombreUsuario.length() <= 16;
+
+			if (nombreUsuario.isEmpty() || !longitudAdecuada) {
+				errores.add("El nombre debe tener entre 4 y 16 caracteres.");
 				ventanaError = new VistaError(errores);
-				return;
+				return false;
 			}
 
-		} else if (e.getSource() == signIn) {
-			String nombreUsuario = nombre.getText();
-			String contrasenaUsuario = String.valueOf(contrasena.getPassword());
+			boolean may1 = nombreUsuario.charAt(0) >= 'A' && nombreUsuario.charAt(0) <= 'Z';
+			boolean adecuado = nombreUsuario.substring(1).matches("[a-z]*");
 
-			boolean nombreOcupado = Prueba.hayNombreUsuario(nombreUsuario);
-			if (nombreOcupado) {
-				errores.add("Nombre de usuario no disponible");
-				ventanaError = new VistaError(errores);
-				return;
+			if (longitudAdecuada && may1 && adecuado)
+				return true;
+
+			if (!may1) {
+				errores.add("El nombre debe comenzar por mayúscula.");
+			} else if (!adecuado) {
+				errores.add("El nombre debe comenzar por letra mayúscula.");
+				errores.add("El resto de letras deben minúsculas.");
 			}
+			ventanaError = new VistaError(errores);
 
-			boolean nombreAdecuado = comprobarNombre(nombreUsuario);
-			if (!nombreAdecuado)
-				return;
-
-			boolean contrasenaAdecuada = comprobarContrasena(contrasenaUsuario);
-			if (!contrasenaAdecuada)
-				return;
-
-			if (nombreAdecuado && contrasenaAdecuada) {
-				Prueba.signIn(nombreUsuario, contrasenaUsuario);
-				System.out.println("Singed In");
-				nombre.setText("");
-				contrasena.setText("");
-				ventanaError = new VistaError(errores);
-			}
+			return false;
 
 		}
-	}
 
-	// Creo q hay q mover este metodo a otra clase, es solo prueba
-	// Se pueden hacer comentarios personalizados para los errores
-	private boolean comprobarNombre(String nombreUsuario) {
+		private boolean comprobarContrasena(String contrasena) {
 
-		VistaError ventanaError;
+			VistaError ventanaError;
+			boolean longitudAdecuada = contrasena.length() >= 4 && contrasena.length() <= 16;
 
-		boolean longitudAdecuada = nombreUsuario.length() >= 4 && nombreUsuario.length() <= 16;
+			if (contrasena.isEmpty() || !longitudAdecuada) {
+				errores.add("La contraseña debe tener entre 4 y 16 caracteres.");
+				ventanaError = new VistaError(errores);
+				return false;
+			}
 
-		if (nombreUsuario.isEmpty() || !longitudAdecuada) {
-			errores.add("El nombre debe tener entre 4 y 16 caracteres.");
+			boolean hayMin = contrasena.matches(".*[a-z].*");
+			boolean hayMay = contrasena.matches(".*[A-Z].*");
+			boolean hayNum = contrasena.matches(".*[1-9].*");
+
+			if (longitudAdecuada && hayMin && hayMay && hayNum)
+				return true;
+
+			if (!hayMin)
+				errores.add("La contraseña debe tener al menos una letra minúscula.");
+			if (!hayMay)
+				errores.add("La contraseña debe tener al menos una letra mayúscula.");
+			if (!hayNum)
+				errores.add("La contraseña debe tener al menos un número.");
+
 			ventanaError = new VistaError(errores);
+
 			return false;
 		}
 
-		boolean may1 = nombreUsuario.charAt(0) >= 'A' && nombreUsuario.charAt(0) <= 'Z';
-		boolean adecuado = nombreUsuario.substring(1).matches("[a-z]*");
-
-		if (longitudAdecuada && may1 && adecuado)
-			return true;
-
-		if (!may1) {
-			errores.add("El nombre debe comenzar por mayúscula.");
-		} else if (!adecuado) {
-			errores.add("El nombre debe comenzar por letra mayúscula.");
-			errores.add("El resto de letras deben minúsculas.");
-		}
-		ventanaError = new VistaError(errores);
-
-		return false;
-
-	}
-
-	private boolean comprobarContrasena(String contrasena) {
-
-		VistaError ventanaError;
-		boolean longitudAdecuada = contrasena.length() >= 4 && contrasena.length() <= 16;
-
-		if (contrasena.isEmpty() || !longitudAdecuada) {
-			errores.add("La contraseña debe tener entre 4 y 16 caracteres.");
-			ventanaError = new VistaError(errores);
-			return false;
-		}
-
-		boolean hayMin = contrasena.matches(".*[a-z].*");
-		boolean hayMay = contrasena.matches(".*[A-Z].*");
-		boolean hayNum = contrasena.matches(".*[1-9].*");
-
-		if (longitudAdecuada && hayMin && hayMay && hayNum)
-			return true;
-
-		if (!hayMin)
-			errores.add("La contraseña debe tener al menos una letra minúscula.");
-		if (!hayMay)
-			errores.add("La contraseña debe tener al menos una letra mayúscula.");
-		if (!hayNum)
-			errores.add("La contraseña debe tener al menos un número.");
-
-		ventanaError = new VistaError(errores);
-
-		return false;
 	}
 
 }

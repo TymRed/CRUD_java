@@ -6,15 +6,20 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -26,11 +31,15 @@ import javax.swing.SwingConstants;
 import bd.Prueba;
 import logica.Usuario;
 
-class PanelTareasProfesor extends JPanel implements ItemListener {
+class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener {
 	JComboBox<String> eligirTarea;
 	JPanel tareasContenedor;
-	public PanelTareasProfesor(Usuario u) {
-
+	private Programa programa;
+	private Image logo;
+	JButton atras;
+	
+	public PanelTareasProfesor(Usuario u, Programa programa) {
+		this.programa = programa;
 		this.setSize(800, 500);
 		this.setBackground(new Color(0xe1e5f2));
 		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x022b3a), 2),
@@ -48,14 +57,12 @@ class PanelTareasProfesor extends JPanel implements ItemListener {
 		this.add(infoAsignaturaContenedor, BorderLayout.NORTH);
 		infoAsignaturaContenedor.setLayout(null);
 
-		JLabel nombAsig = new JLabel("Prog");
-		nombAsig.setBounds(0, 10, 71, 13);
-		infoAsignaturaContenedor.add(nombAsig);
-
-		JButton atras = new JButton("Atras");
+		atras = new JButton("Atras");
 		atras.setFocusPainted(false);
 		atras.setBounds(582, 0, 100, 100);
 		atras.setBackground(Color.red);
+		atras.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		atras.addActionListener(this);
 		infoAsignaturaContenedor.add(atras);
 
 		JPanel contenedorBotones = new JPanel();
@@ -166,6 +173,15 @@ class PanelTareasProfesor extends JPanel implements ItemListener {
 			Prueba.buscarEntregasProfesor(tareas, selectedValue);
 
 			bucleTareas(tareas);
+		}
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == atras) {
+			Vista ventana = new Vista();
+            programa.dispose();
 		}
 	}
 

@@ -21,10 +21,11 @@ import logica.Usuario;
 
 class PanelPrincipalEstudiante extends JPanel implements ActionListener {
 
-	JButton asignatura1, asignatura2, asignatura3, asignatura4;
+	JButton asignatura1, asignatura2, asignatura3, asignatura4, botonSalir;
+	private Programa programa;
 
-	public PanelPrincipalEstudiante(Usuario u) {
-
+	public PanelPrincipalEstudiante(Usuario u, Programa programa) {
+		this.programa = programa;
 		this.setSize(800, 500);
 		this.setBackground(new Color(Vista.COLOR4));
 		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2),
@@ -81,50 +82,58 @@ class PanelPrincipalEstudiante extends JPanel implements ActionListener {
 		}
 	}
 
-}
+	class PanelConLogoEstu extends JPanel implements ActionListener {
 
-class PanelConLogoEstu extends JPanel {
+		private Image logo;
+		private ImageIcon iconoSalir;
 
-	private Image logo;
-	private JButton botonSalir;
-	private ImageIcon iconoSalir;
+		public PanelConLogoEstu(Usuario u) {
+			this.setBackground(new Color(Vista.COLOR4));
+			this.setPreferredSize(new Dimension(100, 130));
+			this.setLayout(null);
 
-	public PanelConLogoEstu(Usuario u) {
-		this.setBackground(new Color(Vista.COLOR4));
-		this.setPreferredSize(new Dimension(100, 130));
-		this.setLayout(null);
+			botonSalir = new JButton();
+			botonSalir.setBounds(610, 25, 70, 70);
+			botonSalir.setFocusable(false);
+			botonSalir.setBackground(new Color(Vista.COLOR4));
+			botonSalir.setBorderPainted(false);
+			botonSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			botonSalir.addActionListener(this);
 
-		botonSalir = new JButton();
-		botonSalir.setBounds(610, 25, 70, 70);
-		botonSalir.setFocusable(false);
-		botonSalir.setBackground(new Color(Vista.COLOR4));
-		botonSalir.setBorderPainted(false);
-		botonSalir.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			iconoSalir = new ImageIcon("images//atras.png");
+			Image imagen = iconoSalir.getImage();
+			Image imagenRedimensionada = imagen.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
+			iconoSalir = new ImageIcon(imagenRedimensionada);
+			botonSalir.setIcon(iconoSalir);
+			this.add(botonSalir);
 
-		iconoSalir = new ImageIcon("images//atras.png");
-		Image imagen = iconoSalir.getImage();
-		Image imagenRedimensionada = imagen.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
-		iconoSalir = new ImageIcon(imagenRedimensionada);
-		botonSalir.setIcon(iconoSalir);
-		this.add(botonSalir);
+			JLabel textoNombre = new JLabel("Nombre: " + u.getNombre());
+			textoNombre.setFont(new Font("Consolas", Font.BOLD, 16));
+			textoNombre.setBounds(0, 125, 200, 25);
+			this.add(textoNombre);
 
-		JLabel textoNombre = new JLabel("Nombre: " + u.getNombre());
-		textoNombre.setFont(new Font("Consolas", Font.BOLD, 16));
-		textoNombre.setBounds(0, 125, 200, 25);
-		this.add(textoNombre);
+			JLabel textoAsig = new JLabel("Asignaturas");
+			textoAsig.setFont(new Font("Consolas", Font.BOLD, 20));
+			textoAsig.setBounds(0, 195, 180, 20);
+			this.add(textoAsig);
+		}
 
-		JLabel textoAsig = new JLabel("Asignaturas");
-		textoAsig.setFont(new Font("Consolas", Font.BOLD, 20));
-		textoAsig.setBounds(0, 195, 180, 20);
-		this.add(textoAsig);
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			logo = new ImageIcon("images//logoNoodle.png").getImage();
+			g.drawImage(logo, -10, 30, 150, 50, null);
+//			botonSalir = new ImageIcon("images//atras.png").getImage();
+//			g.drawImage(botonSalir, 600, 42, 100, 100, null);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == botonSalir) {
+				Vista ventana = new Vista();
+				programa.dispose();
+			}
+		}
 	}
 
-	@Override
-	protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		logo = new ImageIcon("images//logoNoodle.png").getImage();
-		g.drawImage(logo, -10, 30, 150, 50, null);
-//		botonSalir = new ImageIcon("images//atras.png").getImage();
-//		g.drawImage(botonSalir, 600, 42, 100, 100, null);
-	}
 }

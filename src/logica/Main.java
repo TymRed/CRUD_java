@@ -8,7 +8,6 @@ public class Main {
 
 
 		Vista ventana1 = new Vista();
-		
 //		ArrayList<String> errores = new ArrayList<String>();
 //		VistaEnvio pruebaEnvio = new VistaEnvio(errores);
 		
