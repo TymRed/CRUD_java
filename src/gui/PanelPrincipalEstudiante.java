@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
@@ -10,7 +11,6 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -20,13 +20,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import bd.Prueba;
+import logica.Asignatura;
 import logica.Usuario;
 
 class PanelPrincipalEstudiante extends JPanel implements ActionListener {
 
 	JButton asignatura1, asignatura2, asignatura3, asignatura4, botonSalir;
+	Usuario u;
 
 	public PanelPrincipalEstudiante(Usuario u) {
+		this.u = u;
 		this.setSize(800, 500);
 		this.setBackground(new Color(Vista.COLOR4));
 		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2),
@@ -72,15 +76,24 @@ class PanelPrincipalEstudiante extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		Asignatura a = null;
 		if (e.getSource() == asignatura1) {
+			a = Prueba.buscarAsignaturaProfesor("Prog");
 			System.out.println("1"); // Constructor Ventana Asig
 		} else if (e.getSource() == asignatura2) {
+			a = Prueba.buscarAsignaturaProfesor("Bbdd");
 			System.out.println("2"); // Constructor Ventana Asig
 		} else if (e.getSource() == asignatura3) {
+			a = Prueba.buscarAsignaturaProfesor("Lmsg");
 			System.out.println("3"); // Constructor Ventana Asig
 		} else if (e.getSource() == asignatura4) {
+			a = Prueba.buscarAsignaturaProfesor("Sisi");
 			System.out.println("4"); // Constructor Ventana Asig
 		}
+		JPanel asignaturaEst = new PanelTareasEstudiante(u, a);
+		Programa.panelCardLayout.add(asignaturaEst, "Panel Tarea Estudiante");
+		CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
+		cl.show(Programa.panelCardLayout, "Panel Tarea Estudiante");
 	}
 
 	class PanelConLogoEstu extends JPanel implements ActionListener {

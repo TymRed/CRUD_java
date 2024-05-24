@@ -27,17 +27,16 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import bd.Prueba;
+import logica.Asignatura;
 import logica.Tarea;
 import logica.Usuario;
 
 class PanelTareasEstudiante extends JPanel implements ItemListener, ActionListener {
 	JComboBox<String> eligirTarea;
-	private Programa programa;
 	private JButton botonAtras;
 	Usuario u;
 
-	public PanelTareasEstudiante(Usuario u, Programa programa) {
-		this.programa = programa;
+	public PanelTareasEstudiante(Usuario u, Asignatura a) {
 		this.u = u;
 		this.setSize(800, 500);
 		this.setBackground(new Color(0xe1e5f2));

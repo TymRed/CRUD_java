@@ -61,6 +61,9 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 		infoAsignaturaContenedor.setPreferredSize(new Dimension(100, 130));
 		this.add(infoAsignaturaContenedor, BorderLayout.NORTH);
 		infoAsignaturaContenedor.setLayout(null);
+		JLabel nombAsig = new JLabel("Tareas " + asig.getNombre());
+		nombAsig.setBounds(0, 100, 71, 13);
+		infoAsignaturaContenedor.add(nombAsig);
 
 		atras = new JButton("Atras");
 		atras.setFocusPainted(false);

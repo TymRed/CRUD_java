@@ -1,6 +1,5 @@
 package logica;
 
-import gui.Programa;
 import gui.Vista;
 
 public class Main {

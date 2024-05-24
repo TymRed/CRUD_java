@@ -122,6 +122,25 @@ public class Prueba {
 		}
 	}
 
+	public static Asignatura buscarAsignaturaEstudiante(String nombreAsig){
+		String query = "SELECT nombre FROM asignaturas where nombre = ?";
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement(query);
+			s.setString(1, nombreAsig);
+			ResultSet rs = s.executeQuery();
+			while (rs.next()) {
+				Asignatura asig = new Asignatura();
+				asig.setNombre(rs.getString(1));
+				return asig;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static Asignatura buscarAsignaturaProfesor(String nombreprof){
 		String query = "SELECT nombre FROM asignaturas where nombreprof = ?";
 		PreparedStatement s;

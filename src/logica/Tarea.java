@@ -1,11 +1,12 @@
 package logica;
 
 public class Tarea {
+	
 	private String nombre;
 	private String nombreEstudiante;
 	private String fechaEntrega;
 	private Double nota;
-	
+	private boolean enviado;
 	
 	public Tarea(String nombre, String nombreEstudiante, String fechaEntrega, double nota) {
 		this.nombre = nombre;

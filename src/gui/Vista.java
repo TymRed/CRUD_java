@@ -38,8 +38,7 @@ public class Vista extends JFrame {
 
 		this.setIconImage(icono.getImage());
 		this.setTitle("Ñoodle");
-		//lo he comentado, ya que esto me cerraba la segunda ventana tambien
-//		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setSize(350, 350);
 		this.setResizable(false);
 		this.setLocationRelativeTo(null);
