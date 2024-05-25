@@ -76,21 +76,21 @@ class PanelPrincipalEstudiante extends JPanel implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Asignatura a = null;
+		
+		String nombreAsignatura = "";
 		if (e.getSource() == asignatura1) {
-			a = Prueba.buscarAsignaturaProfesor("Prog");
-			System.out.println("1"); // Constructor Ventana Asig
+			nombreAsignatura = "Prog";
 		} else if (e.getSource() == asignatura2) {
-			a = Prueba.buscarAsignaturaProfesor("Bbdd");
-			System.out.println("2"); // Constructor Ventana Asig
+			nombreAsignatura = "BBDD";
 		} else if (e.getSource() == asignatura3) {
-			a = Prueba.buscarAsignaturaProfesor("Lmsg");
-			System.out.println("3"); // Constructor Ventana Asig
+			nombreAsignatura = "LMSG";
 		} else if (e.getSource() == asignatura4) {
-			a = Prueba.buscarAsignaturaProfesor("Sisi");
-			System.out.println("4"); // Constructor Ventana Asig
+			nombreAsignatura = "SISI";
 		}
-		JPanel asignaturaEst = new PanelTareasEstudiante(u, a);
+		Prueba.unirseAsignatura(u.getNombre(),nombreAsignatura);
+		
+		Asignatura asignatura = Prueba.buscarAsignaturaEstudiante(nombreAsignatura);
+		JPanel asignaturaEst = new PanelTareasEstudiante(u, asignatura);
 		Programa.panelCardLayout.add(asignaturaEst, "Panel Tarea Estudiante");
 		CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
 		cl.show(Programa.panelCardLayout, "Panel Tarea Estudiante");

@@ -19,10 +19,12 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
@@ -31,23 +33,20 @@ import logica.Asignatura;
 import logica.Tarea;
 import logica.Usuario;
 
-class PanelTareasEstudiante extends JPanel implements ItemListener, ActionListener {
-	JComboBox<String> eligirTarea;
+class PanelTareasEstudiante extends JPanel implements ActionListener {
 	private JButton botonAtras;
 	Usuario u;
-
+	JPanel tareasContenedor;
+	Asignatura asig;
 	public PanelTareasEstudiante(Usuario u, Asignatura a) {
 		this.u = u;
+		this.asig = a;
+		
 		this.setSize(800, 500);
 		this.setBackground(new Color(0xe1e5f2));
 		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x022b3a), 2),
 				BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		this.setLayout(new BorderLayout(0, 0));
-
-		JPanel paneCardLayout = new JPanel();
-		paneCardLayout.setSize(800, 500);
-		paneCardLayout.setLayout(new CardLayout(0, 0));
-		paneCardLayout.add(this, "Tareas Profe");
 
 		JPanel infoAsignaturaContenedor = new JPanel();
 		infoAsignaturaContenedor.setBackground(new Color(0xe1e5f2));
@@ -76,22 +75,14 @@ class PanelTareasEstudiante extends JPanel implements ItemListener, ActionListen
 		botonAtras.addActionListener(this);
 		infoAsignaturaContenedor.add(botonAtras);
 
-		JPanel tareasContenedor = new JPanel();
+		tareasContenedor = new JPanel();
 		tareasContenedor.setBackground(new Color(Vista.COLOR2));
 //		tareasContenedor.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.red, 1),BorderFactory.createEmptyBorder(5,5,5,5)));
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
-		ArrayList<Tarea> tareas = new ArrayList<Tarea>(); // Hay que mejorar
-//		Prueba.buscarTareasEstudiante(tareas, "Prog");
-
-		for (Tarea tareaInfo : tareas) {
-			String nombreAlumno = tareaInfo.getNombreEstudiante();
-			String fecha = tareaInfo.getFechaEntrega(); // cambiar a date
-
-			JPanel tarea = crearTarea(nombreAlumno, fecha);
-			tareasContenedor.add(tarea);
-
-		}
+		ArrayList<Tarea> tareas = new ArrayList<Tarea>();
+		Prueba.buscarTareasEstudiante(tareas, asig.getNombre());
+		bucleTareas(tareas);
 
 		JScrollPane tareasScroll = new JScrollPane(tareasContenedor);
 		tareasScroll.setPreferredSize(new Dimension(200, 250));
@@ -99,51 +90,76 @@ class PanelTareasEstudiante extends JPanel implements ItemListener, ActionListen
 
 	}
 
-	public JPanel crearTarea(String nombre, String fecha) {
-		GridBagLayout gbl_tarea1 = new GridBagLayout();
-		gbl_tarea1.columnWeights = new double[] { 2.0, 3.0, 0.5 };
-
-		JPanel tarea1 = new JPanel(gbl_tarea1);
-		tarea1.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x1f7a8c), 3),
-				BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-		tarea1.setBackground(new Color(0xbfdbf7));
-		tarea1.setPreferredSize(new Dimension(1, 40));
-		tarea1.setMaximumSize(new Dimension(4000, 40)); // 4000 es limite al cual nunca llegaremos
-
-		JLabel nomAl1 = new JLabel(nombre);
-		nomAl1.setHorizontalAlignment(SwingConstants.LEFT);
-
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.insets = new Insets(0, 0, 0, 5);
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.anchor = GridBagConstraints.WEST;
-		tarea1.add(nomAl1, gbc);
-
-		JLabel time = new JLabel(fecha);
-		time.setHorizontalAlignment(SwingConstants.LEFT);
-		gbc.gridx = 1;
-		tarea1.add(time, gbc);
-
-		JButton submitNota = new JButton("Enviar");
-		submitNota.setBackground(new Color(Vista.COLOR4));
-		submitNota.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x1f7a8c), 1),
-				BorderFactory.createEmptyBorder(7, 17, 7, 17)));
-		submitNota.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		submitNota.setFocusable(false);
-//		gbc.fill = GridBagConstraints.NONE;
-		gbc.gridx = 2;
-		gbc.anchor = GridBagConstraints.EAST;
-		tarea1.add(submitNota, gbc);
-		return tarea1;
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent event) {
-		if (event.getStateChange() == ItemEvent.SELECTED) {
-			String selectedValue = eligirTarea.getSelectedItem().toString();
-			System.out.println(selectedValue);
+	public void bucleTareas(ArrayList<Tarea> tareas) {
+		tareasContenedor.removeAll();
+		for (Tarea tareaInfo : tareas) {
+			JPanel tarea = crearTarea(tareaInfo);
+			tareasContenedor.add(tarea);
 		}
+		tareasContenedor.revalidate();
+		tareasContenedor.repaint();
+	}
+	
+	public JPanel crearTarea(Tarea tareaInfo) {
+	    GridBagLayout gbl_tarea1 = new GridBagLayout();
+	    gbl_tarea1.columnWeights = new double[] { 1.0, 0.0, 0.0 };
+	    gbl_tarea1.columnWidths = new int[] { 0, 450, 50 }; // Ajusta estos valores según sea necesario
+
+	    JPanel tarea = new JPanel(gbl_tarea1);
+	    tarea.setBorder(BorderFactory.createCompoundBorder(
+	            BorderFactory.createLineBorder(new Color(Vista.COLOR2), 3),
+	            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
+	    tarea.setBackground(new Color(Vista.COLOR3));
+	    tarea.setMaximumSize(new Dimension(800, 40));
+
+	    GridBagConstraints gbc = new GridBagConstraints();
+	    JLabel nombreTarea = new JLabel(tareaInfo.getNombre());
+	    nombreTarea.setHorizontalAlignment(SwingConstants.LEFT);
+	    gbc.insets = new Insets(0, 0, 0, 5);
+	    gbc.gridx = 0;
+	    gbc.gridy = 0;
+	    gbc.anchor = GridBagConstraints.WEST;
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    tarea.add(nombreTarea, gbc);
+
+
+	    
+	    JLabel descrip = new JLabel(tareaInfo.getDescripcion());
+	    nombreTarea.setHorizontalAlignment(SwingConstants.LEFT);
+	    gbc.insets = new Insets(0, 0, 0, 20);
+	    gbc.fill = GridBagConstraints.HORIZONTAL;
+	    gbc.gridx = 1;
+	    tarea.add(descrip, gbc);
+	    
+//	    if (tareaInfo.getNota() != null) {
+//	    	Color verde = new Color(20,200,20);
+//	    	Color rojo = new Color(200,20,20);
+//	    	nota.setText(tareaInfo.getNota() + "");
+//	    	nota.setBackground(tareaInfo.getNota() >= 5 ? verde : rojo);
+//	    	nota.setEnabled(false);
+//	    }
+
+	    JButton botonEnviar = new JButton("Poner");
+	    botonEnviar.setBackground(new Color(Vista.COLOR4));
+	    botonEnviar.setBorder(BorderFactory.createCompoundBorder(
+	            BorderFactory.createLineBorder(new Color(Vista.COLOR1), 1),
+	            BorderFactory.createEmptyBorder(3, 17, 3, 17)));
+	    botonEnviar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	    botonEnviar.setFocusable(false);
+	    botonEnviar.addActionListener(new ActionListener() { //Para poder hacerlo con varios botones
+	        public void actionPerformed(ActionEvent e) {
+	        	JFileChooser enviador = new JFileChooser();
+				enviador.showOpenDialog(null);
+				Prueba.entregarTarea(tareaInfo.getNombre(), u.getNombre(), asig.getNombre());
+	        }
+	    });
+	    gbc.insets = new Insets(0, 0, 0, 0);
+	    gbc.gridx = 2;
+	    gbc.anchor = GridBagConstraints.EAST;
+	    gbc.fill = GridBagConstraints.NONE;
+	    tarea.add(botonEnviar, gbc);
+
+	    return tarea;
 	}
 
 	@Override

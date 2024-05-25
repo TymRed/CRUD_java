@@ -51,11 +51,6 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 				BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		this.setLayout(new BorderLayout(0, 0));
 
-//		JPanel paneCardLayout = new JPanel();
-//		paneCardLayout.setSize(800, 500);
-//		paneCardLayout.setLayout(new CardLayout(0, 0));
-//		paneCardLayout.add(this, "Tareas Profe");
-
 		JPanel infoAsignaturaContenedor = new JPanel();
 		infoAsignaturaContenedor.setBackground(new Color(Vista.COLOR4));
 		infoAsignaturaContenedor.setPreferredSize(new Dimension(100, 130));
@@ -108,12 +103,8 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	public void bucleTareas(ArrayList<Tarea> tareas) {
 		tareasContenedor.removeAll();
 		for (Tarea tareaInfo : tareas) {
-			String nombreAlumno = tareaInfo.getNombreEstudiante();
-			String fecha = tareaInfo.getFechaEntrega(); // cambiar a date
-
 			JPanel tarea = crearTarea(tareaInfo);
 			tareasContenedor.add(tarea);
-
 		}
 		tareasContenedor.revalidate();
 		tareasContenedor.repaint();
@@ -154,10 +145,11 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	    gbc.gridx = 2;
 	    tarea1.add(nota, gbc);
 	    
-//	    System.out.println(tareaInfo.getNota());
 	    if (tareaInfo.getNota() != null) {
+	    	Color verde = new Color(20,200,20);
+	    	Color rojo = new Color(200,20,20);
 	    	nota.setText(tareaInfo.getNota() + "");
-	    	nota.setBackground(tareaInfo.getNota() >= 5 ? Color.green : Color.red);
+	    	nota.setBackground(tareaInfo.getNota() >= 5 ? verde : rojo);
 	    	nota.setEnabled(false);
 	    }
 
@@ -174,8 +166,10 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	            Prueba.ponerNotaEstudiante(notaD, tareaInfo.getNombre(), nombreEstud.getText(), asig.getNombre());
 	            
 	            if (notaD != null) {
+	            	Color verde = new Color(20,200,20);
+	    	    	Color rojo = new Color(200,20,20);
 	    	    	nota.setText(notaD + "");
-	    	    	nota.setBackground(notaD >= 5 ? Color.green : Color.red);
+	    	    	nota.setBackground(notaD >= 5 ? verde : rojo);
 	    	    	nota.setEnabled(false);
 	    	    }
 	            repaint();

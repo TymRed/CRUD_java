@@ -112,12 +112,12 @@ public class Prueba {
 		try {
 			s = c.prepareStatement(query);
 			s.setString(1, nombreAsig);
+			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				tareas.add(rs.getString(1));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -128,6 +128,7 @@ public class Prueba {
 		try {
 			s = c.prepareStatement(query);
 			s.setString(1, nombreAsig);
+			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				Asignatura asig = new Asignatura();
@@ -135,10 +136,26 @@ public class Prueba {
 				return asig;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
+	}
+	public static void unirseAsignatura(String nombreEstudiante, String nombreAsig){
+		String unirseQuery = "INSERT INTO cursos (nombre_asignatura, nombre_estudiante) "
+				+ "SELECT ?, ? WHERE NOT EXISTS "
+				+ "(SELECT 1 FROM cursos WHERE nombre_asignatura = ? AND nombre_estudiante = ?)";
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement(unirseQuery);
+			s.setString(1, nombreAsig);
+			s.setString(2, nombreEstudiante);
+			s.setString(3, nombreAsig);
+			s.setString(4, nombreEstudiante);
+			s.executeUpdate();
+			System.out.println(s);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static Asignatura buscarAsignaturaProfesor(String nombreprof){
@@ -147,6 +164,7 @@ public class Prueba {
 		try {
 			s = c.prepareStatement(query);
 			s.setString(1, nombreprof);
+			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				Asignatura asig = new Asignatura();
@@ -154,7 +172,6 @@ public class Prueba {
 				return asig;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -166,31 +183,29 @@ public class Prueba {
 		try {
 			s = c.prepareStatement(query);
 			s.setString(1, nombreTarea);
-			s.setString(2, nombreAsig);			
+			s.setString(2, nombreAsig);		
+			System.out.println(s);
 			ResultSet rs = s.executeQuery();
-			while (rs.next()) { //debe ser if
+			while (rs.next()) {
 				Tarea tarea = new Tarea(nombreTarea,rs.getString(1), rs.getString(2), rs.getDouble(3));
 				tareas.add(tarea);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public static void buscarTareasEstudiante(ArrayList<ArrayList<String>> tareas, String nombreAsig) {
-		String query = "SELECT NOMBRE, DESCRIPCION FROM TAREAS WHERE NOMBRE_ASIGNATURA = ?;";
+	public static void buscarTareasEstudiante(ArrayList<Tarea> tareas, String nombreAsig) {
+		String query = "SELECT DISTINCT nombre, descripcion FROM tareas WHERE nombre_asignatura = ?;";
 		PreparedStatement s;
 		try {
-			int i = 0; // Hay que mejorar!!!!!!!!!!
 			s = c.prepareStatement(query);
-			s.setString(1, nombreAsig);
+			s.setString(1, nombreAsig);		
+			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
-				tareas.add(new ArrayList<>());
-				tareas.get(i).add(rs.getString(1));
-				tareas.get(i).add(rs.getString(2));
-				i++;
+				Tarea tarea = new Tarea(rs.getString(1),rs.getString(2));
+				tareas.add(tarea);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -207,9 +222,25 @@ public class Prueba {
 			s.setString(2, nombreTarea);			
 			s.setString(3, nombreAsig);
 			s.setString(4, nombreEstud);	
-			System.out.println(s);
 			s.executeUpdate();
-			System.out.println("La nota puesta");
+			System.out.println(s);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public static void entregarTarea(String nombreTarea, String nombreEstud, String nombreAsig) {
+		String query =  "insert into tareas (nombre, nombre_asignatura, nombre_estudiante) values (?,?,?)";
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement(query);
+			s.setString(1, nombreTarea);			
+			s.setString(2, nombreAsig);
+			s.setString(3, nombreEstud);	
+			s.executeUpdate();
+			System.out.println(s);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
