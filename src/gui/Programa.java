@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-import bd.Prueba;
+import bd.BaseQueries;
 import gui.VistaError.PanelError;
 import logica.Estudiante;
 import logica.Profesor;

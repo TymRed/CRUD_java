@@ -28,7 +28,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import bd.Prueba;
+import bd.BaseQueries;
 import logica.Asignatura;
 import logica.Tarea;
 import logica.Usuario;
@@ -74,7 +74,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 		this.add(contenedorBotones);
 
 		ArrayList<String> nombresDeTareas = new ArrayList<String>();
-		Prueba.crearListaNombreTareas(nombresDeTareas, asig.getNombre()); //se puede cambiar. da pereza
+		BaseQueries.crearListaNombreTareas(nombresDeTareas, asig.getNombre()); //se puede cambiar. da pereza
 		eligirTarea = new JComboBox<String>(nombresDeTareas.stream().toArray(String[]::new));
 		eligirTarea.addItemListener(this);
 		contenedorBotones.add(eligirTarea, BorderLayout.WEST);
@@ -90,7 +90,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
 		ArrayList<Tarea> tareas = new ArrayList<Tarea>();
-		Prueba.buscarEntregas(tareas, "Tarea1", asig.getNombre()); //mejorable
+		BaseQueries.buscarEntregas(tareas, "Tarea1", asig.getNombre()); //mejorable
 
 		bucleTareas(tareas);
 
@@ -163,7 +163,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	    submitNota.addActionListener(new ActionListener() { //Para poder hacerlo con varios botones
 	        public void actionPerformed(ActionEvent e) {
 	        	Double notaD = Double.parseDouble(nota.getText());
-	            Prueba.ponerNotaEstudiante(notaD, tareaInfo.getNombre(), nombreEstud.getText(), asig.getNombre());
+	            BaseQueries.ponerNotaEstudiante(notaD, tareaInfo.getNombre(), nombreEstud.getText(), asig.getNombre());
 	            
 	            if (notaD != null) {
 	            	Color verde = new Color(20,200,20);
@@ -191,7 +191,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 			System.out.println(selectedValue);
 			
 			ArrayList<Tarea> tareas = new ArrayList<Tarea>();
-			Prueba.buscarEntregas(tareas, selectedValue, asig.getNombre());
+			BaseQueries.buscarEntregas(tareas, selectedValue, asig.getNombre());
 
 			bucleTareas(tareas);
 		}

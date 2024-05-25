@@ -20,7 +20,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import bd.Prueba;
+import bd.BaseQueries;
 import logica.Usuario;
 
 public class Vista extends JFrame {
@@ -149,7 +149,7 @@ public class Vista extends JFrame {
 			if (e.getSource() == logIn) {
 				String nombreUsusario = nombre.getText();
 				String contrasenaUsuario = String.valueOf(contrasena.getPassword());
-				Usuario u = Prueba.buscarUsuario(nombreUsusario, contrasenaUsuario);
+				Usuario u = BaseQueries.buscarUsuario(nombreUsusario, contrasenaUsuario);
 				boolean datosCorrectos = u != null;
 
 				if (datosCorrectos) {
@@ -166,7 +166,7 @@ public class Vista extends JFrame {
 				String nombreUsuario = nombre.getText();
 				String contrasenaUsuario = String.valueOf(contrasena.getPassword());
 
-				boolean nombreOcupado = Prueba.hayNombreUsuario(nombreUsuario);
+				boolean nombreOcupado = BaseQueries.hayNombreUsuario(nombreUsuario);
 				if (nombreOcupado) {
 					errores.add("Nombre de usuario no disponible");
 					ventanaError = new VistaError(errores);
@@ -182,7 +182,7 @@ public class Vista extends JFrame {
 					return;
 
 				if (nombreAdecuado && contrasenaAdecuada) {
-					Prueba.signIn(nombreUsuario, contrasenaUsuario);
+					BaseQueries.signIn(nombreUsuario, contrasenaUsuario);
 					System.out.println("Singed In");
 					nombre.setText("");
 					contrasena.setText("");
@@ -192,7 +192,7 @@ public class Vista extends JFrame {
 			}
 		}
 
-		// Creo q hay q mover este metodo a otra clase, es solo prueba
+		// Creo q hay q mover este metodo a otra clase, es solo BaseQueries
 		// Se pueden hacer comentarios personalizados para los errores
 		private boolean comprobarNombre(String nombreUsuario) {
 

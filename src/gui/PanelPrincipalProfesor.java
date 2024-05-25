@@ -20,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import bd.Prueba;
+import bd.BaseQueries;
 import logica.Asignatura;
 import logica.Usuario;
 
@@ -35,7 +35,7 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 	public PanelPrincipalProfesor(Usuario u) {
 
 		this.prof = u;
-		this.asig = Prueba.buscarAsignaturaProfesor(u.getNombre());
+		this.asig = BaseQueries.buscarAsignaturaProfesor(u.getNombre());
 		
 		this.setSize(800, 500);
 		this.setBackground(new Color(Vista.COLOR4));

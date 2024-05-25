@@ -20,7 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import bd.Prueba;
+import bd.BaseQueries;
 import logica.Asignatura;
 import logica.Usuario;
 
@@ -87,9 +87,9 @@ class PanelPrincipalEstudiante extends JPanel implements ActionListener {
 		} else if (e.getSource() == asignatura4) {
 			nombreAsignatura = "SISI";
 		}
-		Prueba.unirseAsignatura(u.getNombre(),nombreAsignatura);
+		BaseQueries.unirseAsignatura(u.getNombre(),nombreAsignatura);
 		
-		Asignatura asignatura = Prueba.buscarAsignaturaEstudiante(nombreAsignatura);
+		Asignatura asignatura = BaseQueries.buscarAsignaturaEstudiante(nombreAsignatura);
 		JPanel asignaturaEst = new PanelTareasEstudiante(u, asignatura);
 		Programa.panelCardLayout.add(asignaturaEst, "Panel Tarea Estudiante");
 		CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());

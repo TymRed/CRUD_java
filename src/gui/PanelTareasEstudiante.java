@@ -28,7 +28,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
-import bd.Prueba;
+import bd.BaseQueries;
 import logica.Asignatura;
 import logica.Tarea;
 import logica.Usuario;
@@ -81,7 +81,7 @@ class PanelTareasEstudiante extends JPanel implements ActionListener {
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
 		ArrayList<Tarea> tareas = new ArrayList<Tarea>();
-		Prueba.buscarTareasEstudiante(tareas, asig.getNombre());
+		BaseQueries.buscarTareasEstudiante(tareas, asig.getNombre());
 		bucleTareas(tareas);
 
 		JScrollPane tareasScroll = new JScrollPane(tareasContenedor);
@@ -150,7 +150,7 @@ class PanelTareasEstudiante extends JPanel implements ActionListener {
 	        public void actionPerformed(ActionEvent e) {
 	        	JFileChooser enviador = new JFileChooser();
 				enviador.showOpenDialog(null);
-				Prueba.entregarTarea(tareaInfo.getNombre(), u.getNombre(), asig.getNombre());
+				BaseQueries.entregarTarea(tareaInfo.getNombre(), u.getNombre(), asig.getNombre());
 	        }
 	    });
 	    gbc.insets = new Insets(0, 0, 0, 0);

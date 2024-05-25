@@ -18,7 +18,7 @@ import logica.Profesor;
 import logica.Tarea;
 import logica.Usuario;
 
-public class Prueba {
+public class BaseQueries {
 	private static Properties prop = cargarConf();
 	private static String url = "jdbc:mysql://localhost:3306/crud";
 	private static Connection c = conectar();
