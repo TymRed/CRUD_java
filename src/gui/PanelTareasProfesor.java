@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -23,11 +24,13 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import bd.BaseQueries;
 import logica.Asignatura;
@@ -38,7 +41,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	
 	JComboBox<String> eligirTarea;
 	JPanel tareasContenedor;
-	JButton atras, addTarea, removeTarea;
+	JButton addTarea, removeTarea;
 	Asignatura asig;
 	Usuario u;
 	ArrayList<String> nombresDeTareas;
@@ -48,27 +51,13 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 		this.u = u;
 		this.asig = asig;
 		this.setSize(800, 500);
-		this.setBackground(new Color(0xe1e5f2));
-		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x022b3a), 2),
+		this.setBackground(new Color(Vista.COLOR4));
+		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2),
 				BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		this.setLayout(new BorderLayout(0, 0));
 
-		JPanel infoAsignaturaContenedor = new JPanel();
-		infoAsignaturaContenedor.setBackground(new Color(Vista.COLOR4));
-		infoAsignaturaContenedor.setPreferredSize(new Dimension(100, 130));
+		JPanel infoAsignaturaContenedor = new PanelConLogoProf(u);
 		this.add(infoAsignaturaContenedor, BorderLayout.NORTH);
-		infoAsignaturaContenedor.setLayout(null);
-		JLabel nombAsig = new JLabel("Tareas " + asig.getNombre());
-		nombAsig.setBounds(0, 100, 71, 13);
-		infoAsignaturaContenedor.add(nombAsig);
-
-		atras = new JButton("Atras");
-		atras.setFocusPainted(false);
-		atras.setBounds(582, 0, 100, 100);
-		atras.setBackground(Color.red);
-		atras.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		atras.addActionListener(this);
-		infoAsignaturaContenedor.add(atras);
 
 		
 		
@@ -210,13 +199,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == atras) {
-			JPanel panelProfesor = new PanelPrincipalProfesor(u); // 3
-			Programa.panelCardLayout.add(panelProfesor, "Panel Profesor");
-			CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
-			cl.show(Programa.panelCardLayout, "Panel Profesor");
-		}
-		else if (e.getSource() == addTarea) { 
+		if (e.getSource() == addTarea) { 
 			BaseQueries.crearTarea(asig.getNombre());
 			
 			nombresDeTareas = BaseQueries.crearListaNombreTareas(asig.getNombre());
@@ -238,6 +221,58 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 //			CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
 //			cl.show(Programa.panelCardLayout, "Panel Profesor");
 //		}
+	}
+	
+	class PanelConLogoProf extends JPanel implements ActionListener {
+
+		private Image logo;
+		private JButton atras;
+		private ImageIcon iconoSalir;
+
+		public PanelConLogoProf(Usuario u) {
+			
+			this.setBackground(new Color(Vista.COLOR4));
+			this.setPreferredSize(new Dimension(100, 130));
+			this.setLayout(null);
+			JLabel nombAsig = new JLabel("Tareas " + asig.getNombre());
+			nombAsig.setBounds(0, 100, 71, 13);
+			this.add(nombAsig);
+
+			atras = new JButton();
+			atras.setBounds(610, 10, 70, 70);
+			atras.setFocusable(false);
+			atras.setBackground(new Color(Vista.COLOR4));
+			atras.setBorderPainted(false);
+			atras.setCursor(new Cursor(Cursor.HAND_CURSOR));
+						
+			iconoSalir = new ImageIcon("images//atras.png");
+			Image imagen = iconoSalir.getImage();
+			Image imagenRedimensionada = imagen.getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+			iconoSalir = new ImageIcon(imagenRedimensionada);
+			atras.setIcon(iconoSalir);
+			atras.addActionListener(this);
+
+			this.add(atras);
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			logo = new ImageIcon("images//logoNoodle.png").getImage();
+			g.drawImage(logo, -10, 10, 150, 50, null);
+//		botonSalir = new ImageIcon("images//atras.png").getImage();
+//		g.drawImage(botonSalir, 600, 42, 100, 100, null);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == atras) {
+				JPanel panelProfesor = new PanelPrincipalProfesor(u); // 3
+				Programa.panelCardLayout.add(panelProfesor, "Panel Profesor");
+				CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
+				cl.show(Programa.panelCardLayout, "Panel Profesor");
+			}
+		}
 	}
 
 }

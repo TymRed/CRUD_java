@@ -140,6 +140,5 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 				topFrame.dispose();
 			}
 		}
-
 	}
 }

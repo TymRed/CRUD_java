@@ -6,8 +6,10 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +19,7 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -33,8 +36,8 @@ import logica.Asignatura;
 import logica.Tarea;
 import logica.Usuario;
 
-class PanelTareasEstudiante extends JPanel implements ActionListener {
-	private JButton botonAtras;
+class PanelTareasEstudiante extends JPanel {
+	
 	Usuario u;
 	JPanel tareasContenedor;
 	Asignatura asig;
@@ -43,37 +46,14 @@ class PanelTareasEstudiante extends JPanel implements ActionListener {
 		this.asig = a;
 		
 		this.setSize(800, 500);
-		this.setBackground(new Color(0xe1e5f2));
-		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x022b3a), 2),
+		this.setBackground(new Color(Vista.COLOR4));
+		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2),
 				BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		this.setLayout(new BorderLayout(0, 0));
 
-		JPanel infoAsignaturaContenedor = new JPanel();
-		infoAsignaturaContenedor.setBackground(new Color(0xe1e5f2));
-		infoAsignaturaContenedor.setPreferredSize(new Dimension(100, 160));
+		JPanel infoAsignaturaContenedor = new PanelConLogoProf(u);
 		this.add(infoAsignaturaContenedor, BorderLayout.NORTH);
-		infoAsignaturaContenedor.setLayout(null);
 
-		JLabel nombAsig = new JLabel("Tareas Prog");// Cambiar por Ñoodle
-		nombAsig.setBounds(0, 10, 71, 13);
-		infoAsignaturaContenedor.add(nombAsig);
-
-		JLabel notaMedia = new JLabel("Nota media: ");
-		notaMedia.setBounds(0, 80, 71, 13);
-		infoAsignaturaContenedor.add(notaMedia);
-
-		JLabel textoAsig = new JLabel("Tareas");
-		textoAsig.setFont(new Font("Consolas", Font.BOLD, 20));
-		textoAsig.setBounds(0, 145, 180, 20);
-		infoAsignaturaContenedor.add(textoAsig);
-
-		botonAtras = new JButton("Atras");
-		botonAtras.setFocusPainted(false);
-		botonAtras.setBounds(582, 0, 100, 100);
-		botonAtras.setBackground(Color.red);
-		botonAtras.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		botonAtras.addActionListener(this);
-		infoAsignaturaContenedor.add(botonAtras);
 
 		tareasContenedor = new JPanel();
 		tareasContenedor.setBackground(new Color(Vista.COLOR2));
@@ -148,6 +128,7 @@ class PanelTareasEstudiante extends JPanel implements ActionListener {
 	            BorderFactory.createEmptyBorder(3, 17, 3, 17)));
 	    botonEnviar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	    botonEnviar.setFocusable(false);
+	    botonEnviar.setEnabled(!entregado);//Por ahora, para evitar problemas
 	    botonEnviar.addActionListener(new ActionListener() { //Para poder hacerlo con varios botones
 	        public void actionPerformed(ActionEvent e) {
 	        	JFileChooser enviador = new JFileChooser();
@@ -156,9 +137,7 @@ class PanelTareasEstudiante extends JPanel implements ActionListener {
 				botonEnviar.setEnabled(false);//Por ahora, para evitar problemas
 	        }
 	    });
-	    if (entregado) { //Por ahora, para evitar problemas
-	    	botonEnviar.setEnabled(false);
-	    }
+
 	    gbc.insets = new Insets(0, 0, 0, 0);
 	    gbc.gridx = 2;
 	    gbc.anchor = GridBagConstraints.EAST;
@@ -168,13 +147,66 @@ class PanelTareasEstudiante extends JPanel implements ActionListener {
 	    return tarea;
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == botonAtras) {
-			JPanel panelEstudiante = new PanelPrincipalEstudiante(u); // 3
-			Programa.panelCardLayout.add(panelEstudiante, "Panel Estudiante");
-			CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
-			cl.show(Programa.panelCardLayout, "Panel Estudiante");
+	class PanelConLogoProf extends JPanel implements ActionListener {
+
+		private Image logo;
+		private JButton atras;
+		private ImageIcon iconoSalir;
+
+		public PanelConLogoProf(Usuario u) {
+			
+			this.setBackground(new Color(Vista.COLOR4));
+			this.setPreferredSize(new Dimension(100, 160));
+			this.setLayout(null);
+			JLabel nombAsig = new JLabel("Tareas " + asig.getNombre());
+			nombAsig.setBounds(0, 100, 71, 13);
+			this.add(nombAsig);
+
+
+			JLabel notaMedia = new JLabel("Nota media: ");
+			notaMedia.setBounds(0, 80, 71, 13);
+			this.add(notaMedia);
+
+			JLabel textoAsig = new JLabel("Tareas");
+			textoAsig.setFont(new Font("Consolas", Font.BOLD, 20));
+			textoAsig.setBounds(0, 145, 180, 20);
+			this.add(textoAsig);
+			
+			
+			atras = new JButton();
+			atras.setBounds(610, 10, 70, 70);
+			atras.setFocusable(false);
+			atras.setBackground(new Color(Vista.COLOR4));
+			atras.setBorderPainted(false);
+			atras.setCursor(new Cursor(Cursor.HAND_CURSOR));
+						
+			iconoSalir = new ImageIcon("images//atras.png");
+			Image imagen = iconoSalir.getImage();
+			Image imagenRedimensionada = imagen.getScaledInstance(70, 70, Image.SCALE_SMOOTH);
+			iconoSalir = new ImageIcon(imagenRedimensionada);
+			atras.setIcon(iconoSalir);
+			atras.addActionListener(this);
+
+			this.add(atras);
+		}
+
+		@Override
+		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
+			logo = new ImageIcon("images//logoNoodle.png").getImage();
+			g.drawImage(logo, -10, 10, 150, 50, null);
+//		botonSalir = new ImageIcon("images//atras.png").getImage();
+//		g.drawImage(botonSalir, 600, 42, 100, 100, null);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (e.getSource() == atras) {
+				JPanel panelEstudiante = new PanelPrincipalEstudiante(u); // 3
+				Programa.panelCardLayout.add(panelEstudiante, "Panel Estudiante");
+				CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
+				cl.show(Programa.panelCardLayout, "Panel Estudiante");;
+			}
 		}
 	}
 
