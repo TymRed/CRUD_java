@@ -141,7 +141,7 @@ class PanelTareasEstudiante extends JPanel implements ActionListener {
 //	    	nota.setEnabled(false);
 //	    }
 
-	    JButton botonEnviar = new JButton("Poner");
+	    JButton botonEnviar = new JButton("Entregar");
 	    botonEnviar.setBackground(new Color(Vista.COLOR4));
 	    botonEnviar.setBorder(BorderFactory.createCompoundBorder(
 	            BorderFactory.createLineBorder(new Color(Vista.COLOR1), 1),
