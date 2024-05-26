@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -37,9 +38,10 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	
 	JComboBox<String> eligirTarea;
 	JPanel tareasContenedor;
-	JButton atras;
+	JButton atras, addTarea, removeTarea;
 	Asignatura asig;
 	Usuario u;
+	ArrayList<String> nombresDeTareas;
 	
 	public PanelTareasProfesor(Usuario u, Asignatura asig) {
 
@@ -68,30 +70,18 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 		atras.addActionListener(this);
 		infoAsignaturaContenedor.add(atras);
 
-		JPanel contenedorBotones = new JPanel();
-		contenedorBotones.setBackground(new Color(Vista.COLOR4));
-		contenedorBotones.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+		
+		
+		JPanel contenedorBotones = crearPanelContenedorBotones();
 		this.add(contenedorBotones);
 
-		ArrayList<String> nombresDeTareas = new ArrayList<String>();
-		BaseQueries.crearListaNombreTareas(nombresDeTareas, asig.getNombre()); //se puede cambiar. da pereza
-		eligirTarea = new JComboBox<String>(nombresDeTareas.stream().toArray(String[]::new));
-		eligirTarea.addItemListener(this);
-		contenedorBotones.add(eligirTarea, BorderLayout.WEST);
-
-		JButton addTarea = new JButton("+");
-		contenedorBotones.add(addTarea, BorderLayout.CENTER);
-
-		JButton removeTarea = new JButton("-");
-		contenedorBotones.add(removeTarea, BorderLayout.EAST);
-
+		
+		
 		tareasContenedor = new JPanel();
 		tareasContenedor.setBackground(new Color(Vista.COLOR2));
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
-		ArrayList<Tarea> tareas = new ArrayList<Tarea>();
-		BaseQueries.buscarEntregas(tareas, "Tarea1", asig.getNombre()); //mejorable
-
+		ArrayList<Tarea> tareas = BaseQueries.buscarEntregas("Tarea1", asig.getNombre()); //mejorable
 		bucleTareas(tareas);
 
 		JScrollPane tareasScroll = new JScrollPane(tareasContenedor);
@@ -100,6 +90,28 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 
 	}
 
+	public JPanel crearPanelContenedorBotones(){
+		JPanel contenedorBotones = new JPanel();
+		contenedorBotones.setBackground(new Color(Vista.COLOR4));
+		contenedorBotones.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+
+		nombresDeTareas = BaseQueries.crearListaNombreTareas(asig.getNombre()); //se puede cambiar. da pereza
+		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(nombresDeTareas.toArray(new String[0]));
+		eligirTarea = new JComboBox<String>();
+		eligirTarea.setModel(model);
+		eligirTarea.addItemListener(this);
+		contenedorBotones.add(eligirTarea, BorderLayout.WEST);
+
+		addTarea = new JButton("+");
+		addTarea.addActionListener(this);
+		contenedorBotones.add(addTarea, BorderLayout.CENTER);
+
+		removeTarea = new JButton("-");
+		removeTarea.addActionListener(this);
+		contenedorBotones.add(removeTarea, BorderLayout.EAST);
+		return contenedorBotones;
+	}
+	
 	public void bucleTareas(ArrayList<Tarea> tareas) {
 		tareasContenedor.removeAll();
 		for (Tarea tareaInfo : tareas) {
@@ -190,9 +202,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 			String selectedValue = eligirTarea.getSelectedItem().toString();
 			System.out.println(selectedValue);
 			
-			ArrayList<Tarea> tareas = new ArrayList<Tarea>();
-			BaseQueries.buscarEntregas(tareas, selectedValue, asig.getNombre());
-
+			ArrayList<Tarea> tareas = BaseQueries.buscarEntregas(selectedValue, asig.getNombre());
 			bucleTareas(tareas);
 		}
 		
@@ -206,6 +216,28 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 			CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
 			cl.show(Programa.panelCardLayout, "Panel Profesor");
 		}
+		else if (e.getSource() == addTarea) { 
+			BaseQueries.crearTarea(asig.getNombre());
+			
+			nombresDeTareas = BaseQueries.crearListaNombreTareas(asig.getNombre());
+
+			// Para actualizar el modelo del JComboBox existente
+			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(nombresDeTareas.toArray(new String[0]));
+			eligirTarea.setModel(model);
+
+			eligirTarea.revalidate();
+			eligirTarea.repaint();
+			
+			//Para mostrar otra vez entregas de Tarea1
+			ArrayList<Tarea> tareas = BaseQueries.buscarEntregas("Tarea1", asig.getNombre()); //mejorable
+			bucleTareas(tareas);
+		}
+//		else if (e.getSource() == atras) {
+//			JPanel panelProfesor = new PanelPrincipalProfesor(u); // 3
+//			Programa.panelCardLayout.add(panelProfesor, "Panel Profesor");
+//			CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
+//			cl.show(Programa.panelCardLayout, "Panel Profesor");
+//		}
 	}
 
 }

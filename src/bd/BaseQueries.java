@@ -107,7 +107,8 @@ public class BaseQueries {
 
 	
 	
-	public static void crearListaNombreTareas(ArrayList<String> tareas, String nombreAsig) {
+	public static ArrayList<String> crearListaNombreTareas(String nombreAsig) {
+		ArrayList<String> tareas = new ArrayList<>();
 		String query = "SELECT nombre FROM tareasinfo where nombre_asignatura = ?";
 		PreparedStatement s;
 		try {
@@ -121,6 +122,7 @@ public class BaseQueries {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return tareas;
 	}
 
 	public static Asignatura buscarAsignaturaEstudiante(String nombreAsig){
@@ -179,7 +181,9 @@ public class BaseQueries {
 		return null;
 	}
 	
-	public static void buscarEntregas(ArrayList<Tarea> tareas, String nombreTarea, String nombreAsig) {
+	public static ArrayList<Tarea> buscarEntregas(String nombreTarea, String nombreAsig) {
+		ArrayList<Tarea> tareas = new ArrayList<Tarea>();
+		
 		String query = "SELECT nombre_estudiante, entregado_fecha, nota FROM tareas where nombre = ? and nombre_asignatura = ?";
 		PreparedStatement s;
 		try {
@@ -195,6 +199,7 @@ public class BaseQueries {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return tareas;
 	}
 
 	public static void buscarTareasEstudiante(ArrayList<Tarea> tareas, String nombreAsig) {
@@ -210,7 +215,6 @@ public class BaseQueries {
 				tareas.add(tarea);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -229,7 +233,6 @@ public class BaseQueries {
 				return true;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
@@ -247,7 +250,6 @@ public class BaseQueries {
 			s.executeUpdate();
 			System.out.println(s);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -268,6 +270,38 @@ public class BaseQueries {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public static void crearTarea(String nombreAsig) {
+		int maxTarea = buscarMaxIdTarea(nombreAsig);
+		String query =  "insert into tareasinfo (nombre, nombre_asignatura) values (?,?)";
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement(query);
+			s.setString(1, "Tarea" + maxTarea);			
+			s.setString(2, nombreAsig);
+			s.executeUpdate();
+			System.out.println(s);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	//se puede cambiar si hacemos nombreTarea de otra manera
+	private static int buscarMaxIdTarea(String nombreAsig) { 
+		String query =  "select right(Max(nombre),1) from tareasinfo WHERE nombre_asignatura = ?";
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement(query);	
+			s.setString(1, nombreAsig);
+			System.out.println(s);
+			ResultSet rs = s.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1) + 1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return 1;
 	}
 
 }
