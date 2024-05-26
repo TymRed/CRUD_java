@@ -101,6 +101,8 @@ class PanelTareasEstudiante extends JPanel implements ActionListener {
 	}
 	
 	public JPanel crearTarea(Tarea tareaInfo) {
+		boolean entregado = BaseQueries.buscarSiEntregado(tareaInfo.getNombre(), u.getNombre(), asig.getNombre());
+		
 	    GridBagLayout gbl_tarea1 = new GridBagLayout();
 	    gbl_tarea1.columnWeights = new double[] { 1.0, 0.0, 0.0 };
 	    gbl_tarea1.columnWidths = new int[] { 0, 450, 50 }; // Ajusta estos valores según sea necesario
@@ -151,8 +153,12 @@ class PanelTareasEstudiante extends JPanel implements ActionListener {
 	        	JFileChooser enviador = new JFileChooser();
 				enviador.showOpenDialog(null);
 				BaseQueries.entregarTarea(tareaInfo.getNombre(), u.getNombre(), asig.getNombre());
+				botonEnviar.setEnabled(false);//Por ahora, para evitar problemas
 	        }
 	    });
+	    if (entregado) { //Por ahora, para evitar problemas
+	    	botonEnviar.setEnabled(false);
+	    }
 	    gbc.insets = new Insets(0, 0, 0, 0);
 	    gbc.gridx = 2;
 	    gbc.anchor = GridBagConstraints.EAST;

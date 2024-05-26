@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -47,8 +48,6 @@ public class BaseQueries {
 		return null;
 	}
 
-	// Podemos separarlo en 2 metodos, uno q solo comprueba el nombre, y otro como
-	// este
 	public static Usuario buscarUsuario(String nombre, String contrasena) {
 		String queryUsuarios = "SELECT *,'estudiante' FROM estudiantes WHERE nombre = ? AND contrasena = ? UNION SELECT *, 'profesor' FROM profesores WHERE nombre = ? AND contrasena = ?";
 		PreparedStatement s;
@@ -106,8 +105,10 @@ public class BaseQueries {
 		}
 	}
 
+	
+	
 	public static void crearListaNombreTareas(ArrayList<String> tareas, String nombreAsig) {
-		String query = "SELECT distinct nombre FROM tareas where nombre_asignatura = ?";
+		String query = "SELECT nombre FROM tareasinfo where nombre_asignatura = ?";
 		PreparedStatement s;
 		try {
 			s = c.prepareStatement(query);
@@ -140,7 +141,8 @@ public class BaseQueries {
 		}
 		return null;
 	}
-	public static void unirseAsignatura(String nombreEstudiante, String nombreAsig){
+	//se une automaticamente. Se puede hacer la logica que hemos hablado antes
+	public static void unirseAsignatura(String nombreEstudiante, String nombreAsig){ 
 		String unirseQuery = "INSERT INTO cursos (nombre_asignatura, nombre_estudiante) "
 				+ "SELECT ?, ? WHERE NOT EXISTS "
 				+ "(SELECT 1 FROM cursos WHERE nombre_asignatura = ? AND nombre_estudiante = ?)";
@@ -196,7 +198,7 @@ public class BaseQueries {
 	}
 
 	public static void buscarTareasEstudiante(ArrayList<Tarea> tareas, String nombreAsig) {
-		String query = "SELECT DISTINCT nombre, descripcion FROM tareas WHERE nombre_asignatura = ?;";
+		String query = "SELECT nombre, descripcion FROM tareasinfo WHERE nombre_asignatura = ?";
 		PreparedStatement s;
 		try {
 			s = c.prepareStatement(query);
@@ -211,6 +213,26 @@ public class BaseQueries {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	//Im so sorry, no he podido hacerlo con una query
+	public static boolean buscarSiEntregado(String nombreTarea, String nombreEstud, String nombreAsig) { 
+		String query = "SELECT entregado_fecha FROM tareas WHERE nombre = ? and nombre_estudiante = ? and  nombre_asignatura = ?";
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement(query);
+			s.setString(1, nombreTarea);			
+			s.setString(2, nombreEstud);			
+			s.setString(3, nombreAsig);
+			System.out.println(s);
+			ResultSet rs = s.executeQuery();
+			if (rs.next()) {
+				return true;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 	public static void ponerNotaEstudiante(Double nota, String nombreTarea, String nombreEstud, String nombreAsig) {
@@ -232,20 +254,20 @@ public class BaseQueries {
 	}
 	
 	public static void entregarTarea(String nombreTarea, String nombreEstud, String nombreAsig) {
-		String query =  "insert into tareas (nombre, nombre_asignatura, nombre_estudiante) values (?,?,?)";
+		String query =  "insert into tareas (nombre, nombre_asignatura, nombre_estudiante, entregado_fecha) values (?,?,?,?)";
 		PreparedStatement s;
 		try {
 			s = c.prepareStatement(query);
 			s.setString(1, nombreTarea);			
 			s.setString(2, nombreAsig);
 			s.setString(3, nombreEstud);	
+			s.setString(4, LocalDate.now().toString());
 			s.executeUpdate();
 			System.out.println(s);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 
 }
