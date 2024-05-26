@@ -24,13 +24,11 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
 
 import bd.BaseQueries;
 import logica.Asignatura;
@@ -91,11 +89,11 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 		eligirTarea.addItemListener(this);
 		contenedorBotones.add(eligirTarea, BorderLayout.WEST);
 
-		addTarea = new JButton("+");
+		addTarea = crearBoton("+");
 		addTarea.addActionListener(this);
 		contenedorBotones.add(addTarea, BorderLayout.CENTER);
 
-		removeTarea = new JButton("-");
+		removeTarea = crearBoton("-");
 		removeTarea.addActionListener(this);
 		contenedorBotones.add(removeTarea, BorderLayout.EAST);
 		return contenedorBotones;
@@ -184,7 +182,18 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 
 	    return tarea1;
 	}
-
+	public JButton crearBoton(String nombre) {
+		JButton asignatura = new JButton(nombre);
+		asignatura.setBackground(new Color(Vista.COLOR3));
+		asignatura.setFont(new Font("Consolas", Font.BOLD, 18));
+		asignatura.setBorder(BorderFactory.createCompoundBorder(
+	            BorderFactory.createLineBorder(new Color(Vista.COLOR2), 1),
+	            BorderFactory.createEmptyBorder(2, 10, -1, 10)));
+		
+		asignatura.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		asignatura.setFocusable(false);
+		return asignatura;
+	}
 	@Override
 	public void itemStateChanged(ItemEvent event) {
 		if (event.getStateChange() == ItemEvent.SELECTED) {
