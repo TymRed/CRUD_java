@@ -5,7 +5,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -13,6 +12,7 @@ import java.awt.Image;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -74,11 +74,11 @@ class PanelTareasEstudiante extends JPanel {
 	}
 	
 	public JPanel crearTarea(Tarea tareaInfo) {
-		boolean entregado = BaseQueries.buscarSiEntregado(tareaInfo.getNombre(), u.getNombre(), asig.getNombre());
+		String entregado = BaseQueries.buscarSiEntregado(tareaInfo.getNombre(), u.getNombre(), asig.getNombre());
 		
 	    GridBagLayout gbl_tarea1 = new GridBagLayout();
 	    gbl_tarea1.columnWeights = new double[] { 1.0, 0.0, 0.0 };
-	    gbl_tarea1.columnWidths = new int[] { 0, 450, 50 }; // Ajusta estos valores según sea necesario
+	    gbl_tarea1.columnWidths = new int[] { 0, 450, 50 };
 
 	    JPanel tarea = new JPanel(gbl_tarea1);
 	    tarea.setBorder(BorderFactory.createCompoundBorder(
@@ -97,22 +97,12 @@ class PanelTareasEstudiante extends JPanel {
 	    gbc.fill = GridBagConstraints.HORIZONTAL;
 	    tarea.add(nombreTarea, gbc);
 
-
-	    
-	    JLabel descrip = new JLabel(tareaInfo.getDescripcion());
+	    JLabel descrip = new JLabel(entregado == null ? "No entregado" : entregado);
 	    nombreTarea.setHorizontalAlignment(SwingConstants.LEFT);
 	    gbc.insets = new Insets(0, 0, 0, 20);
 	    gbc.fill = GridBagConstraints.HORIZONTAL;
 	    gbc.gridx = 1;
 	    tarea.add(descrip, gbc);
-	    
-//	    if (tareaInfo.getNota() != null) {
-//	    	Color verde = new Color(20,200,20);
-//	    	Color rojo = new Color(200,20,20);
-//	    	nota.setText(tareaInfo.getNota() + "");
-//	    	nota.setBackground(tareaInfo.getNota() >= 5 ? verde : rojo);
-//	    	nota.setEnabled(false);
-//	    }
 
 	    JButton botonEnviar = new JButton("Entregar");
 	    botonEnviar.setBackground(new Color(Vista.COLOR4));
@@ -121,13 +111,15 @@ class PanelTareasEstudiante extends JPanel {
 	            BorderFactory.createEmptyBorder(3, 17, 3, 17)));
 	    botonEnviar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	    botonEnviar.setFocusable(false);
-	    botonEnviar.setEnabled(!entregado);//Por ahora, para evitar problemas
+	    botonEnviar.setEnabled(entregado == null);//Por ahora, para evitar problemas
 	    botonEnviar.addActionListener(new ActionListener() { //Para poder hacerlo con varios botones
 	        public void actionPerformed(ActionEvent e) {
 	        	JFileChooser enviador = new JFileChooser();
 				enviador.showOpenDialog(null);
 				BaseQueries.entregarTarea(tareaInfo.getNombre(), u.getNombre(), asig.getNombre());
 				botonEnviar.setEnabled(false);//Por ahora, para evitar problemas
+				
+				descrip.setText(LocalDate.now().toString());;
 	        }
 	    });
 
@@ -152,20 +144,14 @@ class PanelTareasEstudiante extends JPanel {
 			this.setPreferredSize(new Dimension(100, 160));
 			this.setLayout(null);
 			JLabel nombAsig = new JLabel("Tareas " + asig.getNombre());
-			nombAsig.setBounds(0, 100, 71, 13);
+			nombAsig.setBounds(0, 100, 120, 20);
 			this.add(nombAsig);
 
-
+			
 			JLabel notaMedia = new JLabel("Nota media: ");
 			notaMedia.setBounds(0, 80, 71, 13);
 			this.add(notaMedia);
 
-			JLabel textoAsig = new JLabel("Tareas");
-			textoAsig.setFont(new Font("Consolas", Font.BOLD, 20));
-			textoAsig.setBounds(0, 145, 180, 20);
-			this.add(textoAsig);
-			
-			
 			atras = new JButton();
 			atras.setBounds(610, 10, 70, 70);
 			atras.setFocusable(false);

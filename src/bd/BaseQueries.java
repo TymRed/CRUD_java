@@ -203,7 +203,7 @@ public class BaseQueries {
 	}
 
 	public static void buscarTareasEstudiante(ArrayList<Tarea> tareas, String nombreAsig) {
-		String query = "SELECT nombre, descripcion FROM tareasinfo WHERE nombre_asignatura = ?";
+		String query = "SELECT nombre FROM tareasinfo WHERE nombre_asignatura = ?";
 		PreparedStatement s;
 		try {
 			s = c.prepareStatement(query);
@@ -211,7 +211,7 @@ public class BaseQueries {
 			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
-				Tarea tarea = new Tarea(rs.getString(1),rs.getString(2));
+				Tarea tarea = new Tarea(rs.getString(1));
 				tareas.add(tarea);
 			}
 		} catch (SQLException e) {
@@ -219,7 +219,7 @@ public class BaseQueries {
 		}
 	}
 	//Im so sorry, no he podido hacerlo con una query
-	public static boolean buscarSiEntregado(String nombreTarea, String nombreEstud, String nombreAsig) { 
+	public static String buscarSiEntregado(String nombreTarea, String nombreEstud, String nombreAsig) { 
 		String query = "SELECT entregado_fecha FROM tareas WHERE nombre = ? and nombre_estudiante = ? and  nombre_asignatura = ?";
 		PreparedStatement s;
 		try {
@@ -230,12 +230,12 @@ public class BaseQueries {
 			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			if (rs.next()) {
-				return true;
+				return rs.getString(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 	
 	public static void ponerNotaEstudiante(Double nota, String nombreTarea, String nombreEstud, String nombreAsig) {

@@ -5,7 +5,6 @@ public class Tarea {
 	private String nombre;
 	private String nombreEstudiante;
 	private String fechaEntrega;
-	private String descripcion;
 	private Double nota;
 	private boolean enviado;
 	
@@ -14,25 +13,11 @@ public class Tarea {
 		this.nombreEstudiante = nombreEstudiante;
 		this.fechaEntrega = fechaEntrega;
 		this.nota = nota == 0 ? null : nota;
-//		if (nota == 0) {
-//			this.nota = null;
-//		}
-//		else {
-//			this.nota = nota;			
-//		}
 	}
-	public Tarea(String nombre, String descripcion) {
+	public Tarea(String nombre) {
 		this.nombre = nombre;
-		this.descripcion = this.descripcion == null ? "No hay descripcion" : descripcion;
 	}
 	
-	
-	public String getDescripcion() {
-		return descripcion;
-	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
 	public boolean isEnviado() {
 		return enviado;
 	}

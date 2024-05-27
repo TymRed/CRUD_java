@@ -149,7 +149,7 @@ CREATE TABLE `tareas` (
 
 LOCK TABLES `tareas` WRITE;
 /*!40000 ALTER TABLE `tareas` DISABLE KEYS */;
-INSERT INTO `tareas` VALUES ('Tarea1','Albert','Prog',NULL,'2024-05-22'),('Tarea1','Claudiu','Prog',NULL,'2024-05-22'),('Tarea1','Dani','Prog',NULL,'2024-05-22'),('Tarea1','Diego','Prog',NULL,'2024-05-22'),('Tarea1','Fran','Prog',NULL,'2024-05-22'),('Tarea1','Javi','Prog',NULL,'2024-05-22'),('Tarea1','Luru','Prog',NULL,'2024-05-22'),('Tarea1','Tym','Prog',NULL,'2024-05-22'),('Tarea1','Claudiu','SISI',NULL,'2024-05-22'),('Tarea1','Diego','SISI',NULL,'2024-05-22'),('Tarea1','Tym','SISI',NULL,'2024-05-22'),('Tarea2','Javi','Prog',NULL,'2024-05-22'),('Tarea2','Tym','Prog',NULL,'2024-05-22'),('Tarea3','Fran','Prog',NULL,'2024-05-22'),('Tarea4','Fran','Prog',4.50,'2024-05-26'),('Tarea4','Javi','Prog',NULL,'2024-05-26');
+INSERT INTO `tareas` VALUES ('Tarea1','Albert','Prog',NULL,'2024-05-22'),('Tarea1','Claudiu','Prog',NULL,'2024-05-22'),('Tarea1','Dani','Prog',NULL,'2024-05-22'),('Tarea1','Diego','Prog',NULL,'2024-05-22'),('Tarea1','Fran','Prog',NULL,'2024-05-22'),('Tarea1','Javi','Prog',NULL,'2024-05-22'),('Tarea1','Luru','Prog',NULL,'2024-05-22'),('Tarea1','Tym','Prog',NULL,'2024-05-22'),('Tarea1','Claudiu','SISI',NULL,'2024-05-22'),('Tarea1','Diego','SISI',NULL,'2024-05-22'),('Tarea1','Tym','SISI',NULL,'2024-05-22'),('Tarea2','Javi','Prog',NULL,'2024-05-22'),('Tarea2','Tym','Prog',NULL,'2024-05-22'),('Tarea3','Fran','Prog',NULL,'2024-05-22');
 /*!40000 ALTER TABLE `tareas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -163,7 +163,6 @@ DROP TABLE IF EXISTS `tareasinfo`;
 CREATE TABLE `tareasinfo` (
   `nombre` varchar(45) NOT NULL,
   `nombre_asignatura` varchar(45) NOT NULL,
-  `descripcion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`nombre`,`nombre_asignatura`),
   KEY `FK_nombreAsignatura2_asignatura_idx` (`nombre_asignatura`),
   CONSTRAINT `FK_nombreAsignatura2_asignatura` FOREIGN KEY (`nombre_asignatura`) REFERENCES `asignaturas` (`nombre`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -176,7 +175,7 @@ CREATE TABLE `tareasinfo` (
 
 LOCK TABLES `tareasinfo` WRITE;
 /*!40000 ALTER TABLE `tareasinfo` DISABLE KEYS */;
-INSERT INTO `tareasinfo` VALUES ('Tarea1','Prog',NULL),('Tarea1','SISI',NULL),('Tarea2','Prog',NULL),('Tarea3','Prog',NULL),('Tarea4','Prog',NULL);
+INSERT INTO `tareasinfo` VALUES ('Tarea1','Prog'),('Tarea2','Prog'),('Tarea3','Prog'),('Tarea1','SISI');
 /*!40000 ALTER TABLE `tareasinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -189,4 +188,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-26 13:02:53
+-- Dump completed on 2024-05-27 13:58:14

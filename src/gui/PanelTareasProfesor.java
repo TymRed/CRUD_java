@@ -56,19 +56,15 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 
 		JPanel infoAsignaturaContenedor = new PanelConLogoProf(u);
 		this.add(infoAsignaturaContenedor, BorderLayout.NORTH);
-
-		
 		
 		JPanel contenedorBotones = crearPanelContenedorBotones();
 		this.add(contenedorBotones);
-
-		
 		
 		tareasContenedor = new JPanel();
 		tareasContenedor.setBackground(new Color(Vista.COLOR2));
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
-		ArrayList<Tarea> tareas = BaseQueries.buscarEntregas("Tarea1", asig.getNombre()); //mejorable
+		ArrayList<Tarea> tareas = BaseQueries.buscarEntregas("Tarea1", asig.getNombre());
 		bucleTareas(tareas);
 
 		JScrollPane tareasScroll = new JScrollPane(tareasContenedor);
@@ -82,7 +78,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 		contenedorBotones.setBackground(new Color(Vista.COLOR4));
 		contenedorBotones.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
-		nombresDeTareas = BaseQueries.crearListaNombreTareas(asig.getNombre()); //se puede cambiar. da pereza
+		nombresDeTareas = BaseQueries.crearListaNombreTareas(asig.getNombre());
 		DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(nombresDeTareas.toArray(new String[0]));
 		eligirTarea = new JComboBox<String>();
 		eligirTarea.setModel(model);
@@ -111,7 +107,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	public JPanel crearTarea(Tarea tareaInfo) {
 	    GridBagLayout gbl_tarea1 = new GridBagLayout();
 	    gbl_tarea1.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0 };
-	    gbl_tarea1.columnWidths = new int[] { 0, 100, 50, 50 }; // Ajusta estos valores según sea necesario
+	    gbl_tarea1.columnWidths = new int[] { 0, 100, 50, 50 };
 
 	    JPanel tarea1 = new JPanel(gbl_tarea1);
 	    tarea1.setBorder(BorderFactory.createCompoundBorder(
@@ -144,41 +140,50 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	    gbc.gridx = 2;
 	    tarea1.add(nota, gbc);
 	    
+
+	    JButton botonPuntuar = new JButton("Puntuar");
+	    botonPuntuar.setBackground(new Color(Vista.COLOR4));
+	    botonPuntuar.setBorder(BorderFactory.createCompoundBorder(
+	            BorderFactory.createLineBorder(new Color(Vista.COLOR1), 1),
+	            BorderFactory.createEmptyBorder(3, 17, 3, 17)));
+	    botonPuntuar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	    botonPuntuar.setFocusable(false);
+	    botonPuntuar.addActionListener(new ActionListener() { //Para poder hacerlo con varios botones
+	        public void actionPerformed(ActionEvent e) {
+	        	Double notaD;
+	        	try {
+	        		notaD = Double.parseDouble(nota.getText());
+	        		BaseQueries.ponerNotaEstudiante(notaD, tareaInfo.getNombre(), nombreEstud.getText(), asig.getNombre());
+	        		
+	        		if (notaD != null) {
+	        			Color verde = new Color(20,200,20);
+	        			Color rojo = new Color(200,20,20);
+	        			nota.setText(notaD + "");
+	        			nota.setBackground(notaD >= 5 ? verde : rojo);
+	        			nota.setEnabled(false);
+	        			botonPuntuar.setEnabled(false);;
+	        		}
+	        		repaint();
+				} catch (Exception e2) {
+					System.out.println("Nota invalida");
+				}
+	        	
+	        }
+	    });
 	    if (tareaInfo.getNota() != null) {
 	    	Color verde = new Color(20,200,20);
 	    	Color rojo = new Color(200,20,20);
 	    	nota.setText(tareaInfo.getNota() + "");
 	    	nota.setBackground(tareaInfo.getNota() >= 5 ? verde : rojo);
 	    	nota.setEnabled(false);
+	    	botonPuntuar.setEnabled(false);
 	    }
-
-	    JButton submitNota = new JButton("Poner");
-	    submitNota.setBackground(new Color(Vista.COLOR4));
-	    submitNota.setBorder(BorderFactory.createCompoundBorder(
-	            BorderFactory.createLineBorder(new Color(Vista.COLOR1), 1),
-	            BorderFactory.createEmptyBorder(3, 17, 3, 17)));
-	    submitNota.setCursor(new Cursor(Cursor.HAND_CURSOR));
-	    submitNota.setFocusable(false);
-	    submitNota.addActionListener(new ActionListener() { //Para poder hacerlo con varios botones
-	        public void actionPerformed(ActionEvent e) {
-	        	Double notaD = Double.parseDouble(nota.getText());
-	            BaseQueries.ponerNotaEstudiante(notaD, tareaInfo.getNombre(), nombreEstud.getText(), asig.getNombre());
-	            
-	            if (notaD != null) {
-	            	Color verde = new Color(20,200,20);
-	    	    	Color rojo = new Color(200,20,20);
-	    	    	nota.setText(notaD + "");
-	    	    	nota.setBackground(notaD >= 5 ? verde : rojo);
-	    	    	nota.setEnabled(false);
-	    	    }
-	            repaint();
-	        }
-	    });
+	    
 	    gbc.insets = new Insets(0, 0, 0, 0);
 	    gbc.gridx = 3;
 	    gbc.anchor = GridBagConstraints.EAST;
 	    gbc.fill = GridBagConstraints.NONE;
-	    tarea1.add(submitNota, gbc);
+	    tarea1.add(botonPuntuar, gbc);
 
 	    return tarea1;
 	}
@@ -220,16 +225,9 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 			eligirTarea.revalidate();
 			eligirTarea.repaint();
 			
-			//Para mostrar otra vez entregas de Tarea1
-			ArrayList<Tarea> tareas = BaseQueries.buscarEntregas("Tarea1", asig.getNombre()); //mejorable
+			ArrayList<Tarea> tareas = BaseQueries.buscarEntregas("Tarea1", asig.getNombre()); 
 			bucleTareas(tareas);
 		}
-//		else if (e.getSource() == atras) {
-//			JPanel panelProfesor = new PanelPrincipalProfesor(u); // 3
-//			Programa.panelCardLayout.add(panelProfesor, "Panel Profesor");
-//			CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
-//			cl.show(Programa.panelCardLayout, "Panel Profesor");
-//		}
 	}
 	
 	class PanelConLogoProf extends JPanel implements ActionListener {
@@ -244,7 +242,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 			this.setPreferredSize(new Dimension(100, 130));
 			this.setLayout(null);
 			JLabel nombAsig = new JLabel("Tareas " + asig.getNombre());
-			nombAsig.setBounds(0, 100, 71, 13);
+			nombAsig.setBounds(0, 100, 120, 20);
 			this.add(nombAsig);
 
 			atras = new JButton();
