@@ -1,0 +1,9 @@
+		Prog
+Tarea1	Fran	10.0
+Tarea3	Fran	0.0
+Tarea1	Javi	9.5
+Tarea2	Javi	4.3
+
+	Notas medias
+Fran: 5.0
+Javi: 6.9

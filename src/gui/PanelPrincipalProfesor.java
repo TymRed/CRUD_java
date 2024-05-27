@@ -11,6 +11,8 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -22,21 +24,22 @@ import javax.swing.SwingUtilities;
 
 import bd.Prueba;
 import logica.Asignatura;
+import logica.Profesor;
+import logica.Tarea;
 import logica.Usuario;
 
 class PanelPrincipalProfesor extends JPanel implements ActionListener {
-
 
 	JButton asignaturaBoton, boletinBoton;
 
 	Usuario prof;
 	Asignatura asig;
-	
+
 	public PanelPrincipalProfesor(Usuario u) {
 
 		this.prof = u;
 		this.asig = Prueba.buscarAsignaturaProfesor(u.getNombre());
-		
+
 		this.setSize(800, 500);
 		this.setBackground(new Color(Vista.COLOR4));
 		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2),
@@ -82,7 +85,21 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 			CardLayout cl = (CardLayout) (Programa.panelCardLayout.getLayout());
 			cl.show(Programa.panelCardLayout, "Panel Tarea Profesor");
 		} else if (e.getSource() == boletinBoton) {
-			System.out.println("2"); // Sacar .txt
+			imprimirBoletin(asig);
+			System.out.println("2");
+		}
+	}
+
+	public void imprimirBoletin(Asignatura asig) {
+		try {
+			String textoNotas = Prueba.imprimirBoletinClase(asig.getNombre());
+			String textoMedias = Prueba.imprimirMedias(asig.getNombre());
+			FileWriter fw = new FileWriter("boletin.txt", false);
+			fw.write(textoNotas);
+			fw.write(textoMedias);
+			fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

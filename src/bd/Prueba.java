@@ -122,7 +122,7 @@ public class Prueba {
 		}
 	}
 
-	public static Asignatura buscarAsignaturaEstudiante(String nombreAsig){
+	public static Asignatura buscarAsignaturaEstudiante(String nombreAsig) {
 		String query = "SELECT nombre FROM asignaturas where nombre = ?";
 		PreparedStatement s;
 		try {
@@ -140,8 +140,8 @@ public class Prueba {
 		}
 		return null;
 	}
-	
-	public static Asignatura buscarAsignaturaProfesor(String nombreprof){
+
+	public static Asignatura buscarAsignaturaProfesor(String nombreprof) {
 		String query = "SELECT nombre FROM asignaturas where nombreprof = ?";
 		PreparedStatement s;
 		try {
@@ -159,17 +159,52 @@ public class Prueba {
 		}
 		return null;
 	}
-	
+
+	public static String imprimirBoletinClase(String nombreAsig) {
+		String query = "SELECT nombre_asignatura, nombre, nombre_estudiante, nota FROM tareas WHERE nombre_asignatura = ?  ORDER BY nombre_estudiante ASC";
+		PreparedStatement s;
+		String boletin = "\t\t" + nombreAsig + "\n";
+		try {
+			s = c.prepareStatement(query);
+			s.setString(1, nombreAsig);
+			ResultSet rs = s.executeQuery();
+			while (rs.next()) {
+				boletin += rs.getString("nombre") + "\t" + rs.getString("nombre_estudiante") + "\t"
+						+ rs.getDouble("nota") + "\n";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return boletin;
+	}
+
+	public static String imprimirMedias(String nombreAsig) {
+		String query = "SELECT nombre_estudiante, AVG(nota) AS Nota_media FROM tareas WHERE nombre_asignatura = ? GROUP BY nombre_estudiante";
+		String medias = "\n\tNotas medias\n";
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement(query);
+			s.setString(1, nombreAsig);
+			ResultSet rs = s.executeQuery();
+			while (rs.next()) {
+				medias += rs.getString("nombre_estudiante") + ": " + rs.getDouble("Nota_media") + "\n";
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return medias;
+	}
+
 	public static void buscarEntregas(ArrayList<Tarea> tareas, String nombreTarea, String nombreAsig) {
 		String query = "SELECT nombre_estudiante, entregado_fecha, nota FROM tareas where nombre = ? and nombre_asignatura = ?";
 		PreparedStatement s;
 		try {
 			s = c.prepareStatement(query);
 			s.setString(1, nombreTarea);
-			s.setString(2, nombreAsig);			
+			s.setString(2, nombreAsig);
 			ResultSet rs = s.executeQuery();
-			while (rs.next()) { //debe ser if
-				Tarea tarea = new Tarea(nombreTarea,rs.getString(1), rs.getString(2), rs.getDouble(3));
+			while (rs.next()) { // debe ser if
+				Tarea tarea = new Tarea(nombreTarea, rs.getString(1), rs.getString(2), rs.getDouble(3));
 				tareas.add(tarea);
 			}
 		} catch (SQLException e) {
@@ -197,16 +232,16 @@ public class Prueba {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static void ponerNotaEstudiante(Double nota, String nombreTarea, String nombreEstud, String nombreAsig) {
-		String query =  "UPDATE tareas SET nota = ? WHERE nombre = ? and nombre_asignatura = ? and nombre_estudiante = ?";
+		String query = "UPDATE tareas SET nota = ? WHERE nombre = ? and nombre_asignatura = ? and nombre_estudiante = ?";
 		PreparedStatement s;
 		try {
 			s = c.prepareStatement(query);
 			s.setDouble(1, nota);
-			s.setString(2, nombreTarea);			
+			s.setString(2, nombreTarea);
 			s.setString(3, nombreAsig);
-			s.setString(4, nombreEstud);	
+			s.setString(4, nombreEstud);
 			System.out.println(s);
 			s.executeUpdate();
 			System.out.println("La nota puesta");
@@ -214,7 +249,7 @@ public class Prueba {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }
