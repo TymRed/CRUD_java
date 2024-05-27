@@ -137,9 +137,9 @@ CREATE TABLE `tareas` (
   PRIMARY KEY (`nombre`,`nombre_asignatura`,`nombre_estudiante`),
   KEY `FK_nombreAsignatura_cursos_idx` (`nombre_asignatura`),
   KEY `FK_nombreEstudiante_cursos_idx` (`nombre_estudiante`),
-  CONSTRAINT `FK_nombreAsignatura_cursos` FOREIGN KEY (`nombre_asignatura`) REFERENCES `tareasinfo` (`nombre_asignatura`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_nombreAsignatura_tareasinfo` FOREIGN KEY (`nombre_asignatura`) REFERENCES `tareasinfo` (`nombre_asignatura`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `FK_nombreEstudiante_cursos` FOREIGN KEY (`nombre_estudiante`) REFERENCES `cursos` (`nombre_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_nombreTarea_tareaInfo` FOREIGN KEY (`nombre`) REFERENCES `tareasinfo` (`nombre`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `FK_nombreTarea_tareaInfo` FOREIGN KEY (`nombre`) REFERENCES `tareasinfo` (`nombre`) ON DELETE RESTRICT ON UPDATE RESTRICT
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -188,4 +188,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-27 13:58:14
+-- Dump completed on 2024-05-27 23:19:00
