@@ -20,7 +20,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import bd.Prueba;
+import bd.BaseQueries;
 import logica.Usuario;
 
 public class Vista extends JFrame {
@@ -80,12 +80,6 @@ public class Vista extends JFrame {
 			this.add(signIn);
 			this.add(logIn);
 
-//		errorUsuario = crearTextoError();
-//		errorUsuario.setBounds(55, 112, 250, 100);
-//		errorUsuario.setVisible(false);
-
-//		this.add(errorUsuario);
-
 			this.setOpaque(true);
 
 		}
@@ -119,20 +113,9 @@ public class Vista extends JFrame {
 			return b;
 		}
 
-//	SI ESO METER (LETRAS EN ROJO)
-//	
-//	private JLabel crearTextoError() {
-//		JLabel t = new JLabel();
-//		t.setText("Introduce un nombre adecuado");
-//		t.setForeground(Color.RED);
-//		t.setFont(new Font("Consolas", Font.ITALIC, 13));
-//		return t;
-//	}
-
 		@Override
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
-//		this.setFont(new Font("Consolas", Font.BOLD, 25));
 			logo = new ImageIcon("images//logoNoodle.png").getImage();
 			logoU = new ImageIcon("images//usuario.png").getImage();
 			logoC = new ImageIcon("images//contrasena.png").getImage();
@@ -149,7 +132,7 @@ public class Vista extends JFrame {
 			if (e.getSource() == logIn) {
 				String nombreUsusario = nombre.getText();
 				String contrasenaUsuario = String.valueOf(contrasena.getPassword());
-				Usuario u = Prueba.buscarUsuario(nombreUsusario, contrasenaUsuario);
+				Usuario u = BaseQueries.buscarUsuario(nombreUsusario, contrasenaUsuario);
 				boolean datosCorrectos = u != null;
 
 				if (datosCorrectos) {
@@ -166,7 +149,7 @@ public class Vista extends JFrame {
 				String nombreUsuario = nombre.getText();
 				String contrasenaUsuario = String.valueOf(contrasena.getPassword());
 
-				boolean nombreOcupado = Prueba.hayNombreUsuario(nombreUsuario);
+				boolean nombreOcupado = BaseQueries.hayNombreUsuario(nombreUsuario);
 				if (nombreOcupado) {
 					errores.add("Nombre de usuario no disponible");
 					ventanaError = new VistaError(errores);
@@ -174,15 +157,19 @@ public class Vista extends JFrame {
 				}
 
 				boolean nombreAdecuado = comprobarNombre(nombreUsuario);
-				if (!nombreAdecuado)
+				if (!nombreAdecuado) {
+					ventanaError = new VistaError(errores);
 					return;
+				}
 
 				boolean contrasenaAdecuada = comprobarContrasena(contrasenaUsuario);
-				if (!contrasenaAdecuada)
-					return;
+				if (!contrasenaAdecuada) {
+					ventanaError = new VistaError(errores);
+					return;					
+				}
 
 				if (nombreAdecuado && contrasenaAdecuada) {
-					Prueba.signIn(nombreUsuario, contrasenaUsuario);
+					BaseQueries.signIn(nombreUsuario, contrasenaUsuario);
 					System.out.println("Singed In");
 					nombre.setText("");
 					contrasena.setText("");
@@ -192,18 +179,12 @@ public class Vista extends JFrame {
 			}
 		}
 
-		// Creo q hay q mover este metodo a otra clase, es solo prueba
-		// Se pueden hacer comentarios personalizados para los errores
 		private boolean comprobarNombre(String nombreUsuario) {
-
-			VistaError ventanaError;
 
 			boolean longitudAdecuada = nombreUsuario.length() >= 4 && nombreUsuario.length() <= 16;
 
 			if (nombreUsuario.isEmpty() || !longitudAdecuada) {
 				errores.add("El nombre debe tener entre 4 y 16 caracteres.");
-
-				ventanaError = new VistaError(errores);
 				return false;
 			}
 
@@ -219,20 +200,16 @@ public class Vista extends JFrame {
 				errores.add("El nombre debe comenzar por letra mayúscula.");
 				errores.add("El resto de letras deben minúsculas.");
 			}
-			ventanaError = new VistaError(errores);
-
 			return false;
 
 		}
 
 		private boolean comprobarContrasena(String contrasena) {
 
-			VistaError ventanaError;
 			boolean longitudAdecuada = contrasena.length() >= 4 && contrasena.length() <= 16;
 
 			if (contrasena.isEmpty() || !longitudAdecuada) {
 				errores.add("La contraseña debe tener entre 4 y 16 caracteres.");
-				ventanaError = new VistaError(errores);
 				return false;
 			}
 
@@ -249,9 +226,7 @@ public class Vista extends JFrame {
 				errores.add("La contraseña debe tener al menos una letra mayúscula.");
 			if (!hayNum)
 				errores.add("La contraseña debe tener al menos un número.");
-
-			ventanaError = new VistaError(errores);
-
+			
 			return false;
 		}
 

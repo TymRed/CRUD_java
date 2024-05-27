@@ -12,25 +12,24 @@ public class Tarea {
 		this.nombre = nombre;
 		this.nombreEstudiante = nombreEstudiante;
 		this.fechaEntrega = fechaEntrega;
-		if (nota == 0) {
-			this.nota = null;
-		}
-		else {
-			this.nota = nota;			
-		}
+		this.nota = nota == 0 ? null : nota;
+	}
+	public Tarea(String nombre) {
+		this.nombre = nombre;
 	}
 	
-	
+	public boolean isEnviado() {
+		return enviado;
+	}
+	public void setEnviado(boolean enviado) {
+		this.enviado = enviado;
+	}
 	public String getNombre() {
 		return nombre;
 	}
-
-
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-
 	public String getNombreEstudiante() {
 		return nombreEstudiante;
 	}

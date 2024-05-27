@@ -80,9 +80,6 @@ public class VistaEnvio extends JFrame {
 		protected void paintComponent(Graphics g) {
 			super.paintComponent(g);
 			Image iconoExito = new ImageIcon("images//exito.png").getImage();
-//				if (PanelError.exito) {
-//					g.drawImage(iconoExito, 87, 44, 20, 20, this);
-//				}
 		}
 
 		@Override

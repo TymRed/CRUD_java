@@ -22,7 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import bd.Prueba;
+import bd.BaseQueries;
 import logica.Asignatura;
 import logica.Profesor;
 import logica.Tarea;
@@ -38,8 +38,8 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 	public PanelPrincipalProfesor(Usuario u) {
 
 		this.prof = u;
-		this.asig = Prueba.buscarAsignaturaProfesor(u.getNombre());
-
+		this.asig = BaseQueries.buscarAsignaturaProfesor(u.getNombre());
+		
 		this.setSize(800, 500);
 		this.setBackground(new Color(Vista.COLOR4));
 		this.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2),
@@ -92,8 +92,8 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 
 	public void imprimirBoletin(Asignatura asig) {
 		try {
-			String textoNotas = Prueba.imprimirBoletinClase(asig.getNombre());
-			String textoMedias = Prueba.imprimirMedias(asig.getNombre());
+			String textoNotas = BaseQueries.imprimirBoletinClase(asig.getNombre());
+			String textoMedias = BaseQueries.imprimirMedias(asig.getNombre());
 			FileWriter fw = new FileWriter("boletin.txt", false);
 			fw.write(textoNotas);
 			fw.write(textoMedias);
@@ -157,6 +157,5 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 				topFrame.dispose();
 			}
 		}
-
 	}
 }

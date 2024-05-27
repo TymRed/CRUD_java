@@ -41,7 +41,7 @@ CREATE TABLE `asignaturas` (
 
 LOCK TABLES `asignaturas` WRITE;
 /*!40000 ALTER TABLE `asignaturas` DISABLE KEYS */;
-INSERT INTO `asignaturas` VALUES ('BBDD','Prof2',0),('Prog','Prof1',0),('SISI','Prof3',0);
+INSERT INTO `asignaturas` VALUES ('BBDD','Prof2',0),('LMSG','Prof4',0),('Prog','Prof1',0),('SISI','Prof3',0);
 /*!40000 ALTER TABLE `asignaturas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,7 +69,7 @@ CREATE TABLE `cursos` (
 
 LOCK TABLES `cursos` WRITE;
 /*!40000 ALTER TABLE `cursos` DISABLE KEYS */;
-INSERT INTO `cursos` VALUES ('Prog','Fran',NULL),('Prog','Javi',NULL),('SISI','Tym',NULL);
+INSERT INTO `cursos` VALUES ('Prog','Albert',NULL),('Prog','Claudiu',NULL),('Prog','Dani',NULL),('Prog','Diego',NULL),('Prog','Fran',NULL),('Prog','Javi',NULL),('Prog','Luru',NULL),('Prog','Tym',NULL),('SISI','Claudiu',NULL),('SISI','Diego',NULL),('SISI','Tym',NULL);
 /*!40000 ALTER TABLE `cursos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,7 +93,7 @@ CREATE TABLE `estudiantes` (
 
 LOCK TABLES `estudiantes` WRITE;
 /*!40000 ALTER TABLE `estudiantes` DISABLE KEYS */;
-INSERT INTO `estudiantes` VALUES ('Fran','aa'),('Javi','aa'),('Tym','aa');
+INSERT INTO `estudiantes` VALUES ('Albert','aa'),('Claudiu','aa'),('Dani','aa'),('Diego','aa'),('Fran','aa'),('Javi','aa'),('Luru','aa'),('Sebas','aa'),('Tym','aa');
 /*!40000 ALTER TABLE `estudiantes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,7 +117,7 @@ CREATE TABLE `profesores` (
 
 LOCK TABLES `profesores` WRITE;
 /*!40000 ALTER TABLE `profesores` DISABLE KEYS */;
-INSERT INTO `profesores` VALUES ('Prof1','aa'),('Prof2','aa'),('Prof3','aa');
+INSERT INTO `profesores` VALUES ('Prof1','aa'),('Prof2','aa'),('Prof3','aa'),('Prof4','aa');
 /*!40000 ALTER TABLE `profesores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,12 +134,12 @@ CREATE TABLE `tareas` (
   `nombre_asignatura` varchar(45) NOT NULL,
   `nota` decimal(4,2) DEFAULT NULL,
   `entregado_fecha` date DEFAULT NULL,
-  `descripcion` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`nombre`,`nombre_asignatura`,`nombre_estudiante`),
   KEY `FK_nombreAsignatura_cursos_idx` (`nombre_asignatura`),
   KEY `FK_nombreEstudiante_cursos_idx` (`nombre_estudiante`),
-  CONSTRAINT `FK_nombreAsignatura_cursos` FOREIGN KEY (`nombre_asignatura`) REFERENCES `cursos` (`nombre_asignatura`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_nombreEstudiante_cursos` FOREIGN KEY (`nombre_estudiante`) REFERENCES `cursos` (`nombre_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `FK_nombreAsignatura_cursos` FOREIGN KEY (`nombre_asignatura`) REFERENCES `tareasinfo` (`nombre_asignatura`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_nombreEstudiante_cursos` FOREIGN KEY (`nombre_estudiante`) REFERENCES `cursos` (`nombre_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `FK_nombreTarea_tareaInfo` FOREIGN KEY (`nombre`) REFERENCES `tareasinfo` (`nombre`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -149,8 +149,34 @@ CREATE TABLE `tareas` (
 
 LOCK TABLES `tareas` WRITE;
 /*!40000 ALTER TABLE `tareas` DISABLE KEYS */;
-INSERT INTO `tareas` VALUES ('Tarea1','Fran','Prog',NULL,'2024-05-22',NULL),('Tarea1','Javi','Prog',NULL,'2024-05-22',NULL),('Tarea1','Tym','SISI',NULL,'2024-05-22',NULL),('Tarea2','Javi','Prog',NULL,'2024-05-22',NULL),('Tarea3','Fran','Prog',NULL,'2024-05-22',NULL);
+INSERT INTO `tareas` VALUES ('Tarea1','Albert','Prog',NULL,'2024-05-22'),('Tarea1','Claudiu','Prog',NULL,'2024-05-22'),('Tarea1','Dani','Prog',NULL,'2024-05-22'),('Tarea1','Diego','Prog',NULL,'2024-05-22'),('Tarea1','Fran','Prog',NULL,'2024-05-22'),('Tarea1','Javi','Prog',NULL,'2024-05-22'),('Tarea1','Luru','Prog',NULL,'2024-05-22'),('Tarea1','Tym','Prog',NULL,'2024-05-22'),('Tarea1','Claudiu','SISI',NULL,'2024-05-22'),('Tarea1','Diego','SISI',NULL,'2024-05-22'),('Tarea1','Tym','SISI',NULL,'2024-05-22'),('Tarea2','Javi','Prog',NULL,'2024-05-22'),('Tarea2','Tym','Prog',NULL,'2024-05-22'),('Tarea3','Fran','Prog',NULL,'2024-05-22');
 /*!40000 ALTER TABLE `tareas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tareasinfo`
+--
+
+DROP TABLE IF EXISTS `tareasinfo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tareasinfo` (
+  `nombre` varchar(45) NOT NULL,
+  `nombre_asignatura` varchar(45) NOT NULL,
+  PRIMARY KEY (`nombre`,`nombre_asignatura`),
+  KEY `FK_nombreAsignatura2_asignatura_idx` (`nombre_asignatura`),
+  CONSTRAINT `FK_nombreAsignatura2_asignatura` FOREIGN KEY (`nombre_asignatura`) REFERENCES `asignaturas` (`nombre`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tareasinfo`
+--
+
+LOCK TABLES `tareasinfo` WRITE;
+/*!40000 ALTER TABLE `tareasinfo` DISABLE KEYS */;
+INSERT INTO `tareasinfo` VALUES ('Tarea1','Prog'),('Tarea2','Prog'),('Tarea3','Prog'),('Tarea1','SISI');
+/*!40000 ALTER TABLE `tareasinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -162,4 +188,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-22 18:06:20
+-- Dump completed on 2024-05-27 13:58:14

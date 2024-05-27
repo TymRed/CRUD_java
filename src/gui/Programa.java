@@ -8,7 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 
-import bd.Prueba;
+import bd.BaseQueries;
 import gui.VistaError.PanelError;
 import logica.Estudiante;
 import logica.Profesor;
@@ -31,13 +31,9 @@ public class Programa extends JFrame {
 		panelCardLayout = new JPanel();
 		panelCardLayout.setSize(800, 500);
 		panelCardLayout.setLayout(new CardLayout(0, 0));
-//		panelCardLayout.add(tareaEstudiante, "Panel Tareas Estudiante");
-//		panelCardLayout.add(tareaProfesor, "Panel Tarea Profesor");
-
 
 		CardLayout cl = (CardLayout) (panelCardLayout.getLayout());
-//		Asi se cambia de un panel a otro (esas 2 lineas) 
-
+		
 		if (u instanceof Estudiante) {
 			JPanel panelEstudiante = new PanelPrincipalEstudiante(u); // 3
 			panelCardLayout.add(panelEstudiante, "Panel Estudiante");
