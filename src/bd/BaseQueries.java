@@ -319,6 +319,20 @@ public class BaseQueries {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void borrarTarea(String nombreTarea, String nombreAsig) {
+		String query =  "delete from tareasinfo where nombre = ? AND nombre_asignatura = ?";
+		PreparedStatement s;
+		try {
+			s = c.prepareStatement(query);
+			s.setString(1, nombreTarea);			
+			s.setString(2, nombreAsig);
+			s.executeUpdate();
+			System.out.println(s);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 	private static int buscarMaxIdTarea(String nombreAsig) { 
 		String query =  "select right(Max(nombre),1) from tareasinfo WHERE nombre_asignatura = ?";

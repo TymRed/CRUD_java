@@ -202,10 +202,10 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	@Override
 	public void itemStateChanged(ItemEvent event) {
 		if (event.getStateChange() == ItemEvent.SELECTED) {
-			String selectedValue = eligirTarea.getSelectedItem().toString();
-			System.out.println(selectedValue);
+			String valorSeleccionado = eligirTarea.getSelectedItem().toString();
+			System.out.println(valorSeleccionado);
 			
-			ArrayList<Tarea> tareas = BaseQueries.buscarEntregas(selectedValue, asig.getNombre());
+			ArrayList<Tarea> tareas = BaseQueries.buscarEntregas(valorSeleccionado, asig.getNombre());
 			bucleTareas(tareas);
 		}
 		
@@ -215,6 +215,22 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == addTarea) { 
 			BaseQueries.crearTarea(asig.getNombre());
+			
+			nombresDeTareas = BaseQueries.crearListaNombreTareas(asig.getNombre());
+
+			// Para actualizar el modelo del JComboBox existente
+			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(nombresDeTareas.toArray(new String[0]));
+			eligirTarea.setModel(model);
+
+			eligirTarea.revalidate();
+			eligirTarea.repaint();
+			
+			ArrayList<Tarea> tareas = BaseQueries.buscarEntregas("Tarea1", asig.getNombre()); 
+			bucleTareas(tareas);
+		}
+		if (e.getSource() == removeTarea) { 
+			String valorSeleccionado = eligirTarea.getSelectedItem().toString();
+			BaseQueries.borrarTarea(valorSeleccionado, asig.getNombre());
 			
 			nombresDeTareas = BaseQueries.crearListaNombreTareas(asig.getNombre());
 
