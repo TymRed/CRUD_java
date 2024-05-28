@@ -53,8 +53,7 @@ class PanelTareasEstudiante extends JPanel {
 		tareasContenedor.setBackground(new Color(Vista.COLOR2));
 		tareasContenedor.setLayout(new BoxLayout(tareasContenedor, BoxLayout.Y_AXIS));
 
-		ArrayList<Tarea> tareas = new ArrayList<Tarea>();
-		BaseQueries.buscarTareasEstudiante(tareas, asig.getNombre());
+		ArrayList<Tarea> tareas = BaseQueries.buscarTareasEstudiante(asig.getNombre());
 		bucleTareas(tareas);
 
 		JScrollPane tareasScroll = new JScrollPane(tareasContenedor);

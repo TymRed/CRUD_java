@@ -236,7 +236,8 @@ public class BaseQueries {
         return tareas;
     }
 
-	public static void buscarTareasEstudiante(ArrayList<Tarea> tareas, String nombreAsig) {
+	public static ArrayList<Tarea> buscarTareasEstudiante(String nombreAsig) {
+		ArrayList<Tarea> tareas = new ArrayList<Tarea>();
 		String query = "SELECT nombre FROM tareasinfo WHERE nombre_asignatura = ?";
 		PreparedStatement s;
 		try {
@@ -251,6 +252,7 @@ public class BaseQueries {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return tareas;
 	}
 
 	public static String buscarSiEntregado(String nombreTarea, String nombreEstud, String nombreAsig) { 
