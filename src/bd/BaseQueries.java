@@ -1,7 +1,9 @@
 package bd;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Properties;
 
 import logica.Asignatura;
@@ -213,6 +216,109 @@ public class BaseQueries {
 			e.printStackTrace();
 		}
 		return medias;
+	}
+	
+	public static void imprimirBoletinHtml(String nombreAsig) {
+		ArrayList<Tarea> tareas = buscarTareasEstudiante(nombreAsig);
+		
+		int numColumnas = tareas.size() + 2;
+		ArrayList<String> estud = buscarEstudiantes(nombreAsig);
+		
+		File htmlResult = new File("htmlResult.html");
+		
+        try {
+        	FileWriter fw = new FileWriter(htmlResult);
+			fw.write("<!DOCTYPE html>");
+			fw.write("<html>");
+	        fw.write("<head>");
+	        fw.write("<title>Notas finales " +nombreAsig + "</title>");
+	        fw.write("</head>");
+	        fw.write("<body>");
+	        fw.write("<table border = '1' style='border-collapse: collapse;'>");
+			
+			String fila1 = "<tr>";
+			for (int j = 0; j < numColumnas; j++) { //j es tarea
+				if (j==0) {
+					fila1 += "<th>Nombre</th>";
+				}
+				else if (j == numColumnas-1) {
+					fila1 += "<th>Media</th>";
+				}
+				else {
+					fila1+= "<th>" + tareas.get(j-1).getNombre() + "</th>";
+				}
+			}
+			fw.write(fila1);
+			
+			for (int i = 0; i < estud.size(); i++) { //i es estudiante
+				double notaTotal = 0;
+				
+				String fila = "<tr>";
+				for (int j = 0; j < numColumnas; j++) {
+					if (j==0) {
+						fila += "<td>" + estud.get(i) + "</td>";
+					}
+					else if (j == numColumnas-1) {
+						double notaMedia = notaTotal/(numColumnas-2);
+						String color = notaMedia>=5 ? "lightgreen" : "lightcoral";
+						fila += String.format("<th style='background-color:%s; padding: 2px 40px;'>%.2f</th>", color, notaMedia);
+					}
+					else {
+						double nota = buscarNotaAsig(tareas.get(j-1).getNombre(), nombreAsig, estud.get(i));
+						String color = nota >=5 ? "lightgreen" : "lightcoral";
+						fila += String.format("<td style='background-color:%s;'>%.2f</td>", color, nota);
+
+						notaTotal += nota;
+					}
+				}
+				fw.write(fila);
+			}
+			
+			fw.write("</table>");
+	        fw.write("</body>");
+	        fw.write("</html>");
+	        fw.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static Double buscarNotaAsig(String nombre, String nombreAsig, String nombreEstud) {
+        String query = "SELECT nota FROM tareas where nombre = ? and nombre_asignatura = ? AND nombre_estudiante = ?";
+        PreparedStatement s;
+        try {
+            s = c.prepareStatement(query);
+            s.setString(1, nombre);
+            s.setString(2, nombreAsig);
+            s.setString(3, nombreEstud);
+//            System.out.println(s);
+            ResultSet rs = s.executeQuery();
+            if (rs.next()) {
+                return rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0.0;
+	}
+
+	private static ArrayList<String> buscarEstudiantes(String nombreAsig) {
+		ArrayList<String> nombEstud = new ArrayList<String>();
+
+        String query = "SELECT distinct nombre_estudiante FROM cursos where nombre_asignatura = ?";
+        PreparedStatement s;
+        try {
+            s = c.prepareStatement(query);
+            s.setString(1, nombreAsig);
+            System.out.println(s);
+            ResultSet rs = s.executeQuery();
+            while (rs.next()) {
+                nombEstud.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return nombEstud;
 	}
 
 	public static ArrayList<Tarea> buscarEntregas(String nombreTarea, String nombreAsig) {

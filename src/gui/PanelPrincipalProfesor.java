@@ -86,7 +86,7 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 			cl.show(Programa.panelCardLayout, "Panel Tarea Profesor");
 		} else if (e.getSource() == boletinBoton) {
 			imprimirBoletin(asig);
-			System.out.println("2");
+			BaseQueries.imprimirBoletinHtml(asig.getNombre());
 		}
 	}
 
