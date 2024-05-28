@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -75,11 +76,11 @@ class PanelTareasEstudiante extends JPanel {
 	public JPanel crearTarea(Tarea tareaInfo) {
 		String entregado = BaseQueries.buscarSiEntregado(tareaInfo.getNombre(), u.getNombre(), asig.getNombre());
 		
-	    GridBagLayout gbl_tarea1 = new GridBagLayout();
-	    gbl_tarea1.columnWeights = new double[] { 1.0, 0.0, 0.0 };
-	    gbl_tarea1.columnWidths = new int[] { 0, 450, 50 };
+	    GridBagLayout gbl_tarea = new GridBagLayout();
+	    gbl_tarea.columnWeights = new double[] { 1.0, 0.0, 0.0 };
+	    gbl_tarea.columnWidths = new int[] { 0, 450, 50 };
 
-	    JPanel tarea = new JPanel(gbl_tarea1);
+	    JPanel tarea = new JPanel(gbl_tarea);
 	    tarea.setBorder(BorderFactory.createCompoundBorder(
 	            BorderFactory.createLineBorder(new Color(Vista.COLOR2), 3),
 	            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
@@ -143,13 +144,9 @@ class PanelTareasEstudiante extends JPanel {
 			this.setPreferredSize(new Dimension(100, 160));
 			this.setLayout(null);
 			JLabel nombAsig = new JLabel("Tareas " + asig.getNombre());
+			nombAsig.setFont(new Font("Consolas", Font.PLAIN, 18));
 			nombAsig.setBounds(0, 100, 120, 20);
 			this.add(nombAsig);
-
-			
-			JLabel notaMedia = new JLabel("Nota media: ");
-			notaMedia.setBounds(0, 80, 71, 13);
-			this.add(notaMedia);
 
 			atras = new JButton();
 			atras.setBounds(610, 10, 70, 70);

@@ -126,13 +126,13 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	    gbc.fill = GridBagConstraints.HORIZONTAL;
 	    tarea.add(nombreEstud, gbc);
 
-	    JLabel time = new JLabel(tareaInfo.getFechaEntrega());
-	    time.setHorizontalAlignment(SwingConstants.LEFT);
+	    JLabel fecha = new JLabel(tareaInfo.getFechaEntrega());
+	    fecha.setHorizontalAlignment(SwingConstants.LEFT);
 	    gbc.insets = new Insets(0, 0, 0, 200);
 	    gbc.gridx = 1;
 	    gbc.anchor = GridBagConstraints.CENTER;
 	    gbc.fill = GridBagConstraints.NONE;
-	    tarea.add(time, gbc);
+	    tarea.add(fecha, gbc);
 
 	    JTextField nota = new JTextField();
 	    gbc.insets = new Insets(0, 0, 0, 20);
@@ -202,7 +202,6 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	public void itemStateChanged(ItemEvent event) {
 		if (event.getStateChange() == ItemEvent.SELECTED) {
 			String valorSeleccionado = eligirTarea.getSelectedItem().toString();
-			System.out.println(valorSeleccionado);
 			
 			ArrayList<Tarea> tareas = BaseQueries.buscarEntregas(valorSeleccionado, asig.getNombre());
 			bucleTareas(tareas);

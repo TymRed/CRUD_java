@@ -29,6 +29,7 @@ public class Vista extends JFrame {
 	final static int COLOR3 = 0xbfdbf7;
 	final static int COLOR4 = 0xe1e5f2;
 	final static int COLOR5 = 0xffffff;
+	static ArrayList<String> errores = new ArrayList<String>();
 
 	public Vista() {
 
@@ -48,6 +49,68 @@ public class Vista extends JFrame {
 
 	}
 
+	public static JButton crearBoton(String texto, char mnemonic) {
+		JButton b = new JButton(texto);
+		b.setFocusable(false);
+		b.setForeground((new Color(Vista.COLOR1)));
+		b.setFont(new Font("Consolas", Font.PLAIN, 14));
+		b.setMnemonic(mnemonic);
+		b.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		b.setBackground(new Color(Vista.COLOR3));
+		b.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2, true));
+		return b;
+	}
+
+	public static boolean comprobarNombre(String nombreUsuario) {
+
+		boolean longitudAdecuada = nombreUsuario.length() >= 4 && nombreUsuario.length() <= 16;
+
+		if (nombreUsuario.isEmpty() || !longitudAdecuada) {
+			errores.add("El nombre debe tener entre 4 y 16 caracteres.");
+			return false;
+		}
+
+		boolean may1 = nombreUsuario.charAt(0) >= 'A' && nombreUsuario.charAt(0) <= 'Z';
+		boolean adecuado = nombreUsuario.substring(1).matches("[a-z]*");
+
+		if (longitudAdecuada && may1 && adecuado)
+			return true;
+
+		if (!may1) {
+			errores.add("El nombre debe comenzar por mayúscula.");
+		} else if (!adecuado) {
+			errores.add("El nombre debe comenzar por letra mayúscula.");
+			errores.add("El resto de letras deben minúsculas.");
+		}
+		return false;
+	}
+
+	public static boolean comprobarContrasena(String contrasena) {
+
+		boolean longitudAdecuada = contrasena.length() >= 4 && contrasena.length() <= 16;
+
+		if (contrasena.isEmpty() || !longitudAdecuada) {
+			errores.add("La contraseña debe tener entre 4 y 16 caracteres.");
+			return false;
+		}
+
+		boolean hayMin = contrasena.matches(".*[a-z].*");
+		boolean hayMay = contrasena.matches(".*[A-Z].*");
+		boolean hayNum = contrasena.matches(".*[1-9].*");
+
+		if (longitudAdecuada && hayMin && hayMay && hayNum)
+			return true;
+
+		if (!hayMin)
+			errores.add("La contraseña debe tener al menos una letra minúscula.");
+		if (!hayMay)
+			errores.add("La contraseña debe tener al menos una letra mayúscula.");
+		if (!hayNum)
+			errores.add("La contraseña debe tener al menos un número.");
+
+		return false;
+	}
+
 	class MiPanel extends JPanel implements ActionListener {
 
 		JButton signIn, logIn;
@@ -55,7 +118,6 @@ public class Vista extends JFrame {
 		JPasswordField contrasena;
 		Image logo, logoU, logoC;
 		JLabel errorUsuario, errorContrasena;
-		static ArrayList<String> errores = new ArrayList<String>();
 
 		public MiPanel() {
 
@@ -73,8 +135,10 @@ public class Vista extends JFrame {
 
 			signIn = crearBoton("Sign in", 's');
 			signIn.setBounds(55, 230, 80, 30);
+			signIn.addActionListener(this);
 			logIn = crearBoton("Log in", 'l');
 			logIn.setBounds(200, 230, 80, 30);
+			logIn.addActionListener(this);
 			this.add(signIn);
 			this.add(logIn);
 
@@ -96,19 +160,6 @@ public class Vista extends JFrame {
 			contrasena.setFont(new Font("Consolas", Font.PLAIN, 18));
 			contrasena.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2));
 			return contrasena;
-		}
-
-		private JButton crearBoton(String texto, char mnemonic) {
-			JButton b = new JButton(texto);
-			b.setFocusable(false);
-			b.setForeground((new Color(Vista.COLOR1)));
-			b.setFont(new Font("Consolas", Font.PLAIN, 14));
-			b.setMnemonic(mnemonic);
-			b.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			b.setBackground(new Color(Vista.COLOR3));
-			b.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2, true));
-			b.addActionListener(this);
-			return b;
 		}
 
 		@Override
@@ -134,7 +185,6 @@ public class Vista extends JFrame {
 				boolean datosCorrectos = u != null;
 
 				if (datosCorrectos) {
-					System.out.println("Loged In");
 					Programa programa = new Programa(u);
 					Vista.this.dispose();
 				} else {
@@ -163,68 +213,17 @@ public class Vista extends JFrame {
 				boolean contrasenaAdecuada = comprobarContrasena(contrasenaUsuario);
 				if (!contrasenaAdecuada) {
 					ventanaError = new VistaError(errores);
-					return;					
+					return;
 				}
 
 				if (nombreAdecuado && contrasenaAdecuada) {
 					BaseQueries.signIn(nombreUsuario, contrasenaUsuario);
-					System.out.println("Singed In");
 					nombre.setText("");
 					contrasena.setText("");
 					ventanaError = new VistaError(errores);
 				}
 
 			}
-		}
-
-		private boolean comprobarNombre(String nombreUsuario) {
-
-			boolean longitudAdecuada = nombreUsuario.length() >= 4 && nombreUsuario.length() <= 16;
-
-			if (nombreUsuario.isEmpty() || !longitudAdecuada) {
-				errores.add("El nombre debe tener entre 4 y 16 caracteres.");
-				return false;
-			}
-
-			boolean may1 = nombreUsuario.charAt(0) >= 'A' && nombreUsuario.charAt(0) <= 'Z';
-			boolean adecuado = nombreUsuario.substring(1).matches("[a-z]*");
-
-			if (longitudAdecuada && may1 && adecuado)
-				return true;
-
-			if (!may1) {
-				errores.add("El nombre debe comenzar por mayúscula.");
-			} else if (!adecuado) {
-				errores.add("El nombre debe comenzar por letra mayúscula.");
-				errores.add("El resto de letras deben minúsculas.");
-			}
-			return false;
-		}
-
-		private boolean comprobarContrasena(String contrasena) {
-
-			boolean longitudAdecuada = contrasena.length() >= 4 && contrasena.length() <= 16;
-
-			if (contrasena.isEmpty() || !longitudAdecuada) {
-				errores.add("La contraseña debe tener entre 4 y 16 caracteres.");
-				return false;
-			}
-
-			boolean hayMin = contrasena.matches(".*[a-z].*");
-			boolean hayMay = contrasena.matches(".*[A-Z].*");
-			boolean hayNum = contrasena.matches(".*[1-9].*");
-
-			if (longitudAdecuada && hayMin && hayMay && hayNum)
-				return true;
-
-			if (!hayMin)
-				errores.add("La contraseña debe tener al menos una letra minúscula.");
-			if (!hayMay)
-				errores.add("La contraseña debe tener al menos una letra mayúscula.");
-			if (!hayNum)
-				errores.add("La contraseña debe tener al menos un número.");
-			
-			return false;
 		}
 
 	}

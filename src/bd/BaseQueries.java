@@ -116,7 +116,6 @@ public class BaseQueries {
 		try {
 			s = c.prepareStatement(query);
 			s.setString(1, nombreAsig);
-			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				tareas.add(rs.getString(1));
@@ -133,7 +132,6 @@ public class BaseQueries {
 		try {
 			s = c.prepareStatement(query);
 			s.setString(1, nombreAsig);
-			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				Asignatura asig = new Asignatura();
@@ -158,7 +156,6 @@ public class BaseQueries {
 			s.setString(3, nombreAsig);
 			s.setString(4, nombreEstudiante);
 			s.executeUpdate();
-			System.out.println(s);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -170,7 +167,6 @@ public class BaseQueries {
 		try {
 			s = c.prepareStatement(query);
 			s.setString(1, nombreprof);
-			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				Asignatura asig = new Asignatura();
@@ -291,7 +287,6 @@ public class BaseQueries {
             s.setString(1, nombre);
             s.setString(2, nombreAsig);
             s.setString(3, nombreEstud);
-//            System.out.println(s);
             ResultSet rs = s.executeQuery();
             if (rs.next()) {
                 return rs.getDouble(1);
@@ -310,7 +305,6 @@ public class BaseQueries {
         try {
             s = c.prepareStatement(query);
             s.setString(1, nombreAsig);
-            System.out.println(s);
             ResultSet rs = s.executeQuery();
             while (rs.next()) {
                 nombEstud.add(rs.getString(1));
@@ -330,7 +324,6 @@ public class BaseQueries {
             s = c.prepareStatement(query);
             s.setString(1, nombreTarea);
             s.setString(2, nombreAsig);
-            System.out.println(s);
             ResultSet rs = s.executeQuery();
             while (rs.next()) {
                 Tarea tarea = new Tarea(nombreTarea,rs.getString(1), rs.getString(2), rs.getDouble(3));
@@ -349,7 +342,6 @@ public class BaseQueries {
 		try {
 			s = c.prepareStatement(query);
 			s.setString(1, nombreAsig);		
-			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
 				Tarea tarea = new Tarea(rs.getString(1));
@@ -369,7 +361,6 @@ public class BaseQueries {
 			s.setString(1, nombreTarea);			
 			s.setString(2, nombreEstud);			
 			s.setString(3, nombreAsig);
-			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			if (rs.next()) {
 				return rs.getString(1);
@@ -390,7 +381,6 @@ public class BaseQueries {
             s.setString(3, nombreAsig);
             s.setString(4, nombreEstud);
             s.executeUpdate();
-            System.out.println(s);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -407,7 +397,6 @@ public class BaseQueries {
 			s.setString(3, nombreEstud);	
 			s.setString(4, LocalDate.now().toString());
 			s.executeUpdate();
-			System.out.println(s);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -422,7 +411,6 @@ public class BaseQueries {
 			s.setString(1, "Tarea" + maxTarea);			
 			s.setString(2, nombreAsig);
 			s.executeUpdate();
-			System.out.println(s);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -436,19 +424,17 @@ public class BaseQueries {
 			s.setString(1, nombreTarea);			
 			s.setString(2, nombreAsig);
 			s.executeUpdate();
-			System.out.println(s);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private static int buscarMaxIdTarea(String nombreAsig) { 
+	public static int buscarMaxIdTarea(String nombreAsig) { 
 		String query =  "select right(Max(nombre),1) from tareasinfo WHERE nombre_asignatura = ?";
 		PreparedStatement s;
 		try {
 			s = c.prepareStatement(query);	
 			s.setString(1, nombreAsig);
-			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			if (rs.next()) {
 				return rs.getInt(1);

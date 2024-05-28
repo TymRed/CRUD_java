@@ -3,7 +3,6 @@ package logica;
 public class Estudiante extends Usuario{
 	private int cantidadAsig;
 
-	
 	public Estudiante() {
 		super();
 	}
