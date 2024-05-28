@@ -105,16 +105,16 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 		tareasContenedor.repaint();
 	}
 	public JPanel crearTarea(Tarea tareaInfo) {
-	    GridBagLayout gbl_tarea1 = new GridBagLayout();
-	    gbl_tarea1.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0 };
-	    gbl_tarea1.columnWidths = new int[] { 0, 100, 50, 50 };
+	    GridBagLayout gbl_tarea = new GridBagLayout();
+	    gbl_tarea.columnWeights = new double[] { 1.0, 0.0, 0.0, 0.0 };
+	    gbl_tarea.columnWidths = new int[] { 0, 100, 50, 50 };
 
-	    JPanel tarea1 = new JPanel(gbl_tarea1);
-	    tarea1.setBorder(BorderFactory.createCompoundBorder(
+	    JPanel tarea = new JPanel(gbl_tarea);
+	    tarea.setBorder(BorderFactory.createCompoundBorder(
 	            BorderFactory.createLineBorder(new Color(Vista.COLOR2), 3),
 	            BorderFactory.createEmptyBorder(5, 5, 5, 5)));
-	    tarea1.setBackground(new Color(Vista.COLOR3));
-	    tarea1.setMaximumSize(new Dimension(800, 40));
+	    tarea.setBackground(new Color(Vista.COLOR3));
+	    tarea.setMaximumSize(new Dimension(800, 40));
 
 	    GridBagConstraints gbc = new GridBagConstraints();
 	    JLabel nombreEstud = new JLabel(tareaInfo.getNombreEstudiante());
@@ -124,7 +124,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	    gbc.gridy = 0;
 	    gbc.anchor = GridBagConstraints.WEST;
 	    gbc.fill = GridBagConstraints.HORIZONTAL;
-	    tarea1.add(nombreEstud, gbc);
+	    tarea.add(nombreEstud, gbc);
 
 	    JLabel time = new JLabel(tareaInfo.getFechaEntrega());
 	    time.setHorizontalAlignment(SwingConstants.LEFT);
@@ -132,13 +132,13 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	    gbc.gridx = 1;
 	    gbc.anchor = GridBagConstraints.CENTER;
 	    gbc.fill = GridBagConstraints.NONE;
-	    tarea1.add(time, gbc);
+	    tarea.add(time, gbc);
 
 	    JTextField nota = new JTextField();
 	    gbc.insets = new Insets(0, 0, 0, 20);
 	    gbc.fill = GridBagConstraints.HORIZONTAL;
 	    gbc.gridx = 2;
-	    tarea1.add(nota, gbc);
+	    tarea.add(nota, gbc);
 	    
 
 	    JButton botonPuntuar = new JButton("Puntuar");
@@ -160,9 +160,9 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	        			Color rojo = new Color(240,128,128);
 	        			nota.setText(notaD + "");
 	        			nota.setBackground(notaD >= 5 ? verde : rojo);
-	        			nota.setEnabled(false);
-	        			nota.setDisabledTextColor(new Color(Vista.COLOR1));
-	        			botonPuntuar.setEnabled(false);
+//	        			nota.setEnabled(false);
+//	        			nota.setDisabledTextColor(new Color(Vista.COLOR1));
+//	        			botonPuntuar.setEnabled(false);
 	        		}
 	        		else {
 						throw new Exception("error");
@@ -179,18 +179,18 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	    	Color rojo = new Color(240,128,128);
 	    	nota.setText(tareaInfo.getNota() + "");
 	    	nota.setBackground(tareaInfo.getNota() >= 5 ? verde : rojo);
-	    	nota.setEnabled(false);
-	    	nota.setDisabledTextColor(new Color(Vista.COLOR1));
-	    	botonPuntuar.setEnabled(false);
+//	    	nota.setEnabled(false);
+//	    	nota.setDisabledTextColor(new Color(Vista.COLOR1));
+//	    	botonPuntuar.setEnabled(false);
 	    }
 	    
 	    gbc.insets = new Insets(0, 0, 0, 0);
 	    gbc.gridx = 3;
 	    gbc.anchor = GridBagConstraints.EAST;
 	    gbc.fill = GridBagConstraints.NONE;
-	    tarea1.add(botonPuntuar, gbc);
+	    tarea.add(botonPuntuar, gbc);
 
-	    return tarea1;
+	    return tarea;
 	}
 	public JButton crearBoton(String nombre) {
 		JButton asignatura = new JButton(nombre);

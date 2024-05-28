@@ -234,6 +234,7 @@ public class BaseQueries {
 	        fw.write("<title>Notas finales " +nombreAsig + "</title>");
 	        fw.write("</head>");
 	        fw.write("<body>");
+	        fw.write("<h2 style='margin-bottom:2px'>"+nombreAsig+"</h2>");
 	        fw.write("<table border = '1' style='border-collapse: collapse;'>");
 			
 			String fila1 = "<tr>";
