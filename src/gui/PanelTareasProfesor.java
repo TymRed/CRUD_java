@@ -155,7 +155,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	        		notaD = Double.parseDouble(nota.getText());
 	        		BaseQueries.ponerNotaEstudiante(notaD, tareaInfo.getNombre(), nombreEstud.getText(), asig.getNombre());
 	        		
-	        		if (notaD != null) {
+	        		if (notaD != null && notaD >=0 && notaD <=10) {
 	        			Color verde = new Color(144, 238, 144);
 	        			Color rojo = new Color(240,128,128);
 	        			nota.setText(notaD + "");
@@ -164,6 +164,9 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	        			nota.setDisabledTextColor(new Color(Vista.COLOR1));
 	        			botonPuntuar.setEnabled(false);
 	        		}
+	        		else {
+						throw new Exception("error");
+					}
 	        		repaint();
 				} catch (Exception e2) {
 					System.out.println("Nota invalida");
