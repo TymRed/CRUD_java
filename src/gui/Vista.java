@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
@@ -18,7 +17,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 
 import bd.BaseQueries;
 import logica.Usuario;
@@ -65,7 +63,7 @@ public class Vista extends JFrame {
 			this.setBackground(new Color(Vista.COLOR4));
 			this.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 3));
 
-			nombre = crearCampoTexto("Usuario");
+			nombre = crearCampoTexto();
 			nombre.setBounds(55, 130, 225, 25);
 			contrasena = crearCampoContrasena();
 			contrasena.setBounds(55, 180, 225, 25);
@@ -84,11 +82,11 @@ public class Vista extends JFrame {
 
 		}
 
-		private JTextField crearCampoTexto(String texto) {
-			JTextField t = new JTextField(texto);
+		private JTextField crearCampoTexto() {
+			JTextField t = new JTextField();
 			t.setForeground(Color.GRAY);
 			t.setFont(new Font("Consolas", Font.PLAIN, 18));
-			t.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1).brighter().brighter(), 2));
+			t.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2));
 			return t;
 		}
 
@@ -96,7 +94,7 @@ public class Vista extends JFrame {
 			JPasswordField contrasena = new JPasswordField();
 			contrasena.setForeground(Color.GRAY);
 			contrasena.setFont(new Font("Consolas", Font.PLAIN, 18));
-			contrasena.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1).brighter().brighter(), 2));
+			contrasena.setBorder(BorderFactory.createLineBorder(new Color(Vista.COLOR1), 2));
 			return contrasena;
 		}
 
@@ -201,7 +199,6 @@ public class Vista extends JFrame {
 				errores.add("El resto de letras deben minúsculas.");
 			}
 			return false;
-
 		}
 
 		private boolean comprobarContrasena(String contrasena) {

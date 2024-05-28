@@ -184,7 +184,7 @@ public class BaseQueries {
 	}
 
 	public static String imprimirBoletinClase(String nombreAsig) {
-		String query = "SELECT nombre_asignatura, nombre, nombre_estudiante, nota FROM tareas WHERE nombre_asignatura = ?  ORDER BY nombre_estudiante ASC";
+		String query = "SELECT nombre, nombre_estudiante, nota FROM tareas WHERE nombre_asignatura = ?  ORDER BY nombre_estudiante ASC";
 		PreparedStatement s;
 		String boletin = "\t\t" + nombreAsig + "\n";
 		try {
@@ -192,8 +192,7 @@ public class BaseQueries {
 			s.setString(1, nombreAsig);
 			ResultSet rs = s.executeQuery();
 			while (rs.next()) {
-				boletin += rs.getString("nombre") + "\t" + rs.getString("nombre_estudiante") + "\t"
-						+ rs.getDouble("nota") + "\n";
+				boletin += String.format("%s\t%s\t%.2f\n",rs.getString(1),rs.getString(2),rs.getDouble(3));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -224,7 +223,7 @@ public class BaseQueries {
 		int numColumnas = tareas.size() + 2;
 		ArrayList<String> estud = buscarEstudiantes(nombreAsig);
 		
-		File htmlResult = new File("htmlResult.html");
+		File htmlResult = new File("boletin.html");
 		
         try {
         	FileWriter fw = new FileWriter(htmlResult);
@@ -415,7 +414,7 @@ public class BaseQueries {
 	}
 	
 	public static void crearTarea(String nombreAsig) {
-		int maxTarea = buscarMaxIdTarea(nombreAsig);
+		int maxTarea = buscarMaxIdTarea(nombreAsig) +1;
 		String query =  "insert into tareasinfo (nombre, nombre_asignatura) values (?,?)";
 		PreparedStatement s;
 		try {
@@ -452,12 +451,12 @@ public class BaseQueries {
 			System.out.println(s);
 			ResultSet rs = s.executeQuery();
 			if (rs.next()) {
-				return rs.getInt(1) + 1;
+				return rs.getInt(1);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return 1;
+		return 0;
 	}
 
 }

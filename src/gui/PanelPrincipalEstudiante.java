@@ -55,10 +55,10 @@ class PanelPrincipalEstudiante extends JPanel implements ActionListener {
 		asignatura2 = crearBoton("BBDD");
 		asignaturasContenedor.add(asignatura2);
 
-		asignatura3 = crearBoton("LGMS");
+		asignatura3 = crearBoton("SISI");
 		asignaturasContenedor.add(asignatura3);
 
-		asignatura4 = crearBoton("SISI");
+		asignatura4 = crearBoton("FOL");
 		asignaturasContenedor.add(asignatura4);
 
 	}
@@ -79,13 +79,13 @@ class PanelPrincipalEstudiante extends JPanel implements ActionListener {
 		
 		String nombreAsignatura = "";
 		if (e.getSource() == asignatura1) {
-			nombreAsignatura = "Prog";
+			nombreAsignatura = "PROG";
 		} else if (e.getSource() == asignatura2) {
 			nombreAsignatura = "BBDD";
 		} else if (e.getSource() == asignatura3) {
-			nombreAsignatura = "LMSG";
-		} else if (e.getSource() == asignatura4) {
 			nombreAsignatura = "SISI";
+		} else if (e.getSource() == asignatura4) {
+			nombreAsignatura = "FOL";
 		}
 		BaseQueries.unirseAsignatura(u.getNombre(),nombreAsignatura);
 		
@@ -137,8 +137,6 @@ class PanelPrincipalEstudiante extends JPanel implements ActionListener {
 			super.paintComponent(g);
 			logo = new ImageIcon("images//logoNoodle.png").getImage();
 			g.drawImage(logo, -10, 30, 150, 50, null);
-//			botonSalir = new ImageIcon("images//atras.png").getImage();
-//			g.drawImage(botonSalir, 600, 42, 100, 100, null);
 		}
 
 		@Override

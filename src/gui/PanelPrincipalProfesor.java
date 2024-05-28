@@ -94,7 +94,7 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 		try {
 			String textoNotas = BaseQueries.imprimirBoletinClase(asig.getNombre());
 			String textoMedias = BaseQueries.imprimirMedias(asig.getNombre());
-			FileWriter fw = new FileWriter("boletin.txt", false);
+			FileWriter fw = new FileWriter("boletinOrientativo.txt", false);
 			fw.write(textoNotas);
 			fw.write(textoMedias);
 			fw.close();
@@ -123,7 +123,7 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 
 			iconoSalir = new ImageIcon("images//atras.png");
 			Image imagen = iconoSalir.getImage();
-			Image imagenRedimensionada = imagen.getScaledInstance(70, 70, java.awt.Image.SCALE_SMOOTH);
+			Image imagenRedimensionada = imagen.getScaledInstance(70, 70, Image.SCALE_SMOOTH);
 			iconoSalir = new ImageIcon(imagenRedimensionada);
 			botonSalir.setIcon(iconoSalir);
 			botonSalir.addActionListener(this);
@@ -145,8 +145,6 @@ class PanelPrincipalProfesor extends JPanel implements ActionListener {
 			super.paintComponent(g);
 			logo = new ImageIcon("images//logoNoodle.png").getImage();
 			g.drawImage(logo, -10, 30, 150, 50, null);
-//		botonSalir = new ImageIcon("images//atras.png").getImage();
-//		g.drawImage(botonSalir, 600, 42, 100, 100, null);
 		}
 
 		@Override

@@ -139,7 +139,6 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	    gbc.fill = GridBagConstraints.HORIZONTAL;
 	    gbc.gridx = 2;
 	    tarea.add(nota, gbc);
-	    
 
 	    JButton botonPuntuar = new JButton("Puntuar");
 	    botonPuntuar.setBackground(new Color(Vista.COLOR4));
@@ -153,6 +152,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	        	Double notaD;
 	        	try {
 	        		notaD = Double.parseDouble(nota.getText());
+	        		notaD = notaD >= 4.995 && notaD <=5  ?  5 : notaD;
 	        		BaseQueries.ponerNotaEstudiante(notaD, tareaInfo.getNombre(), nombreEstud.getText(), asig.getNombre());
 	        		
 	        		if (notaD != null && notaD >=0 && notaD <=10) {
@@ -160,9 +160,6 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	        			Color rojo = new Color(240,128,128);
 	        			nota.setText(notaD + "");
 	        			nota.setBackground(notaD >= 5 ? verde : rojo);
-//	        			nota.setEnabled(false);
-//	        			nota.setDisabledTextColor(new Color(Vista.COLOR1));
-//	        			botonPuntuar.setEnabled(false);
 	        		}
 	        		else {
 						throw new Exception("error");
@@ -179,9 +176,6 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	    	Color rojo = new Color(240,128,128);
 	    	nota.setText(tareaInfo.getNota() + "");
 	    	nota.setBackground(tareaInfo.getNota() >= 5 ? verde : rojo);
-//	    	nota.setEnabled(false);
-//	    	nota.setDisabledTextColor(new Color(Vista.COLOR1));
-//	    	botonPuntuar.setEnabled(false);
 	    }
 	    
 	    gbc.insets = new Insets(0, 0, 0, 0);
@@ -288,8 +282,6 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 			super.paintComponent(g);
 			logo = new ImageIcon("images//logoNoodle.png").getImage();
 			g.drawImage(logo, -10, 10, 150, 50, null);
-//		botonSalir = new ImageIcon("images//atras.png").getImage();
-//		g.drawImage(botonSalir, 600, 42, 100, 100, null);
 		}
 
 		@Override

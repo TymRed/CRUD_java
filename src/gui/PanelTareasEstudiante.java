@@ -45,7 +45,7 @@ class PanelTareasEstudiante extends JPanel {
 				BorderFactory.createEmptyBorder(20, 50, 20, 50)));
 		this.setLayout(new BorderLayout(0, 0));
 
-		JPanel infoAsignaturaContenedor = new PanelConLogoProf(u);
+		JPanel infoAsignaturaContenedor = new PanelConLogoEst(u);
 		this.add(infoAsignaturaContenedor, BorderLayout.NORTH);
 
 
@@ -131,13 +131,13 @@ class PanelTareasEstudiante extends JPanel {
 	    return tarea;
 	}
 
-	class PanelConLogoProf extends JPanel implements ActionListener {
+	class PanelConLogoEst extends JPanel implements ActionListener {
 
 		private Image logo;
 		private JButton atras;
 		private ImageIcon iconoSalir;
 
-		public PanelConLogoProf(Usuario u) {
+		public PanelConLogoEst(Usuario u) {
 			
 			this.setBackground(new Color(Vista.COLOR4));
 			this.setPreferredSize(new Dimension(100, 160));
@@ -173,8 +173,6 @@ class PanelTareasEstudiante extends JPanel {
 			super.paintComponent(g);
 			logo = new ImageIcon("images//logoNoodle.png").getImage();
 			g.drawImage(logo, -10, 10, 150, 50, null);
-//		botonSalir = new ImageIcon("images//atras.png").getImage();
-//		g.drawImage(botonSalir, 600, 42, 100, 100, null);
 		}
 
 		@Override
