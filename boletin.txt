@@ -1,24 +1,24 @@
 		Prog
 Tarea1	Albert	2.0
-Tarea1	Claudiu	8.0
-Tarea1	Dani	-5.0
-Tarea1	Diego	0.0
-Tarea1	Fran	0.0
-Tarea2	Fran	0.0
-Tarea3	Fran	0.0
-Tarea4	Fran	0.0
-Tarea1	Javi	0.0
-Tarea2	Javi	0.0
-Tarea1	Luru	0.0
-Tarea1	Tym	0.0
-Tarea2	Tym	0.0
+Tarea1	Claudiu	8.9
+Tarea1	Dani	6.8
+Tarea1	Diego	6.0
+Tarea1	Fran	5.7
+Tarea3	Fran	8.0
+Tarea1	Javi	2.9
+Tarea2	Javi	6.9
+Tarea1	Luru	2.6
+Tarea2	Luru	8.1
+Tarea3	Luru	2.7
+Tarea1	Tym	8.9
+Tarea2	Tym	3.8
 
 	Notas medias
 Albert: 2.0
-Claudiu: 8.0
-Dani: -5.0
-Diego: 0.0
-Fran: 0.0
-Javi: 0.0
-Luru: 0.0
-Tym: 0.0
+Claudiu: 8.9
+Dani: 6.8
+Diego: 6.0
+Fran: 6.85
+Javi: 4.9
+Luru: 4.466667
+Tym: 6.35

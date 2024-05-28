@@ -156,12 +156,13 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	        		BaseQueries.ponerNotaEstudiante(notaD, tareaInfo.getNombre(), nombreEstud.getText(), asig.getNombre());
 	        		
 	        		if (notaD != null) {
-	        			Color verde = new Color(20,200,20);
-	        			Color rojo = new Color(200,20,20);
+	        			Color verde = new Color(144, 238, 144);
+	        			Color rojo = new Color(240,128,128);
 	        			nota.setText(notaD + "");
 	        			nota.setBackground(notaD >= 5 ? verde : rojo);
 	        			nota.setEnabled(false);
-	        			botonPuntuar.setEnabled(false);;
+	        			nota.setDisabledTextColor(new Color(Vista.COLOR1));
+	        			botonPuntuar.setEnabled(false);
 	        		}
 	        		repaint();
 				} catch (Exception e2) {
@@ -171,11 +172,12 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 	        }
 	    });
 	    if (tareaInfo.getNota() != null) {
-	    	Color verde = new Color(20,200,20);
-	    	Color rojo = new Color(200,20,20);
+	    	Color verde = new Color(144, 238, 144);
+	    	Color rojo = new Color(240,128,128);
 	    	nota.setText(tareaInfo.getNota() + "");
 	    	nota.setBackground(tareaInfo.getNota() >= 5 ? verde : rojo);
 	    	nota.setEnabled(false);
+	    	nota.setDisabledTextColor(new Color(Vista.COLOR1));
 	    	botonPuntuar.setEnabled(false);
 	    }
 	    
@@ -218,7 +220,7 @@ class PanelTareasProfesor extends JPanel implements ItemListener, ActionListener
 			
 			nombresDeTareas = BaseQueries.crearListaNombreTareas(asig.getNombre());
 
-			// Para actualizar el modelo del JComboBox existente
+			// Para actualizar el modelo del JComboBox
 			DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(nombresDeTareas.toArray(new String[0]));
 			eligirTarea.setModel(model);
 
