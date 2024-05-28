@@ -41,7 +41,7 @@ CREATE TABLE `asignaturas` (
 
 LOCK TABLES `asignaturas` WRITE;
 /*!40000 ALTER TABLE `asignaturas` DISABLE KEYS */;
-INSERT INTO `asignaturas` VALUES ('BBDD','Prof2',0),('LMSG','Prof4',0),('Prog','Prof1',0),('SISI','Prof3',0);
+INSERT INTO `asignaturas` VALUES ('BBDD','Jimenez',0),('FOL','Fran',0),('PROG','Velasco',0),('SISI','Fernandez',0);
 /*!40000 ALTER TABLE `asignaturas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -69,7 +69,7 @@ CREATE TABLE `cursos` (
 
 LOCK TABLES `cursos` WRITE;
 /*!40000 ALTER TABLE `cursos` DISABLE KEYS */;
-INSERT INTO `cursos` VALUES ('Prog','Albert',NULL),('Prog','Claudiu',NULL),('Prog','Dani',NULL),('Prog','Diego',NULL),('Prog','Fran',NULL),('Prog','Javi',NULL),('Prog','Luru',NULL),('Prog','Tym',NULL),('SISI','Claudiu',NULL),('SISI','Diego',NULL),('SISI','Tym',NULL);
+INSERT INTO `cursos` VALUES ('FOL','Javi',NULL),('FOL','Tym',NULL),('PROG','Albert',NULL),('PROG','Javi',NULL),('SISI','Tym',NULL);
 /*!40000 ALTER TABLE `cursos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -93,7 +93,7 @@ CREATE TABLE `estudiantes` (
 
 LOCK TABLES `estudiantes` WRITE;
 /*!40000 ALTER TABLE `estudiantes` DISABLE KEYS */;
-INSERT INTO `estudiantes` VALUES ('Albert','aa'),('Claudiu','aa'),('Dani','aa'),('Diego','aa'),('Fran','aa'),('Javi','aa'),('Luru','aa'),('Sebas','aa'),('Tym','aa');
+INSERT INTO `estudiantes` VALUES ('Albert','Aa12'),('Javi','Aa12'),('Tym','Aa12');
 /*!40000 ALTER TABLE `estudiantes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,7 +117,7 @@ CREATE TABLE `profesores` (
 
 LOCK TABLES `profesores` WRITE;
 /*!40000 ALTER TABLE `profesores` DISABLE KEYS */;
-INSERT INTO `profesores` VALUES ('Prof1','aa'),('Prof2','aa'),('Prof3','aa'),('Prof4','aa');
+INSERT INTO `profesores` VALUES ('Fernandez','Prof1'),('Fran','Prof1'),('Jimenez','Prof1'),('Velasco','Prof1');
 /*!40000 ALTER TABLE `profesores` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -149,7 +149,7 @@ CREATE TABLE `tareas` (
 
 LOCK TABLES `tareas` WRITE;
 /*!40000 ALTER TABLE `tareas` DISABLE KEYS */;
-INSERT INTO `tareas` VALUES ('Tarea1','Albert','Prog',2.00,'2024-05-22'),('Tarea1','Claudiu','Prog',8.90,'2024-05-22'),('Tarea1','Dani','Prog',6.80,'2024-05-22'),('Tarea1','Diego','Prog',6.00,'2024-05-22'),('Tarea1','Fran','Prog',5.70,'2024-05-22'),('Tarea1','Javi','Prog',2.90,'2024-05-22'),('Tarea1','Luru','Prog',2.60,'2024-05-22'),('Tarea1','Tym','Prog',8.90,'2024-05-22'),('Tarea1','Claudiu','SISI',NULL,'2024-05-22'),('Tarea1','Diego','SISI',NULL,'2024-05-22'),('Tarea1','Tym','SISI',NULL,'2024-05-22'),('Tarea2','Javi','Prog',6.90,'2024-05-22'),('Tarea2','Luru','Prog',8.10,'2024-05-28'),('Tarea2','Tym','Prog',3.80,'2024-05-22'),('Tarea3','Fran','Prog',8.00,'2024-05-22'),('Tarea3','Luru','Prog',2.70,'2024-05-28');
+INSERT INTO `tareas` VALUES ('Tarea1','Javi','FOL',7.00,'2024-05-28'),('Tarea1','Tym','FOL',5.00,'2024-05-28'),('Tarea1','Albert','PROG',NULL,'2024-05-22'),('Tarea1','Tym','PROG',NULL,'2024-05-22'),('Tarea1','Tym','SISI',NULL,'2024-05-22'),('Tarea2','Javi','PROG',NULL,'2024-05-22'),('Tarea2','Tym','PROG',NULL,'2024-05-22');
 /*!40000 ALTER TABLE `tareas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -175,7 +175,7 @@ CREATE TABLE `tareasinfo` (
 
 LOCK TABLES `tareasinfo` WRITE;
 /*!40000 ALTER TABLE `tareasinfo` DISABLE KEYS */;
-INSERT INTO `tareasinfo` VALUES ('Tarea1','Prog'),('Tarea2','Prog'),('Tarea3','Prog'),('Tarea1','SISI');
+INSERT INTO `tareasinfo` VALUES ('Tarea1','FOL'),('Tarea2','FOL'),('Tarea1','PROG'),('Tarea2','PROG'),('Tarea1','SISI');
 /*!40000 ALTER TABLE `tareasinfo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -207,4 +207,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-28 13:19:41
+-- Dump completed on 2024-05-28 23:33:33
