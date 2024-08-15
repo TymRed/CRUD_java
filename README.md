@@ -1,6 +1,23 @@
 # Crud_Java
 ## Proyecto creado por:
-[Timasostima](https://github.com/Timasostima) y [RedondoDev](https://github.com/RedondoDev)
+<table>
+    <tr>
+        <th>Timasostima</th>
+        <th>RedondoDEV</th>    
+    </tr>
+    <tr>        
+        <td>
+            <a href="https://github.com/Timasostima">
+                <img src="https://avatars.githubusercontent.com/u/72166965?v=1" width="110px">
+            </a>
+        </td>
+        <td>
+            <a href="https://github.com/RedondoDev">
+                <img src="https://avatars.githubusercontent.com/u/163606882?v=1" width="110px"> 
+            </a>
+        </td>
+    </tr>
+</table>
 
 ## Imagenes del proyecto:
 
