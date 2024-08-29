@@ -1,8 +1,10 @@
 # Java CRUD
 Ñoodle es una aplicación de escritorio desarrollada con <b>Java Swing</b> y <b>MySQL</b>, diseñada para gestionar datos mediante operaciones <b>CRUD</b> (Crear, Leer, Actualizar, Eliminar).
+<p align="center">
+    <img style="width:70%" src="https://github.com/user-attachments/assets/d56ac25c-7460-4a14-b26a-4e240d8016a8">
+</p>
 
 ## Imagenes del proyecto:
-
 | Log In                                                | Vista Profe                                   | Vista Profe Entregas                          |
 | ----------------------------------------------------- | --------------------------------------------- | --------------------------------------------- |
 | ![NoodleLogIn](https://github.com/Timasostima/CRUD_java/assets/72166965/4bc5b8b7-6352-4dad-887d-c7fe1f6bd97e) | ![NoodleProfe](https://github.com/Timasostima/CRUD_java/assets/72166965/9b4e25a1-14b6-426b-aa78-4050101012d9) | ![image](https://github.com/Timasostima/CRUD_java/assets/72166965/12665fb8-75a8-4484-b238-d2d0b12d5687) | 
